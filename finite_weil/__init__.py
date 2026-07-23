@@ -9,6 +9,7 @@ from .explicit_formula import (
     universal_prime_operator,
     von_mangoldt,
 )
+from .gamma import gamma_kernel, gamma_matrix, gamma_weight
 from .gram import gram_matrix, scalar_form_matrix
 from .lfunctions import (
     PrimitiveQuadraticCharacter,
@@ -27,6 +28,9 @@ __all__ = [
     "PrimitiveQuadraticCharacter",
     "assemble_prime_operator",
     "conductor_matrix",
+    "gamma_kernel",
+    "gamma_matrix",
+    "gamma_weight",
     "generalized_eigenvalues",
     "gram_matrix",
     "gram_operator_norm",
