@@ -17,7 +17,7 @@ import numpy as np
 from numpy.typing import NDArray
 
 from .completed import CompletedDirichletData, conductor_matrix
-from .explicit_formula import assemble_prime_operator
+from .explicit_formula import PrimeWeight, assemble_prime_operator, sharp_prime_weight
 from .gamma import gamma_matrix
 from .operators import generalized_eigenvalues, gram_operator_norm
 from .packets import GaussianPacketFamily
@@ -33,12 +33,21 @@ class WeilOperator:
     packets: GaussianPacketFamily
     data: CompletedDirichletData
     prime_cutoff: int
+    prime_weight: PrimeWeight = sharp_prime_weight
+    prime_support_multiplier: float = 1.0
 
     def __post_init__(self) -> None:
         if isinstance(self.prime_cutoff, bool) or not isinstance(self.prime_cutoff, int):
             raise TypeError("prime_cutoff must be an integer")
         if self.prime_cutoff < 2:
             raise ValueError("prime_cutoff must be at least 2")
+        if (
+            self.prime_support_multiplier <= 0
+            or not np.isfinite(self.prime_support_multiplier)
+        ):
+            raise ValueError(
+                "prime_support_multiplier must be a finite positive number"
+            )
 
     def gram_matrix(self) -> FloatMatrix:
         """Return the packet Gram matrix ``B``."""
@@ -66,12 +75,14 @@ class WeilOperator:
         )
 
     def prime_matrix(self) -> FloatMatrix:
-        """Return the prime-power contribution truncated at ``prime_cutoff``."""
+        """Return the weighted prime-power contribution."""
 
         return assemble_prime_operator(
             self.packets,
             self.data.character,
             self.prime_cutoff,
+            weight=self.prime_weight,
+            support_multiplier=self.prime_support_multiplier,
         )
 
     def archimedean_matrix(
