@@ -20,6 +20,9 @@ dev = [
   "pytest>=8.0",
   "ruff>=0.5",
 ]
+experiments = [
+  "matplotlib>=3.8",
+]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
