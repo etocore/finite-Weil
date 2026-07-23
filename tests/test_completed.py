@@ -58,7 +58,7 @@ def test_conductor_matrix_matches_independent_spectral_quadrature() -> None:
         for j, right_center in enumerate(centers):
             delta = right_center - left_center
 
-            def integrand(u: float) -> float:
+            def integrand(u: float, delta: float = delta) -> float:
                 spectral_product = (
                     2.0
                     * pi
