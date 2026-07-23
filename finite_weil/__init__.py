@@ -1,5 +1,6 @@
 """Finite-dimensional Weil operator tools."""
 
+from .completed import CompletedDirichletData
 from .explicit_formula import (
     PrimeOperatorTerm,
     assemble_prime_operator,
@@ -19,6 +20,7 @@ from .operators import generalized_eigenvalues, gram_operator_norm
 from .packets import GaussianPacketFamily
 
 __all__ = [
+    "CompletedDirichletData",
     "GaussianPacketFamily",
     "PrimeOperatorTerm",
     "PrimitiveQuadraticCharacter",
