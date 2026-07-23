@@ -9,6 +9,7 @@ from .explicit_formula import (
     universal_prime_operator,
     von_mangoldt,
 )
+from .gram import gram_matrix, scalar_form_matrix
 from .lfunctions import (
     PrimitiveQuadraticCharacter,
     is_fundamental_discriminant,
@@ -26,6 +27,7 @@ __all__ = [
     "PrimitiveQuadraticCharacter",
     "assemble_prime_operator",
     "generalized_eigenvalues",
+    "gram_matrix",
     "gram_operator_norm",
     "is_fundamental_discriminant",
     "jacobi_symbol",
@@ -33,6 +35,7 @@ __all__ = [
     "prime_operator_terms",
     "prime_power_base",
     "quadratic_prime_power_coefficient",
+    "scalar_form_matrix",
     "universal_prime_operator",
     "von_mangoldt",
 ]
