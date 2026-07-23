@@ -50,6 +50,40 @@ def quadratic_prime_power_coefficient(
     return mangoldt * character(n) / sqrt(n)
 
 
+def prime_power_values(cutoff: int) -> tuple[tuple[int, int], ...]:
+    """Return sorted ``(p**k, p)`` pairs through ``cutoff``.
+
+    This sieve-based enumerator is exact and avoids testing every integer for
+    prime-power structure. It is intended for deep cutoff experiments where the
+    Gaussian translation kernel may remain significant far beyond small values of
+    ``cutoff``.
+    """
+
+    if isinstance(cutoff, bool) or not isinstance(cutoff, int):
+        raise TypeError("cutoff must be an integer")
+    if cutoff < 2:
+        return ()
+
+    sieve = np.ones(cutoff + 1, dtype=bool)
+    sieve[:2] = False
+    limit = int(sqrt(cutoff))
+    for prime in range(2, limit + 1):
+        if sieve[prime]:
+            sieve[prime * prime : cutoff + 1 : prime] = False
+
+    values: list[tuple[int, int]] = []
+    for prime in np.flatnonzero(sieve):
+        p = int(prime)
+        value = p
+        while value <= cutoff:
+            values.append((value, p))
+            if value > cutoff // p:
+                break
+            value *= p
+    values.sort()
+    return tuple(values)
+
+
 def sharp_prime_weight(n: int, cutoff: int) -> float:
     """Return the sharp cutoff weight ``1_{n <= cutoff}``."""
 
@@ -119,8 +153,8 @@ def prime_operator_terms(
 
     maximum = max(2, int(np.ceil(cutoff * support_multiplier)))
     terms: list[PrimeOperatorTerm] = []
-    for n in range(2, maximum + 1):
-        coefficient = quadratic_prime_power_coefficient(n, character)
+    for n, prime in prime_power_values(maximum):
+        coefficient = log(prime) * character(n) / sqrt(n)
         if coefficient == 0.0:
             continue
         term_weight = float(weight(n, cutoff))
