@@ -20,8 +20,8 @@ from __future__ import annotations
 from dataclasses import dataclass
 from math import log, pi
 
-from numpy.typing import NDArray
 import numpy as np
+from numpy.typing import NDArray
 
 from .gram import scalar_form_matrix
 from .lfunctions import PrimitiveQuadraticCharacter
