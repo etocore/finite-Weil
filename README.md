@@ -21,6 +21,28 @@ D(\sigma,q)=\lambda_{\min}(\sigma,q)-\log q
 
 across packet bandwidths and primitive quadratic characters.
 
+## Run the convergence experiment locally
+
+Create a Python 3.11 or newer environment, then install the package with its experiment dependencies:
+
+```bash
+python -m pip install -e ".[experiments]"
+```
+
+Run the default local sweep and generate the CSV plus all plots with one command:
+
+```bash
+python -m experiments.run
+```
+
+The default `quick` profile evaluates 90 parameter combinations. The full 300-case sweep is:
+
+```bash
+python -m experiments.run --profile full
+```
+
+Results are written to `artifacts/convergence.csv` and one PNG for each discriminant/sigma slice. These are floating-point numerical observations, not certified results and not evidence for RH or GRH.
+
 ## Repository layout
 
 - `finite_weil/` - mathematical implementation
