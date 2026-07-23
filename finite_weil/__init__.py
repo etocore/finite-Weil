@@ -20,12 +20,14 @@ from .lfunctions import (
 )
 from .operators import generalized_eigenvalues, gram_operator_norm
 from .packets import GaussianPacketFamily
+from .weil_operator import WeilOperator
 
 __all__ = [
     "CompletedDirichletData",
     "GaussianPacketFamily",
     "PrimeOperatorTerm",
     "PrimitiveQuadraticCharacter",
+    "WeilOperator",
     "assemble_prime_operator",
     "conductor_matrix",
     "gamma_kernel",
