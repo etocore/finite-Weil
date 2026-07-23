@@ -20,8 +20,8 @@ from .packets import GaussianPacketFamily
 
 __all__ = [
     "GaussianPacketFamily",
-    "PrimitiveQuadraticCharacter",
     "PrimeOperatorTerm",
+    "PrimitiveQuadraticCharacter",
     "assemble_prime_operator",
     "generalized_eigenvalues",
     "gram_operator_norm",
