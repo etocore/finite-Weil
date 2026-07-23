@@ -1,6 +1,6 @@
 """Finite-dimensional Weil operator tools."""
 
-from .completed import CompletedDirichletData
+from .completed import CompletedDirichletData, conductor_matrix
 from .explicit_formula import (
     PrimeOperatorTerm,
     assemble_prime_operator,
@@ -26,6 +26,7 @@ __all__ = [
     "PrimeOperatorTerm",
     "PrimitiveQuadraticCharacter",
     "assemble_prime_operator",
+    "conductor_matrix",
     "generalized_eigenvalues",
     "gram_matrix",
     "gram_operator_norm",
