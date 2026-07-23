@@ -6,7 +6,6 @@ import numpy as np
 from numpy.typing import ArrayLike, NDArray
 from scipy.linalg import eigh
 
-
 FloatArray = NDArray[np.float64]
 
 
