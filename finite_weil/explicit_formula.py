@@ -180,16 +180,56 @@ def assemble_prime_operator(
     *,
     weight: PrimeWeight = sharp_prime_weight,
     support_multiplier: float = 1.0,
+    chunk_size: int = 2048,
 ) -> FloatMatrix:
-    """Assemble a weighted truncated prime matrix."""
+    """Assemble a weighted prime matrix using chunked vectorized kernels."""
 
-    matrix = np.zeros((packets.dimension, packets.dimension), dtype=float)
-    for term in prime_operator_terms(
-        packets,
-        character,
-        cutoff,
-        weight=weight,
-        support_multiplier=support_multiplier,
-    ):
-        matrix += term.coefficient * term.weight * term.matrix
-    return matrix
+    if cutoff < 2:
+        return np.zeros((packets.dimension, packets.dimension), dtype=float)
+    if support_multiplier <= 0 or not np.isfinite(support_multiplier):
+        raise ValueError("support_multiplier must be a finite positive number")
+    if isinstance(chunk_size, bool) or not isinstance(chunk_size, int):
+        raise TypeError("chunk_size must be an integer")
+    if chunk_size < 1:
+        raise ValueError("chunk_size must be positive")
+
+    maximum = max(2, int(np.ceil(cutoff * support_multiplier)))
+    values = prime_power_values(maximum)
+    if not values:
+        return np.zeros((packets.dimension, packets.dimension), dtype=float)
+
+    n_values: list[int] = []
+    coefficients: list[float] = []
+    for n, prime in values:
+        coefficient = log(prime) * character(n) / sqrt(n)
+        if coefficient == 0.0:
+            continue
+        term_weight = float(weight(n, cutoff))
+        if not np.isfinite(term_weight):
+            raise ValueError("prime weight must return finite values")
+        if term_weight == 0.0:
+            continue
+        n_values.append(n)
+        coefficients.append(coefficient * term_weight)
+
+    if not n_values:
+        return np.zeros((packets.dimension, packets.dimension), dtype=float)
+
+    shifts = np.log(np.asarray(n_values, dtype=float))
+    coefficients_array = np.asarray(coefficients, dtype=float)
+    delta = packets.centers[:, None] - packets.centers[None, :]
+    denominator = 4.0 * packets.sigma**2
+    prefactor = sqrt(np.pi) * packets.sigma
+    matrix = np.zeros_like(delta, dtype=float)
+
+    for start in range(0, shifts.size, chunk_size):
+        stop = min(start + chunk_size, shifts.size)
+        local_shifts = shifts[start:stop, None, None]
+        local_coefficients = coefficients_array[start:stop, None, None]
+        kernels = -prefactor * (
+            np.exp(-((delta[None, :, :] - local_shifts) ** 2) / denominator)
+            + np.exp(-((delta[None, :, :] + local_shifts) ** 2) / denominator)
+        )
+        matrix += np.sum(local_coefficients * kernels, axis=0)
+
+    return np.asarray(0.5 * (matrix + matrix.T), dtype=float)
