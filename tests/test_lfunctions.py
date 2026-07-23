@@ -2,13 +2,13 @@ from math import log
 
 import pytest
 
+from finite_weil.explicit_formula import von_mangoldt
 from finite_weil.lfunctions import (
     PrimitiveQuadraticCharacter,
     is_fundamental_discriminant,
     kronecker_symbol,
     prime_power_base,
 )
-from finite_weil.explicit_formula import von_mangoldt
 
 
 def test_fundamental_discriminants() -> None:
