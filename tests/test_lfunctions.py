@@ -12,9 +12,9 @@ from finite_weil.lfunctions import (
 
 
 def test_fundamental_discriminants() -> None:
-    for value in (-8, -7, -4, -3, 5, 8, 12, 13):
+    for value in (-8, -7, -4, -3, 1, 5, 8, 12, 13):
         assert is_fundamental_discriminant(value)
-    for value in (0, 1, 4, 9, 16, 20):
+    for value in (0, 4, 9, 16, 20):
         assert not is_fundamental_discriminant(value)
 
 
