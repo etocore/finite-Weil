@@ -50,7 +50,8 @@ This checklist tracks the transition from local identifiability to quantitative 
 
 ## Immediate theorem queue
 
-- [ ] Derive exact leading constants for the two collapsing singular values using orthogonal projection or Schur-complement reduction.
+- [ ] Derive the exact leading coefficient of the cubic singular scale by orthogonal projection onto the complement of the limiting regular image and the first weak direction.
+- [ ] Derive the exact leading coefficient of the linear singular scale.
 - [ ] Formulate a canonical unitary collision normal form.
 - [ ] Generalize the divided-difference construction to an \(m\)-node cluster.
 - [ ] Determine the full hierarchy of cluster singular-value exponents.
