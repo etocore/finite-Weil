@@ -87,6 +87,27 @@ This checklist tracks the transition from local identifiability to quantitative 
   \qquad
   \sigma_6\sim\frac{2\sqrt2}{3}h^5.
   \]
+- [x] Prove that the ordinary collision Jacobian has corank \(2m-2\).
+- [x] Prove that no ordinary smooth source or target coordinate change can remove the collision rank defect.
+- [x] Define the cluster-rescaled tangent frame
+  \[
+  T(h)=B(h)^{-1}D(h)^{-1}.
+  \]
+- [x] Prove the exact rescaled differential identity
+  \[
+  J(h)T(h)=A(h),
+  \]
+  so the lifted realization differential extends invertibly to the collision face.
+- [x] Prove that the ordinary pullback metric cannot extend nondegenerately in ordinary coordinates.
+- [x] Prove the exact renormalized metric identity
+  \[
+  T(h)^*G(h)T(h)=A(h)^*A(h)
+  \]
+  and the positive-definite boundary value
+  \[
+  \widetilde G(0)=A_0^*A_0.
+  \]
+- [x] Prove that fixed-shape common-scale collision paths reach the boundary in finite ordinary pullback length.
 
 ## Main notes
 
@@ -96,15 +117,20 @@ This checklist tracks the transition from local identifiability to quantitative 
 - `paper/m-node-cluster-normal-form.md`
 - `paper/exact-m-node-deepest-constant.md`
 - `paper/complete-cluster-constant-hierarchy.md`
+- `paper/confluent-rescaled-geometry.md`
 
 ## Immediate theorem queue
 
-- [ ] Introduce confluent packet coordinates for an \(m\)-node collision stratum.
-- [ ] Rewrite the realization map in confluent jet coordinates.
-- [ ] Determine whether the realization Jacobian extends nonsingularly across the confluent stratum.
-- [ ] Pull back the Euclidean moment metric in confluent coordinates.
-- [ ] Determine the anisotropic renormalization required for metric extension.
-- [ ] Determine whether collision strata lie at finite or infinite geodesic distance.
+- [ ] Determine whether the rescaled coframe
+  \[
+  \omega(h)=D(h)B(h)d\theta
+  \]
+  integrates to actual confluent packet coordinates.
+- [ ] Construct a full blow-up atlas allowing center, scale, cluster shape, and coefficients to vary simultaneously.
+- [ ] Rewrite the realization map in explicit holonomic confluent coordinates when such coordinates exist.
+- [ ] Determine compatibility of overlapping cluster charts and permutation actions.
+- [ ] Identify the metric-completion quotient on the collision face.
+- [ ] Compute curvature of the extended rescaled metric in low-dimensional cases.
 - [ ] Formulate a canonical unitary cluster normal form from the exterior filtration.
 - [ ] Derive closed scalar cluster-polynomial formulas for the intermediate constants.
 - [ ] Handle several clusters collapsing simultaneously.
@@ -134,6 +160,7 @@ This checklist tracks the transition from local identifiability to quantitative 
 - [ ] Derive translation and scaling laws for \(G\).
 - [ ] Study metric completion near multiplicity-\(2m\) confluent strata.
 - [ ] Analyze curvature in low-dimensional packet manifolds.
+- [ ] Compare ordinary, rescaled, and quotient metrics on the collision face.
 
 ## Optimization
 
@@ -154,6 +181,7 @@ Before claiming novelty, review primary literature on:
 - Hermite interpolation stability;
 - singular perturbation of structured matrices;
 - singular spectra of clustered Vandermonde and confluent Vandermonde matrices;
-- analytic matrix pencils, Smith forms, and exterior-power singular asymptotics.
+- analytic matrix pencils, Smith forms, and exterior-power singular asymptotics;
+- weighted blow-ups, edge geometry, and rescaled tangent bundles.
 
 Classical ingredients should be cited as classical. New claims should be restricted to packet-specific formulations, geometric synthesis, or genuinely new quantitative results.
