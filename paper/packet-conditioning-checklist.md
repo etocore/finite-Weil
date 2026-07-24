@@ -11,8 +11,7 @@ This checklist tracks the transition from local identifiability to quantitative 
 ## Completed
 
 - [x] Prove Jacobian invertibility on the reduced packet space by Hermite interpolation.
-- [x] Prove local holomorphic invertibility.
-- [x] Prove local bi-Lipschitz stability.
+- [x] Prove local holomorphic invertibility and local bi-Lipschitz stability.
 - [x] Define the absolute packet condition number
   \[
   \kappa_{\mathrm{abs}}=\|J^{-1}\|.
@@ -34,50 +33,18 @@ This checklist tracks the transition from local identifiability to quantitative 
   in grouped coordinates, with positive sign in interleaved coordinates.
 - [x] Prove the two-node collision normal form
   \[
-  J(h)=A(h)D(h)B(h),
-  \qquad
-  D(h)=\operatorname{diag}(1,\ldots,1,h,h^3),
+  J(h)=A(h)\operatorname{diag}(1,\ldots,1,h,h^3)B(h)
   \]
   with uniformly invertible regular factors.
-- [x] Deduce
-  \[
-  \sigma_{2N-1}(J(h))\asymp|h|,
-  \qquad
-  \sigma_{2N}(J(h))\asymp|h|^3,
-  \qquad
-  \kappa_{\mathrm{abs}}(J(h))\asymp|h|^{-3}.
-  \]
-- [x] Derive the exact linear singular-value constant
-  \[
-  \lim_{h\to0}\frac{\sigma_{2N-1}(J(h))}{|h|}
-  =
-  \frac{\|P_0m''(x)\|}
-  {\sqrt{|u_1|^{-2}+|u_2|^{-2}}}.
-  \]
-- [x] Derive the exact cubic singular-value constant
-  \[
-  \lim_{h\to0}\frac{\sigma_{2N}(J(h))}{|h|^3}
-  =
-  \frac1{12\sqrt2}
-  \left\|
-  P_{\mathcal L_0\cap(P_0m''(x))^\perp}m'''(x)
-  \right\|.
-  \]
-- [x] Deduce the exact leading inverse-condition constant
-  \[
-  \lim_{h\to0}|h|^3\kappa_{\mathrm{abs}}(J(h))
-  =
-  \frac{12\sqrt2}
-  {\left\|P_{\mathcal L_0\cap(P_0m''(x))^\perp}m'''(x)\right\|}.
-  \]
-- [x] Derive the exact leading coefficients of the two collapsing metric eigenvalues.
-- [x] Generalize the collision construction to an arbitrary \(m\)-node cluster
+- [x] Derive the exact two-node constants for the linear and cubic singular scales.
+- [x] Derive the exact leading constant of \(h^3\kappa_{\mathrm{abs}}\).
+- [x] Generalize the collision construction to an arbitrary common-scale \(m\)-node cluster
   \[
   x_j=x+h\xi_j,
   \qquad
   \xi_i\ne\xi_j.
   \]
-- [x] Prove the bounded-equivalence normal form with cluster exponents
+- [x] Prove the bounded-equivalence exponent hierarchy
   \[
   0,0,1,2,\ldots,m-1,m+1,\ldots,2m-1.
   \]
@@ -85,7 +52,7 @@ This checklist tracks the transition from local identifiability to quantitative 
   \[
   1,2,\ldots,m-1,m+1,\ldots,2m-1.
   \]
-- [x] Prove the general cluster condition-number law
+- [x] Prove the general condition-number law
   \[
   \kappa_{\mathrm{abs}}(J(h))\asymp|h|^{-(2m-1)}.
   \]
@@ -93,76 +60,55 @@ This checklist tracks the transition from local identifiability to quantitative 
   \[
   \sum e_r=2m(m-1)=4\binom m2.
   \]
-- [x] Specialize the theorem to the three-node hierarchy
-  \[
-  1,2,4,5.
-  \]
-- [x] Prove the rank-one inverse limit
+- [x] Derive the exact deepest singular-value constant from the rank-one inverse limit
   \[
   h^{2m-1}J(h)^{-1}
   \longrightarrow
   r_\xi(\operatorname{coeff}P)^{\mathsf T}.
   \]
-- [x] Derive the exact deepest singular-value constant
+- [x] Separate the deepest constant into a cluster-shape factor and a projected highest-jet factor.
+- [x] Prove the exterior-power filtration theorem for an analytic diagonal normal form.
+- [x] Derive exact cumulative constants for every product of the smallest cluster singular values.
+- [x] Derive exact leading constants for all \(2m-2\) collapsing singular values.
+- [x] Express every constant as a successive orthogonal-projection ratio
   \[
-  \lim_{h\to0^+}
-  \frac{\sigma_{2N}(J(h))}{h^{2m-1}}
+  c_k
   =
-  \frac1{\Gamma(\xi)\|\operatorname{coeff}P\|_2},
+  \frac1{\|\widehat r_k\|\,\|\widehat\ell_k\|}.
   \]
-  where
+- [x] Express every constant as a ratio of principal Gram minors.
+- [x] Compute the complete symmetric three-node spectrum
   \[
-  \Gamma(\xi)
-  =
-  \left(
-  \sum_{j=1}^m
-  \left|
-  \frac{q_\xi''(\xi_j)}{q_\xi'(\xi_j)^3}
-  \right|^2
-  \right)^{1/2}
+  \sigma_3\sim2\sqrt2\,h,
+  \qquad
+  \sigma_4\sim\sqrt6\,h^2,
+  \qquad
+  \sigma_5\sim\sqrt{\frac23}\,h^4,
+  \qquad
+  \sigma_6\sim\frac{2\sqrt2}{3}h^5.
   \]
-  and
-  \[
-  P(z)
-  =
-  (z-x)^{2m-1}
-  \left(\frac{E(z)}{E(x)}\right)^2.
-  \]
-- [x] Prove the projected-jet form
-  \[
-  \lim_{h\to0^+}
-  \frac{\sigma_{2N}(J(h))}{h^{2m-1}}
-  =
-  \frac{\|Q_{m-1}M^{(2m-1)}(x)\|_2}
-  {(2m-1)!\,\Gamma(\xi)}.
-  \]
-- [x] Prove that the deepest common-scale cluster constant is independent of all nonzero packet coefficients.
-- [x] Compute the symmetric three-node constant
-  \[
-  \lim_{h\to0^+}\frac{\sigma_6(J(h))}{h^5}
-  =
-  \frac{2\sqrt2}{3}
-  \]
-  for offsets \((-1,0,1)\), center \(0\), and no exterior nodes.
 
-The exact two-node constants are recorded in `paper/exact-two-node-collision-constants.md`.
+## Main notes
 
-The general cluster theorem is recorded in `paper/m-node-cluster-normal-form.md`.
-
-The exact deepest general-cluster constant is recorded in `paper/exact-m-node-deepest-constant.md`.
+- `paper/packet-conditioning.md`
+- `paper/two-node-collision-normal-form.md`
+- `paper/exact-two-node-collision-constants.md`
+- `paper/m-node-cluster-normal-form.md`
+- `paper/exact-m-node-deepest-constant.md`
+- `paper/complete-cluster-constant-hierarchy.md`
 
 ## Immediate theorem queue
 
-- [ ] Derive exact leading constants for the remaining \(2m-3\) collapsing singular values of a general cluster.
-- [ ] Construct a successive inverse-filtration or effective-map theorem that produces every cluster constant.
-- [ ] Express the complete constant hierarchy through orthogonal projections of the jets
-  \[
-  M''(x),M'''(x),\ldots,M^{(2m-1)}(x).
-  \]
-- [ ] Formulate a canonical unitary cluster normal form.
-- [ ] Handle multiple clusters collapsing simultaneously at one common scale.
-- [ ] Handle nonuniform cluster paths in which pairwise distances vanish at different powers of \(h\).
-- [ ] Introduce confluent packet coordinates and test smooth or renormalized extension of the pullback metric.
+- [ ] Introduce confluent packet coordinates for an \(m\)-node collision stratum.
+- [ ] Rewrite the realization map in confluent jet coordinates.
+- [ ] Determine whether the realization Jacobian extends nonsingularly across the confluent stratum.
+- [ ] Pull back the Euclidean moment metric in confluent coordinates.
+- [ ] Determine the anisotropic renormalization required for metric extension.
+- [ ] Determine whether collision strata lie at finite or infinite geodesic distance.
+- [ ] Formulate a canonical unitary cluster normal form from the exterior filtration.
+- [ ] Derive closed scalar cluster-polynomial formulas for the intermediate constants.
+- [ ] Handle several clusters collapsing simultaneously.
+- [ ] Handle nonuniform cluster paths with different pairwise powers of \(h\).
 
 ## Quantitative global bounds
 
@@ -175,29 +121,26 @@ The exact deepest general-cluster constant is recorded in `paper/exact-m-node-de
   R=\max_i|x_i|.
   \]
 - [ ] Compare determinant-based bounds with inverse-Hermite-interpolation bounds.
-- [ ] Separate the effects of coefficient loss and geometric collision.
-- [ ] Determine whether useful scale-invariant relative condition numbers exist.
-- [ ] Make cluster-shape dependence explicit through the offset Vandermonde
+- [ ] Separate coefficient loss from geometric collision.
+- [ ] Make cluster-shape dependence explicit through
   \[
   \Delta(\xi)=\prod_{i<j}(\xi_j-\xi_i).
   \]
+- [ ] Determine useful scale-invariant relative condition numbers.
 
 ## Metric geometry
 
 - [ ] Compute the block entries of \(G=J^*J\) explicitly.
 - [ ] Derive translation and scaling laws for \(G\).
-- [ ] Determine geodesic distance to the collision boundary.
-- [ ] Study whether confluent boundary strata lie at finite or infinite metric distance.
+- [ ] Study metric completion near multiplicity-\(2m\) confluent strata.
 - [ ] Analyze curvature in low-dimensional packet manifolds.
-- [ ] Determine whether the anisotropically renormalized metric extends across multiplicity-\(2m\) confluent strata.
 
 ## Optimization
 
-- [ ] Fix normalization constraints that remove translation and scale degeneracy.
+- [ ] Fix normalization constraints removing translation and scale degeneracy.
 - [ ] Numerically search for configurations minimizing \(\kappa_{\mathrm{abs}}\).
-- [ ] Test equally spaced, symmetric, Fekete-type, and roots-of-unity configurations.
+- [ ] Compare equally spaced, symmetric, Fekete-type, and roots-of-unity configurations.
 - [ ] Prove existence of minimizers under compact separation and diameter constraints.
-- [ ] Determine whether symmetry is forced or merely favorable.
 
 ## Literature boundary
 
@@ -210,6 +153,7 @@ Before claiming novelty, review primary literature on:
 - finite-rate-of-innovation reconstruction;
 - Hermite interpolation stability;
 - singular perturbation of structured matrices;
-- full singular spectra of clustered Vandermonde and confluent Vandermonde matrices.
+- singular spectra of clustered Vandermonde and confluent Vandermonde matrices;
+- analytic matrix pencils, Smith forms, and exterior-power singular asymptotics.
 
-The established ingredients should be cited as classical. New claims should be restricted to packet-specific formulations, geometric synthesis, or genuinely new quantitative results.
+Classical ingredients should be cited as classical. New claims should be restricted to packet-specific formulations, geometric synthesis, or genuinely new quantitative results.
