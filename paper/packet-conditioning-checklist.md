@@ -71,16 +71,47 @@ This checklist tracks the transition from local identifiability to quantitative 
   {\left\|P_{\mathcal L_0\cap(P_0m''(x))^\perp}m'''(x)\right\|}.
   \]
 - [x] Derive the exact leading coefficients of the two collapsing metric eigenvalues.
+- [x] Generalize the collision construction to an arbitrary \(m\)-node cluster
+  \[
+  x_j=x+h\xi_j,
+  \qquad
+  \xi_i\ne\xi_j.
+  \]
+- [x] Prove the bounded-equivalence normal form with cluster exponents
+  \[
+  0,0,1,2,\ldots,m-1,m+1,\ldots,2m-1.
+  \]
+- [x] Prove that the collapsing singular-value exponents are
+  \[
+  1,2,\ldots,m-1,m+1,\ldots,2m-1.
+  \]
+- [x] Prove the general cluster condition-number law
+  \[
+  \kappa_{\mathrm{abs}}(J(h))\asymp|h|^{-(2m-1)}.
+  \]
+- [x] Verify compatibility with the determinant order
+  \[
+  \sum e_r=2m(m-1)=4\binom m2.
+  \]
+- [x] Specialize the theorem to the three-node hierarchy
+  \[
+  1,2,4,5.
+  \]
 
-The exact-constant proof is recorded in `paper/exact-two-node-collision-constants.md`.
+The exact two-node constants are recorded in `paper/exact-two-node-collision-constants.md`.
+
+The general cluster theorem is recorded in `paper/m-node-cluster-normal-form.md`.
 
 ## Immediate theorem queue
 
-- [ ] Generalize the divided-difference construction to an \(m\)-node cluster.
-- [ ] Determine the full hierarchy of cluster singular-value exponents.
-- [ ] Test the candidate multiplicity-\(m\) exponent pattern against \(m=3\) symbolic and high-precision examples.
-- [ ] Formulate a canonical unitary collision normal form.
-- [ ] Express cluster constants through successive orthogonal projections of higher jets.
+- [ ] Derive exact leading constants for the \(2m-2\) collapsing singular values of a general cluster.
+- [ ] Express those constants through successive effective maps or orthogonal projections of the jets
+  \[
+  m''(x),m'''(x),\ldots,m^{(2m-1)}(x).
+  \]
+- [ ] Formulate a canonical unitary cluster normal form.
+- [ ] Handle multiple clusters collapsing simultaneously at one common scale.
+- [ ] Handle nonuniform cluster paths in which pairwise distances vanish at different powers of \(h\).
 - [ ] Introduce confluent packet coordinates and test smooth or renormalized extension of the pullback metric.
 
 ## Quantitative global bounds
@@ -96,6 +127,10 @@ The exact-constant proof is recorded in `paper/exact-two-node-collision-constant
 - [ ] Compare determinant-based bounds with inverse-Hermite-interpolation bounds.
 - [ ] Separate the effects of coefficient loss and geometric collision.
 - [ ] Determine whether useful scale-invariant relative condition numbers exist.
+- [ ] Make cluster-shape dependence explicit through the offset Vandermonde
+  \[
+  \Delta(\xi)=\prod_{i<j}(\xi_j-\xi_i).
+  \]
 
 ## Metric geometry
 
@@ -104,6 +139,7 @@ The exact-constant proof is recorded in `paper/exact-two-node-collision-constant
 - [ ] Determine geodesic distance to the collision boundary.
 - [ ] Study whether confluent boundary strata lie at finite or infinite metric distance.
 - [ ] Analyze curvature in low-dimensional packet manifolds.
+- [ ] Determine whether the anisotropically renormalized metric extends across multiplicity-\(2m\) confluent strata.
 
 ## Optimization
 
@@ -123,6 +159,7 @@ Before claiming novelty, review primary literature on:
 - super-resolution near colliding nodes;
 - finite-rate-of-innovation reconstruction;
 - Hermite interpolation stability;
-- singular perturbation of structured matrices.
+- singular perturbation of structured matrices;
+- full singular spectra of clustered Vandermonde and confluent Vandermonde matrices.
 
 The established ingredients should be cited as classical. New claims should be restricted to packet-specific formulations, geometric synthesis, or genuinely new quantitative results.
