@@ -6,15 +6,16 @@ The conventions in this module are definitions for the current reconstruction:
     beta_chi(n) = Lambda(n) chi(n) / sqrt(n),
     A_prime(N) = sum_{2 <= n <= N} beta_chi(n) T_n.
 
-With these choices the minus sign in the classical two-sided prime term is
-contained in ``T_n``.  The archimedean and conductor matrices are deliberately
-not included until their Fourier normalization has been independently audited.
+The optional smooth weights are numerical regularizations of the truncated prime
+sum. They do not change the arithmetic coefficients or the universal translation
+matrices and should not be interpreted as a proved tail treatment.
 """
 
 from __future__ import annotations
 
+from collections.abc import Callable
 from dataclasses import dataclass
-from math import log, sqrt
+from math import exp, log, sqrt
 
 import numpy as np
 from numpy.typing import NDArray
@@ -23,6 +24,7 @@ from .lfunctions import PrimitiveQuadraticCharacter, prime_power_base
 from .packets import GaussianPacketFamily
 
 FloatMatrix = NDArray[np.float64]
+PrimeWeight = Callable[[int, int], float]
 
 
 def von_mangoldt(n: int) -> float:
@@ -48,6 +50,69 @@ def quadratic_prime_power_coefficient(
     return mangoldt * character(n) / sqrt(n)
 
 
+def prime_power_values(cutoff: int) -> tuple[tuple[int, int], ...]:
+    """Return sorted ``(p**k, p)`` pairs through ``cutoff``.
+
+    This sieve-based enumerator is exact and avoids testing every integer for
+    prime-power structure. It is intended for deep cutoff experiments where the
+    Gaussian translation kernel may remain significant far beyond small values of
+    ``cutoff``.
+    """
+
+    if isinstance(cutoff, bool) or not isinstance(cutoff, int):
+        raise TypeError("cutoff must be an integer")
+    if cutoff < 2:
+        return ()
+
+    sieve = np.ones(cutoff + 1, dtype=bool)
+    sieve[:2] = False
+    limit = int(sqrt(cutoff))
+    for prime in range(2, limit + 1):
+        if sieve[prime]:
+            sieve[prime * prime : cutoff + 1 : prime] = False
+
+    values: list[tuple[int, int]] = []
+    for prime in np.flatnonzero(sieve):
+        p = int(prime)
+        value = p
+        while value <= cutoff:
+            values.append((value, p))
+            if value > cutoff // p:
+                break
+            value *= p
+    values.sort()
+    return tuple(values)
+
+
+def sharp_prime_weight(n: int, cutoff: int) -> float:
+    """Return the sharp cutoff weight ``1_{n <= cutoff}``."""
+
+    if cutoff < 2:
+        raise ValueError("cutoff must be at least 2")
+    return 1.0 if 2 <= n <= cutoff else 0.0
+
+
+def exponential_prime_weight(n: int, cutoff: int) -> float:
+    """Return the smooth weight ``exp(-n / cutoff)`` for ``n >= 2``."""
+
+    if cutoff < 2:
+        raise ValueError("cutoff must be at least 2")
+    if n < 2:
+        return 0.0
+    return exp(-float(n) / float(cutoff))
+
+
+def gaussian_log_prime_weight(n: int, cutoff: int) -> float:
+    """Return ``exp(-(log(n) / log(cutoff))**2)`` for ``n >= 2``."""
+
+    if cutoff < 2:
+        raise ValueError("cutoff must be at least 2")
+    if n < 2:
+        return 0.0
+    scale = log(cutoff)
+    return exp(-((log(n) / scale) ** 2))
+
+
 def universal_prime_operator(
     packets: GaussianPacketFamily, n: int
 ) -> FloatMatrix:
@@ -62,6 +127,7 @@ def universal_prime_operator(
 class PrimeOperatorTerm:
     n: int
     coefficient: float
+    weight: float
     matrix: FloatMatrix
 
 
@@ -69,20 +135,38 @@ def prime_operator_terms(
     packets: GaussianPacketFamily,
     character: PrimitiveQuadraticCharacter,
     cutoff: int,
+    *,
+    weight: PrimeWeight = sharp_prime_weight,
+    support_multiplier: float = 1.0,
 ) -> tuple[PrimeOperatorTerm, ...]:
-    """Return all nonzero prime-power terms through ``cutoff``."""
+    """Return weighted nonzero prime-power terms for the chosen regularization.
+
+    ``support_multiplier`` controls the finite evaluation range. For the sharp
+    cutoff the default value ``1`` reproduces the original sum. Smooth weights
+    can be evaluated farther out, for example with ``support_multiplier=8``.
+    """
 
     if cutoff < 2:
         return ()
+    if support_multiplier <= 0 or not np.isfinite(support_multiplier):
+        raise ValueError("support_multiplier must be a finite positive number")
+
+    maximum = max(2, int(np.ceil(cutoff * support_multiplier)))
     terms: list[PrimeOperatorTerm] = []
-    for n in range(2, cutoff + 1):
-        coefficient = quadratic_prime_power_coefficient(n, character)
+    for n, prime in prime_power_values(maximum):
+        coefficient = log(prime) * character(n) / sqrt(n)
         if coefficient == 0.0:
+            continue
+        term_weight = float(weight(n, cutoff))
+        if not np.isfinite(term_weight):
+            raise ValueError("prime weight must return finite values")
+        if term_weight == 0.0:
             continue
         terms.append(
             PrimeOperatorTerm(
                 n=n,
                 coefficient=coefficient,
+                weight=term_weight,
                 matrix=universal_prime_operator(packets, n),
             )
         )
@@ -93,10 +177,59 @@ def assemble_prime_operator(
     packets: GaussianPacketFamily,
     character: PrimitiveQuadraticCharacter,
     cutoff: int,
+    *,
+    weight: PrimeWeight = sharp_prime_weight,
+    support_multiplier: float = 1.0,
+    chunk_size: int = 2048,
 ) -> FloatMatrix:
-    """Assemble the truncated prime matrix through ``n <= cutoff``."""
+    """Assemble a weighted prime matrix using chunked vectorized kernels."""
 
-    matrix = np.zeros((packets.dimension, packets.dimension), dtype=float)
-    for term in prime_operator_terms(packets, character, cutoff):
-        matrix += term.coefficient * term.matrix
-    return matrix
+    if cutoff < 2:
+        return np.zeros((packets.dimension, packets.dimension), dtype=float)
+    if support_multiplier <= 0 or not np.isfinite(support_multiplier):
+        raise ValueError("support_multiplier must be a finite positive number")
+    if isinstance(chunk_size, bool) or not isinstance(chunk_size, int):
+        raise TypeError("chunk_size must be an integer")
+    if chunk_size < 1:
+        raise ValueError("chunk_size must be positive")
+
+    maximum = max(2, int(np.ceil(cutoff * support_multiplier)))
+    values = prime_power_values(maximum)
+    if not values:
+        return np.zeros((packets.dimension, packets.dimension), dtype=float)
+
+    n_values: list[int] = []
+    coefficients: list[float] = []
+    for n, prime in values:
+        coefficient = log(prime) * character(n) / sqrt(n)
+        if coefficient == 0.0:
+            continue
+        term_weight = float(weight(n, cutoff))
+        if not np.isfinite(term_weight):
+            raise ValueError("prime weight must return finite values")
+        if term_weight == 0.0:
+            continue
+        n_values.append(n)
+        coefficients.append(coefficient * term_weight)
+
+    if not n_values:
+        return np.zeros((packets.dimension, packets.dimension), dtype=float)
+
+    shifts = np.log(np.asarray(n_values, dtype=float))
+    coefficients_array = np.asarray(coefficients, dtype=float)
+    delta = packets.centers[:, None] - packets.centers[None, :]
+    denominator = 4.0 * packets.sigma**2
+    prefactor = sqrt(np.pi) * packets.sigma
+    matrix = np.zeros_like(delta, dtype=float)
+
+    for start in range(0, shifts.size, chunk_size):
+        stop = min(start + chunk_size, shifts.size)
+        local_shifts = shifts[start:stop, None, None]
+        local_coefficients = coefficients_array[start:stop, None, None]
+        kernels = -prefactor * (
+            np.exp(-((delta[None, :, :] - local_shifts) ** 2) / denominator)
+            + np.exp(-((delta[None, :, :] + local_shifts) ** 2) / denominator)
+        )
+        matrix += np.sum(local_coefficients * kernels, axis=0)
+
+    return np.asarray(0.5 * (matrix + matrix.T), dtype=float)
