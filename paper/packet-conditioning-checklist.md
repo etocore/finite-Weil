@@ -1,112 +1,101 @@
-# Packet conditioning research checklist
+# Packet-conditioning research checklist
 
-This checklist tracks the quantitative geometry of the finite exponential moment map
+This checklist tracks the transition from local identifiability to quantitative packet geometry for
 
 \[
 \mathcal R_N(X,u)
 =
-\left(\sum_j u_jx_j^k\right)_{k=0}^{2N-1}.
+\left(\sum_{j=1}^N u_jx_j^k\right)_{k=0}^{2N-1}.
 \]
 
-The companion note `paper/packet-conditioning.md` proves local identifiability, local Lipschitz stability, and blow-up of the absolute condition number near the singular boundary. The items below separate established facts from the next calculations.
+## Completed
 
-## A. Exact Jacobian determinant
-
-- [ ] Fix one coordinate ordering and sign convention.
-- [ ] Factor \(u_j\) from each node-motion column.
-- [ ] Reduce to the standard multiplicity-two confluent Vandermonde matrix.
-- [ ] Prove the collision factor has exponent four for every pair.
-- [ ] Determine the global sign for the chosen column ordering.
-- [ ] Check the formula symbolically for \(N=1,2,3,4\).
-
-Target formula, subject to sign:
-
-\[
-\det J(X,u)
-=
-\pm
-\left(\prod_{j=1}^N u_j\right)
-\left(\prod_{1\le i<j\le N}(x_j-x_i)^4\right).
-\]
-
-Do not promote this to a theorem until the ordering and sign are proved.
-
-## B. Smallest-singular-value estimates
-
-- [ ] Define
+- [x] Prove Jacobian invertibility on the reduced packet space by Hermite interpolation.
+- [x] Prove local holomorphic invertibility.
+- [x] Prove local bi-Lipschitz stability.
+- [x] Define the absolute packet condition number
   \[
-  \Delta=\min_{i\ne j}|x_i-x_j|,
-  \quad
-  R=\max_i|x_i|,
-  \quad
-  \nu=\min_i|u_i|.
+  \kappa_{\mathrm{abs}}=\|J^{-1}\|.
   \]
-- [ ] Bound \(\|J\|\) above in terms of \(N,R,\max_i|u_i|\).
-- [ ] Use determinant and singular-value products to obtain a first non-sharp lower bound for \(\sigma_{\min}(J)\).
-- [ ] Compare determinant-based bounds with direct inverse-Hermite bounds.
-- [ ] Express rows of \(J^{-1}\) through fundamental Hermite polynomials.
-- [ ] Estimate coefficients of those polynomials from node separation.
-
-## C. Two-node collision asymptotics
-
-- [ ] Set
-  \[
-  x_1=x-h/2,
-  \qquad
-  x_2=x+h/2.
-  \]
-- [ ] Replace \((u_1,u_2)\) by symmetric and antisymmetric coefficient coordinates.
-- [ ] Expand the moment map in powers of \(h\).
-- [ ] Identify the tangent direction that collapses fastest.
-- [ ] Compute the leading order of \(\sigma_{\min}(J)\).
-- [ ] Compare with the fourth-order determinant zero.
-- [ ] Determine dependence on cancellations such as \(u_1+u_2=0\).
-
-## D. Confluent coordinates
-
-- [ ] Introduce collision-adapted coordinates that converge to coefficients of
-  \[
-  e^{xz},\qquad ze^{xz}.
-  \]
-- [ ] Rewrite the realization map in those coordinates.
-- [ ] Show that the confluent Jacobian remains nonsingular at the collision point.
-- [ ] Determine which part of ordinary condition-number blow-up is a coordinate singularity.
-- [ ] Extend to clusters of multiplicity \(m\).
-
-## E. Pullback geometry
-
-- [ ] Compute the block form of
+- [x] Define the pullback metric
   \[
   G=J^*J.
   \]
-- [ ] Derive explicit formulas for the coefficient-coefficient, coefficient-node, and node-node blocks.
-- [ ] Check invariance under permutations.
-- [ ] Study translations and scalings of nodes and derive transformation laws.
-- [ ] Define normalized metrics that remove trivial scale dependence.
-- [ ] Determine whether the metric completion naturally adds confluent packets.
+- [x] Identify the exact singular locus as node collisions or vanishing coefficients.
+- [x] Prove condition-number blow-up along convergent sequences approaching the singular locus.
+- [x] Prove the exact determinant formula
+  \[
+  \det J
+  =
+  (-1)^{N(N-1)/2}
+  \left(\prod_j u_j\right)
+  \left(\prod_{i<j}(x_j-x_i)^4\right)
+  \]
+  in grouped coordinates, with positive sign in interleaved coordinates.
+- [x] Prove the two-node collision normal form
+  \[
+  J(h)=A(h)D(h)B(h),
+  \qquad
+  D(h)=\operatorname{diag}(1,\ldots,1,h,h^3),
+  \]
+  with uniformly invertible regular factors.
+- [x] Deduce
+  \[
+  \sigma_{2N-1}(J(h))\asymp|h|,
+  \qquad
+  \sigma_{2N}(J(h))\asymp|h|^3,
+  \qquad
+  \kappa_{\mathrm{abs}}(J(h))\asymp|h|^{-3}.
+  \]
 
-## F. Optimization problems
+## Immediate theorem queue
 
-- [ ] Choose a normalization, since unnormalized conditioning is coordinate dependent.
-- [ ] For real nodes in a fixed interval, numerically minimize \(\kappa_{\mathrm{abs}}\).
-- [ ] Compare equally spaced, Chebyshev, Fekete, and optimized nodes.
-- [ ] Study equal coefficients before allowing coefficient optimization.
-- [ ] Determine whether minimizers are unique modulo symmetry.
-- [ ] Formulate only evidence-backed conjectures.
+- [ ] Derive exact leading constants for the two collapsing singular values using orthogonal projection or Schur-complement reduction.
+- [ ] Formulate a canonical unitary collision normal form.
+- [ ] Generalize the divided-difference construction to an \(m\)-node cluster.
+- [ ] Determine the full hierarchy of cluster singular-value exponents.
+- [ ] Introduce confluent packet coordinates and test smooth or renormalized extension of the pullback metric.
 
-## G. Numerical experiments
+## Quantitative global bounds
 
-- [ ] Implement stable Jacobian construction.
-- [ ] Compute singular values with arbitrary precision near collisions.
-- [ ] Plot \(\log\kappa\) against \(\log\Delta\) to estimate exponents.
-- [ ] Test generic and cancellation-heavy coefficient choices separately.
-- [ ] Compare ordinary coordinates with confluent coordinates.
-- [ ] Store reproducible scripts and machine-readable results.
+- [ ] Bound \(\sigma_{\min}(J)\) below using
+  \[
+  \Delta(X)=\min_{i\ne j}|x_i-x_j|,
+  \qquad
+  u_{\min}=\min_i|u_i|,
+  \qquad
+  R=\max_i|x_i|.
+  \]
+- [ ] Compare determinant-based bounds with inverse-Hermite-interpolation bounds.
+- [ ] Separate the effects of coefficient loss and geometric collision.
+- [ ] Determine whether useful scale-invariant relative condition numbers exist.
 
-## H. Literature boundary
+## Metric geometry
 
-- [ ] Review classical confluent Vandermonde determinant formulas.
-- [ ] Review Prony-map conditioning and super-resolution collision asymptotics.
-- [ ] Review inverse Hermite interpolation estimates.
-- [ ] Distinguish classical results from packet-specific reformulations.
-- [ ] Identify which normalization and geometric questions are genuinely not standard.
+- [ ] Compute the block entries of \(G=J^*J\) explicitly.
+- [ ] Derive translation and scaling laws for \(G\).
+- [ ] Determine geodesic distance to the collision boundary.
+- [ ] Study whether confluent boundary strata lie at finite or infinite metric distance.
+- [ ] Analyze curvature in low-dimensional packet manifolds.
+
+## Optimization
+
+- [ ] Fix normalization constraints that remove translation and scale degeneracy.
+- [ ] Numerically search for configurations minimizing \(\kappa_{\mathrm{abs}}\).
+- [ ] Test equally spaced, symmetric, Fekete-type, and roots-of-unity configurations.
+- [ ] Prove existence of minimizers under compact separation and diameter constraints.
+- [ ] Determine whether symmetry is forced or merely favorable.
+
+## Literature boundary
+
+Before claiming novelty, review primary literature on:
+
+- Prony maps and Prony varieties;
+- confluent Vandermonde conditioning;
+- exponential fitting and matrix-pencil methods;
+- super-resolution near colliding nodes;
+- finite-rate-of-innovation reconstruction;
+- Hermite interpolation stability;
+- singular perturbation of structured matrices.
+
+The established ingredients should be cited as classical. New claims should be restricted to packet-specific formulations, geometric synthesis, or genuinely new quantitative results.
