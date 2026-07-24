@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Search for numerical witness pairs for two-shift generation.
 
 This script constructs the paired Gaussian translation matrices T_s on an
@@ -20,7 +19,6 @@ from __future__ import annotations
 import argparse
 from dataclasses import dataclass
 from itertools import product
-from math import exp
 
 import numpy as np
 
