@@ -115,12 +115,19 @@ class WeilOperator:
         *,
         epsabs: float = 1e-11,
         epsrel: float = 1e-11,
+        relative_tolerance: float | None = None,
     ) -> FloatArray:
-        """Return ordered intrinsic eigenvalues from ``A v = lambda B v``."""
+        """Return ordered intrinsic eigenvalues from ``A v = lambda B v``.
+
+        When ``relative_tolerance`` is supplied, numerically null Gram modes are
+        removed before solving the ordinary symmetric eigenproblem on the retained
+        stable packet subspace.
+        """
 
         return generalized_eigenvalues(
             self.matrix(epsabs=epsabs, epsrel=epsrel),
             self.gram_matrix(),
+            relative_tolerance=relative_tolerance,
         )
 
     def smallest_generalized_eigenvalue(
@@ -128,11 +135,16 @@ class WeilOperator:
         *,
         epsabs: float = 1e-11,
         epsrel: float = 1e-11,
+        relative_tolerance: float | None = None,
     ) -> float:
         """Return the smallest generalized eigenvalue."""
 
         return float(
-            self.generalized_eigenvalues(epsabs=epsabs, epsrel=epsrel)[0]
+            self.generalized_eigenvalues(
+                epsabs=epsabs,
+                epsrel=epsrel,
+                relative_tolerance=relative_tolerance,
+            )[0]
         )
 
     def operator_norm(
@@ -140,10 +152,12 @@ class WeilOperator:
         *,
         epsabs: float = 1e-11,
         epsrel: float = 1e-11,
+        relative_tolerance: float | None = None,
     ) -> float:
         """Return the Gram-induced norm of the truncated operator."""
 
         return gram_operator_norm(
             self.matrix(epsabs=epsabs, epsrel=epsrel),
             self.gram_matrix(),
+            relative_tolerance=relative_tolerance,
         )
