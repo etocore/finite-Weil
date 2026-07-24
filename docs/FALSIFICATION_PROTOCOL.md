@@ -1,8 +1,10 @@
-# Protocol: attempting to falsify RH with certified finite Weil sections
+# Protocol: certified finite Weil sections and exploratory RH falsification
 
 ## Status
 
-This document is a preregistered research protocol. It defines a one-way falsification experiment for the Riemann hypothesis using certified finite sections of Weil's quadratic form. It does not define a proving strategy for RH.
+This document is a preregistered research protocol for interval-certified finite-dimensional approximations of Weil's quadratic form, together with an explicitly one-way exploratory falsification program for the Riemann hypothesis.
+
+The framework contribution is primary. The high-band sweep is exploratory and does not define a proving strategy for RH.
 
 A reported violation is not a mathematical result until every certificate condition below is met and an independent implementation reproduces it.
 
@@ -17,9 +19,30 @@ The experiment therefore has a permanent asymmetry:
 - one exact certified negative can falsify RH;
 - any number of certified positive samples cannot prove RH.
 
-## 2. Candidate section
+A certified positive finite section establishes only that the implementation agrees with the exact criterion on that section within the stated enclosure. Inside a region already covered by independent zero computations, it adds essentially no new evidence for RH beyond those computations.
 
-A Phase 2 section is completely determined by a machine-readable manifest containing:
+## 2. Framework claim and organizing principle
+
+The central framework claim is numerical-analytic rather than conjectural:
+
+> Geometry is the probe space; arithmetic is the state.
+
+The packet geometry determines the finite test space and its conditioning. The explicit-formula assembly - prime powers, Archimedean contribution, pole term, and Gram normalization - determines the arithmetic quadratic form evaluated on that space.
+
+The framework paper studies:
+
+- exact finite-section formulas;
+- interval-certified matrix assembly;
+- rigorous truncation and quadrature bounds;
+- generalized-eigenvalue verification;
+- reproducible machine-readable certificates;
+- calibration of the instrument response.
+
+The high-band RH sweep is an application of this framework and is secondary to it.
+
+## 3. Candidate section
+
+A section is completely determined by a machine-readable manifest containing:
 
 - packet nodes;
 - Gaussian width `sigma`;
@@ -31,15 +54,16 @@ A Phase 2 section is completely determined by a machine-readable manifest contai
 - Fourier and reflection conventions;
 - code commit SHA;
 - implementation identifier;
-- search index and total number of sections examined.
+- search index and total number of sections examined;
+- the external zero-verification horizon metadata used to classify the band.
 
 No parameter may be silently altered after a candidate is observed. Any refinement is a new run with a new manifest.
 
-## 3. Certification requirements
+## 4. Certification requirements
 
 A candidate negative must bound the exact form, not a finite floating-point truncation.
 
-### 3.1 Truncated generalized eigenvalue
+### 4.1 Truncated generalized eigenvalue
 
 The assembled Hermitian matrix and Gram matrix must be enclosed by interval matrices. The smallest generalized eigenvalue must be bounded using a residual-based verification method, with all complex arithmetic enclosed.
 
@@ -51,7 +75,7 @@ The certificate must report:
 - the verified spectral separation used by the method;
 - the precision and directed-rounding backend.
 
-### 3.2 Prime tail
+### 4.2 Prime tail
 
 The omitted prime-power contribution must be bounded entrywise and in operator norm using the actual section geometry. The cutoff must scale with the maximum packet difference, not with a reference geometry.
 
@@ -63,19 +87,19 @@ For Gaussian packets, the tail estimate must use the decay
 
 and a stated explicit prime-counting majorant. The implementation must record the exact inequality and constants used. A numerical tail estimate without a derivation is not a certificate.
 
-### 3.3 Archimedean remainder
+### 4.3 Archimedean remainder
 
-All numerical quadrature in the archimedean term must be interval-enclosed. The certificate must distinguish:
+All numerical quadrature in the Archimedean term must be interval-enclosed. The certificate must distinguish:
 
 - truncation of an infinite integral;
 - discretization or quadrature error;
 - special-function evaluation error.
 
-### 3.4 Pole term
+### 4.4 Pole term
 
 The pole contribution must be assembled from its exact closed form. It must not be estimated numerically when an exact packet formula is available. Orientation and transpose conventions must be tested at nonzero modulation, because errors can be invisible at `omega = 0`.
 
-### 3.5 Exact negativity margin
+### 4.5 Exact negativity margin
 
 Let `lambda_upper` be the verified upper bound for the truncated generalized eigenvalue and let
 
@@ -87,18 +111,19 @@ be rigorous operator-norm bounds for all omitted or uncertain contributions afte
 
 \[
 \lambda_{\mathrm{upper}}
-+
-E_{\mathrm{tail}}
-+
-E_{\infty}
-+
-E_{\mathrm{other}}
++E_{\mathrm{tail}}
++E_{\infty}
++E_{\mathrm{other}}
 <0.
 \]
 
 The reported margin is the negative of the left side.
 
-## 4. Calibration gate
+## 5. Phase 1 - calibration of the instrument response
+
+Phase 1 is a calibration program, not a falsification test and not evidence for RH.
+
+Its purpose is to establish that the implementation reproduces known arithmetic spectral features and to measure the instrument response model used to interpret later scans.
 
 No high-band run may begin until the current implementation passes all of the following:
 
@@ -110,17 +135,47 @@ No high-band run may begin until the current implementation passes all of the fo
 6. passes a Gram-conditioning stress test;
 7. verifies that all conclusion labels are generated from computed interval signs rather than hardcoded text.
 
-These are calibration tests, not evidence for RH.
+The legitimate Phase 1 outputs are:
 
-## 5. Phase 2 target band
+- frequency response and resolution width;
+- centroid behavior for unresolved pairs;
+- splitting behavior as resolution improves;
+- conditioning sensitivity;
+- numerical agreement with known spectral data;
+- a bug and convention ledger.
 
-The first exploratory target band begins strictly beyond the zero-verification horizon used by the project. The exact lower endpoint must be recorded in the manifest together with the source and date supporting that horizon.
+These results calibrate the spectrometer. They do not validate its behavior in regions without ground truth.
+
+## 6. Literature and novelty discipline
+
+High regions of the critical line are not unexplored territory. The project must not claim novelty from merely evaluating large `omega`.
+
+Before publication, the framework paper must include a literature review covering at least:
+
+- systematic verification of RH to large finite heights;
+- large-scale zero computations and isolated high-window studies;
+- prior numerical work on Weil's criterion and explicit-formula quadratic forms;
+- interval or computer-assisted certification methods for related spectral problems.
+
+The only plausible novelty claim is the observable and its certification architecture:
+
+> interval-certified finite-dimensional Weil-section positivity or negativity with complete truncation, pole, Archimedean, conditioning, and reproduction accounting.
+
+That claim remains provisional until the literature review is complete.
+
+## 7. Phase 2 target band and role
+
+Phase 2 is an exploratory appendix to the framework program, not the headline contribution.
+
+The first exploratory target band begins strictly beyond the zero-verification horizon adopted by the project. The exact lower endpoint must be recorded in the manifest together with the source and date supporting that horizon.
 
 No hardcoded claim about the current verified-zero horizon belongs in theorem-facing code. The value is external metadata and must be updated only through a documented protocol revision.
 
 The initial design uses modulation frequencies on a coarse ladder, followed by local refinement only when a preregistered discriminator triggers.
 
-## 6. Parameter design guided by the transform
+A certified-positive window in territory already covered by independent zero computations is primarily a calibration or cross-check result. A certified-positive window outside that territory is still only a survival window for the sampled packet family.
+
+## 8. Parameter design guided by the transform
 
 The packet transform is
 
@@ -146,7 +201,9 @@ The first batch must include:
 
 The optimizer may use only quantities available before evaluation of the final exact Weil form at the target frequency. This prevents direct fishing on the outcome variable.
 
-## 7. Search accounting
+Selection language must remain operational. The protocol does not say that the mathematics "points" to a region after seeing the result. It says that preregistered susceptibility, pole-channel, conditioning, and resolution criteria rank candidate sections before exact-form evaluation.
+
+## 9. Search accounting
 
 Every run must report:
 
@@ -160,7 +217,7 @@ Every run must report:
 
 Any reported candidate must include this search count. Local refinement around a trigger is part of the search count.
 
-## 8. Trigger and refinement rules
+## 10. Trigger and refinement rules
 
 A coarse-grid point triggers refinement only when one of the following preregistered conditions holds:
 
@@ -173,7 +230,7 @@ The numerical thresholds belong in the Phase 2 manifest and may not be changed d
 
 A trigger authorizes a fixed refinement stencil and a fixed precision-doubling schedule. It does not authorize arbitrary parameter changes.
 
-## 9. Negative-result precommitments
+## 11. Negative-result precommitments
 
 Any apparent negative is presumed to be a bug.
 
@@ -196,9 +253,14 @@ No candidate may be announced unless:
 - the candidate survives orientation and normalization perturbation tests;
 - the complete search ledger is published.
 
-## 10. Null results
+## 12. Null results
 
-Every fully certified positive batch is recorded as a survival window for the tested family. The report must state explicitly that it is not evidence sufficient to prove RH and that unsampled test functions remain unrestricted.
+Every fully certified positive batch is recorded as a survival window for the tested family. The report must state explicitly that it cannot prove RH and that unsampled test functions remain unrestricted.
+
+The report must also distinguish two cases:
+
+- **inside independently checked zero territory:** primarily a calibration or framework cross-check;
+- **outside independently checked zero territory:** a new certified survival window for this packet family, but not general evidence sufficient to establish RH.
 
 The quantitative outputs remain scientifically useful:
 
@@ -209,19 +271,19 @@ The quantitative outputs remain scientifically useful:
 - conditioning and resolution laws;
 - empirical frequency-density law with rigorous numerical error bars where certification is complete.
 
-## 11. Required implementation work
+## 13. Required implementation work
 
 Phase 2 cannot be called certified until the repository contains:
 
 - a complex-Hermitian interval generalized-eigenvalue verifier;
-- interval enclosures for modulated archimedean assembly;
+- interval enclosures for modulated Archimedean assembly;
 - a geometry-aware rigorous prime-tail bound;
 - exact pole-term assembly with nonzero-modulation orientation tests;
 - immutable run manifests;
 - an independent implementation interface;
 - machine-generated reports whose conclusions derive only from certificate fields.
 
-## 12. Stop conditions
+## 14. Stop conditions
 
 A batch stops immediately if:
 
@@ -234,8 +296,52 @@ A batch stops immediately if:
 
 Stopped batches are retained and reported. They are not silently rerun under modified rules.
 
-## 13. Interpretation
+## 15. Publication architecture
+
+The repository's outputs are separated by claim type.
+
+### Paper A - algebra generation
+
+Primary claim type: proved mathematics.
+
+Contents include the Gaussian packet geometry, exceptional-width analysis, shell-transform factorization, and local or fixed-shift generation theorems.
+
+### Paper B - pole structure
+
+Primary claim type: proved mathematics.
+
+Contents include the exact pole matrix, packet pole channels, reflection structure, and the role of `Phi_u(+/-1/2)`.
+
+### Paper C - certified finite-dimensional approximations of Weil's quadratic form
+
+Primary claim type: interval-certified computational framework.
+
+The abstract should state the organizing principle:
+
+> Geometry is the probe space; arithmetic is the state.
+
+Core contents:
+
+- exact finite-section assembly;
+- interval generalized-eigenvalue verification;
+- prime-tail calculus;
+- interval Archimedean quadrature;
+- exact pole treatment;
+- calibration and instrument-response measurements;
+- reproducible certificate and audit architecture.
+
+Phase 1 belongs in this paper as calibration. Phase 2 belongs only as an exploratory application or appendix unless it produces a separately reproducible mathematical event.
+
+### Phase 2 reports
+
+Primary claim type: reproducible numerical observation or certified survival window.
+
+These reports must never be blended into theorem statements or described as cumulative proof evidence.
+
+## 16. Interpretation
 
 The finite geometry is a probe architecture. The arithmetic assembly is the tested state. Generation and transform nondegeneracy ensure that the probe family itself is not collapsing, but they do not imply positivity of the arithmetic form.
 
-The experiment asks only whether a certified finite section can produce an exact negative Weil value. Its expected outcome is no violation. Its realistic products are the instrument, its audit trail, and the certified susceptibility and spectral ladders.
+The experiment asks only whether a certified finite section can produce an exact negative Weil value. Its expected outcome is no violation.
+
+The realistic primary product is the certified finite-section framework itself: its mathematics, interval architecture, response calibration, audit trail, and susceptibility and spectral ladders. High-band exploration is subordinate to that framework and must remain honest about what it can and cannot establish.
