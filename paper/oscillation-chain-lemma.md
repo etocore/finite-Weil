@@ -181,99 +181,272 @@ and by finite-dimensional bicommutant theory,
 =M_{N_+}(\mathbf C)\oplus M_{N_-}(\mathbf C).
 \]
 
-## Flat-limit proof program
+## Flat-limit variables and exact factorization
 
-Write
+Set
 
 \[
-K_\tau(i,j)
-:=
-\exp\!\left(-\frac{(x_i-x_j)^2}{4\tau}\right).
+v:=\frac1{2\tau},
+\qquad
+K(v)_{ij}:=e^{-v(x_i-x_j)^2/2},
 \]
 
-Using
+so that
 
 \[
-K_\tau(i,j)
-=
-\exp\!\left(-\frac{x_i^2}{4\tau}\right)
-\exp\!\left(-\frac{x_j^2}{4\tau}\right)
-\exp\!\left(\frac{x_ix_j}{2\tau}\right),
+A(\tau)=-2\sqrt\pi\,\tau^{1/2}K(v).
 \]
 
-we obtain the exact expansion
+Let
 
 \[
-K_\tau(i,j)
+E(v):=e^{-vX^2/2},
+\qquad
+m_k:=(x_1^k,\ldots,x_N^k)^{\mathsf T}.
+\]
+
+Then the Gaussian kernel admits the exact graded factorization
+
+\[
+\boxed{
+K(v)=E(v)
+\left(
+\sum_{k=0}^{\infty}\frac{v^k}{k!}m_km_k^{\mathsf T}
+\right)
+E(v).
+}
+\]
+
+For any eigenvectors \(K(v)u_j(v)=\mu_j(v)u_j(v)\), the double commutator has the exact decomposition
+
+\[
+\boxed{
+\langle u_r,[X,[X,K]]u_s\rangle
 =
-\exp\!\left(-\frac{x_i^2}{4\tau}\right)
-\exp\!\left(-\frac{x_j^2}{4\tau}\right)
+(\mu_r+\mu_s)\langle u_r,X^2u_s\rangle
+-2\langle Xu_r,KXu_s\rangle.
+}
+\]
+
+The second term can be expanded exactly through the graded factorization:
+
+\[
+\langle Xu_r,KXu_s\rangle
+=
 \sum_{k=0}^{\infty}
-\frac{x_i^k x_j^k}{k!(2\tau)^k}.
+\frac{v^k}{k!}
+\langle E m_k,Xu_r\rangle
+\langle E m_k,Xu_s\rangle.
 \]
 
-For fixed distinct nodes, the flat-limit eigenvectors converge to the discrete orthogonal polynomials \(p_r\) obtained by Gram-Schmidt from
+For symmetric nodes, \(m_k\) has parity \((-1)^k\), \(E\) is even, and \(Xu_j\) has the opposite parity of \(u_j\). Hence all parity-forbidden summands vanish exactly.
+
+## Discrete orthogonal polynomials
+
+Let \(p_0,\ldots,p_{N-1}\) be the orthonormal polynomials obtained by Gram-Schmidt from
 
 \[
 1,x,x^2,\ldots
 \]
 
-with respect to the counting measure on the node set. The eigenvalues satisfy
+with respect to counting measure on the nodes. Write their three-term recurrence as
 
 \[
-\lambda_r(\tau)
-\sim
-\alpha_r\tau^{1/2-r},
+\boxed{
+xp_j=a_{j+1}p_{j+1}+b_jp_j+a_jp_{j-1},}
+\]
+
+with \(a_j>0\) for every admissible index.
+
+Applying the recurrence twice gives the exact selection rule
+
+\[
+\begin{aligned}
+xp_{r+2}
+&=a_{r+3}p_{r+3}+b_{r+2}p_{r+2}+a_{r+2}p_{r+1},\\
+x^2p_{r+2}
+&=a_{r+2}a_{r+1}p_r
++\text{terms orthogonal to }p_r.
+\end{aligned}
+\]
+
+Therefore
+
+\[
+\boxed{
+\langle p_r,x^2p_{r+2}\rangle=a_{r+1}a_{r+2}>0.
+}
+\]
+
+If one uses the shifted convention
+
+\[
+xp_j=a_jp_{j+1}+b_jp_j+a_{j-1}p_{j-1},
+\]
+
+the same coefficient is written \(a_ra_{r+1}\). The proof is identical; only the indexing changes.
+
+## Flat-limit eigenvalue coefficients
+
+Let \(q_r\) denote the component of \(m_r\) orthogonal to polynomials of degree at most \(r-1\):
+
+\[
+q_r:=(I-\Pi_{r-1})m_r.
+\]
+
+The graded Gram expansion implies
+
+\[
+\boxed{
+\mu_r(v)=c_rv^r+O(v^{r+1}),
 \qquad
-\alpha_r\ne0.
+c_r=\frac{\|q_r\|^2}{r!}>0.
+}
 \]
 
-The expected first nontrivial eigenvector correction has the form
+This positivity is elementary: the nodes are distinct, so \(m_r\) does not lie in the span of \(m_0,\ldots,m_{r-1}\), hence \(q_r\ne0\).
+
+## Candidate leading chain coefficient
+
+The exact double-commutator decomposition isolates two contributions for \(s=r+2\):
 
 \[
-u_{r+2}(\tau)
-=
-p_{r+2}
-+
-\frac1\tau
-\left(
-\beta_r p_r+	ext{components orthogonal to }p_r
-\right)
-+
-O(\tau^{-2}).
+D_r(v)
+:=
+(\mu_r+\mu_{r+2})
+\langle u_r,X^2u_{r+2}\rangle,
 \]
 
-Consequently,
+and
 
 \[
-\frac{\partial u_{r+2}}{\partial\tau}
-=
--\beta_r\tau^{-2}p_r+O(\tau^{-3}),
+S_r(v)
+:=
+2\langle Xu_r,KXu_{r+2}\rangle.
 \]
 
-and therefore
+Using
+
+\[
+u_j(v)=p_j+O(v),
+\qquad
+\mu_r(v)=c_rv^r+O(v^{r+1}),
+\]
+
+and the recurrence selection rule gives
+
+\[
+\boxed{
+D_r(v)
+=
+c_r a_{r+1}a_{r+2}v^r+O(v^{r+1}).
+}
+\]
+
+After converting from \(v=1/(2\tau)\) and from \([X,[X,K]]\) back to \(M\), this predicts
 
 \[
 \boxed{
 g_r(\tau)
-=C_r\tau^{-(r+3/2)}
-\left(1+O(\tau^{-1})\right),
-}
+=
+C_r\tau^{-(r+3/2)}
++O(\tau^{-(r+5/2)}),}
 \]
 
 with
 
 \[
-C_r=-\alpha_r\beta_r.
+\boxed{
+C_r
+=
+\frac{\sqrt\pi}{2}\,2^{-r}c_r a_{r+1}a_{r+2},
+}
 \]
 
-Numerics support the exponent \(r+3/2\) exactly. The remaining symbolic task is to compute \(\beta_r\) from the polynomial-moment expansion and prove
+or equivalently \((\sqrt\pi/2)2^{-r}c_ra_ra_{r+1}\) under the shifted recurrence convention.
+
+Every displayed factor is strictly positive. Thus the only remaining issue is to prove that the sum term \(S_r(v)\) is one power smaller and cannot cancel the leading term in \(D_r(v)\).
+
+## Graded-orthogonality lemma: remaining symbolic obligation
+
+The exact graded expansion shows that the dangerous contribution to \(S_r(v)\) comes from the lowest parity-allowed grade. The required estimate is:
+
+> **Graded-orthogonality lemma.** For \(k\equiv r\pmod 2\) and \(k\le r\),
+> \[
+> \langle E(v)m_k,u_{r+2}(v)\rangle
+> =O\!\left(v^{(r+2-k)/2}
+> \right).
+> \]
+> In particular,
+> \[
+> \boxed{
+> \langle E(v)m_r,u_{r+2}(v)\rangle=O(v^2).
+> }
+> \]
+
+The exponent in the general statement records the graded separation between polynomial degree \(k\) and eigenmode \(r+2\). For the load-bearing case \(k=r\), naive counting gives only \(O(v)\); the theorem needs cancellation of the full linear term.
+
+Write
 
 \[
-\boxed{C_r\ne0.}
+E(v)m_r=m_r-\frac v2X^2m_r+O(v^2),
 \]
 
-A formula in terms of discrete-orthogonal-polynomial norms is expected. Proving this coefficient nonzero for each \(r\) establishes \(g_r\not\equiv0\), which completes the analytic argument above.
+and
+
+\[
+u_{r+2}(v)=p_{r+2}+vq_{r+2}^{(1)}+O(v^2).
+\]
+
+Then
+
+\[
+\begin{aligned}
+\langle E(v)m_r,u_{r+2}(v)\rangle
+&=
+\langle m_r,p_{r+2}\rangle\\
+&\quad+v\left(
+\langle m_r,q_{r+2}^{(1)}\rangle
+-\frac12\langle X^2m_r,p_{r+2}\rangle
+\right)
++O(v^2).
+\end{aligned}
+\]
+
+The constant term vanishes by degree orthogonality. Therefore the lemma is equivalent to the explicit first-order cancellation identity
+
+\[
+\boxed{
+\langle m_r,q_{r+2}^{(1)}\rangle
+=
+\frac12\langle X^2m_r,p_{r+2}\rangle.
+}
+\]
+
+This is now the single unresolved symbolic line. It should follow either from first-order perturbation of the graded Gram eigenproblem or directly from differentiating the orthogonality relation that defines the flat-limit eigenbasis.
+
+Once this identity is proved, parity and degree counting imply
+
+\[
+S_r(v)=O(v^{r+1}),
+\]
+
+while
+
+\[
+D_r(v)=c_ra_{r+1}a_{r+2}v^r+O(v^{r+1}).
+\]
+
+Hence
+
+\[
+C_r
+=
+\frac{\sqrt\pi}{2}\,2^{-r}c_ra_{r+1}a_{r+2}
+>0,
+\]
+
+so \(g_r\not\equiv0\) for every admissible \(r\). Analyticity then gives a discrete exceptional set \(Z_N\), and the graph lemma completes generic-width local two-shift generation.
 
 ## Route that should not be used
 
@@ -300,4 +473,26 @@ provided the simple eigenpairs of \(A(\tau)\) are enclosed rigorously. This is c
 
 ## Honest status
 
-The width-derivative identity, eigenvector-rotation formula, analyticity reduction, graph deduction, and flat-limit exponent are established or numerically verified as indicated above. The all-\(N\) theorem is reduced to one symbolic coefficient calculation: derive the leading flat-limit constant \(C_r\) and prove \(C_r\ne0\) for every admissible \(r\). Until that coefficient is derived rigorously, the generic-width theorem remains conditional.
+The width-derivative identity, eigenvector-rotation formula, analyticity reduction, graph deduction, exact graded Gaussian factorization, recurrence selection rule, and positivity formula
+
+\[
+c_r=\frac{\|(I-\Pi_{r-1})m_r\|^2}{r!}>0
+\]
+
+are established. The candidate leading coefficient is
+
+\[
+C_r
+=
+\frac{\sqrt\pi}{2}\,2^{-r}c_ra_{r+1}a_{r+2},
+\]
+
+up to recurrence-index convention. The all-\(N\) theorem is reduced to the first-order graded-orthogonality cancellation
+
+\[
+\langle m_r,q_{r+2}^{(1)}\rangle
+=
+\frac12\langle X^2m_r,p_{r+2}\rangle.
+\]
+
+Until that identity is proved symbolically, the generic-width theorem remains conditional.
