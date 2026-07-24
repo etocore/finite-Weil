@@ -1,4 +1,3 @@
-#!/usr/bin/env python3
 """Rigorous interval certificate for two-shift generation.
 
 For fixed N, s, and t, this script builds the even and odd parity-sector
@@ -17,13 +16,10 @@ from __future__ import annotations
 import argparse
 import json
 from dataclasses import asdict, dataclass
-from itertools import combinations
 from pathlib import Path
-from typing import Iterable
 
 import mpmath as mp
 import numpy as np
-
 from two_shift_rank_certificate import (
     commutator_map,
     paired_gaussian_translation,
@@ -157,7 +153,6 @@ def select_minor(linear_map: np.ndarray, target_rank: int) -> tuple[list[int], l
     if target_rank == 0:
         return [], []
 
-    # Greedy column selection by residual norm.
     selected_cols: list[int] = []
     q_basis = np.zeros((linear_map.shape[0], 0))
     remaining = list(range(linear_map.shape[1]))
@@ -221,7 +216,6 @@ def determinant_iv(matrix: list[list[mp.iv.mpf]]) -> mp.iv.mpf:
                 pivot = row
                 break
         if pivot is None:
-            # Fall back to the narrowest interval with largest midpoint.
             candidates = range(col, n)
             pivot = max(candidates, key=lambda r: abs(float(mp.mid(a[r][col]))))
             if a[pivot][col].a <= 0 <= a[pivot][col].b:
@@ -280,7 +274,10 @@ def build_maps(
     *,
     spacing: str,
     sigma: str,
-) -> tuple[tuple[np.ndarray, list[list[mp.iv.mpf]], int], tuple[np.ndarray, list[list[mp.iv.mpf]], int]]:
+) -> tuple[
+    tuple[np.ndarray, list[list[mp.iv.mpf]], int],
+    tuple[np.ndarray, list[list[mp.iv.mpf]], int],
+]:
     sf, tf = float(s), float(t)
     hf, sigf = float(spacing), float(sigma)
     ts = paired_gaussian_translation(n, sf, spacing=hf, sigma=sigf)
@@ -288,13 +285,21 @@ def build_maps(
     q_plus, q_minus = parity_bases(n)
 
     plus_numeric = commutator_map(restrict(ts, q_plus), restrict(tt, q_plus))
-    minus_numeric = commutator_map(restrict(ts, q_minus), restrict(tt, q_minus)) if q_minus.shape[1] else np.zeros((0, 0))
+    minus_numeric = (
+        commutator_map(restrict(ts, q_minus), restrict(tt, q_minus))
+        if q_minus.shape[1]
+        else np.zeros((0, 0))
+    )
 
     ts_iv = paired_gaussian_translation_iv(n, s, spacing=spacing, sigma=sigma)
     tt_iv = paired_gaussian_translation_iv(n, t, spacing=spacing, sigma=sigma)
     qp_iv, qm_iv = parity_bases_iv(n)
     plus_iv = commutator_map_iv(restrict_iv(ts_iv, qp_iv), restrict_iv(tt_iv, qp_iv))
-    minus_iv = commutator_map_iv(restrict_iv(ts_iv, qm_iv), restrict_iv(tt_iv, qm_iv)) if qm_iv and len(qm_iv[0]) else []
+    minus_iv = (
+        commutator_map_iv(restrict_iv(ts_iv, qm_iv), restrict_iv(tt_iv, qm_iv))
+        if qm_iv and len(qm_iv[0])
+        else []
+    )
 
     return (
         (plus_numeric, plus_iv, q_plus.shape[1]),
