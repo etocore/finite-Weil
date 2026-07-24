@@ -47,14 +47,40 @@ This checklist tracks the transition from local identifiability to quantitative 
   \qquad
   \kappa_{\mathrm{abs}}(J(h))\asymp|h|^{-3}.
   \]
+- [x] Derive the exact linear singular-value constant
+  \[
+  \lim_{h\to0}\frac{\sigma_{2N-1}(J(h))}{|h|}
+  =
+  \frac{\|P_0m''(x)\|}
+  {\sqrt{|u_1|^{-2}+|u_2|^{-2}}}.
+  \]
+- [x] Derive the exact cubic singular-value constant
+  \[
+  \lim_{h\to0}\frac{\sigma_{2N}(J(h))}{|h|^3}
+  =
+  \frac1{12\sqrt2}
+  \left\|
+  P_{\mathcal L_0\cap(P_0m''(x))^\perp}m'''(x)
+  \right\|.
+  \]
+- [x] Deduce the exact leading inverse-condition constant
+  \[
+  \lim_{h\to0}|h|^3\kappa_{\mathrm{abs}}(J(h))
+  =
+  \frac{12\sqrt2}
+  {\left\|P_{\mathcal L_0\cap(P_0m''(x))^\perp}m'''(x)\right\|}.
+  \]
+- [x] Derive the exact leading coefficients of the two collapsing metric eigenvalues.
+
+The exact-constant proof is recorded in `paper/exact-two-node-collision-constants.md`.
 
 ## Immediate theorem queue
 
-- [ ] Derive the exact leading coefficient of the cubic singular scale by orthogonal projection onto the complement of the limiting regular image and the first weak direction.
-- [ ] Derive the exact leading coefficient of the linear singular scale.
-- [ ] Formulate a canonical unitary collision normal form.
 - [ ] Generalize the divided-difference construction to an \(m\)-node cluster.
 - [ ] Determine the full hierarchy of cluster singular-value exponents.
+- [ ] Test the candidate multiplicity-\(m\) exponent pattern against \(m=3\) symbolic and high-precision examples.
+- [ ] Formulate a canonical unitary collision normal form.
+- [ ] Express cluster constants through successive orthogonal projections of higher jets.
 - [ ] Introduce confluent packet coordinates and test smooth or renormalized extension of the pullback metric.
 
 ## Quantitative global bounds
