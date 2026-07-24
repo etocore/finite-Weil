@@ -108,6 +108,27 @@ This checklist tracks the transition from local identifiability to quantitative 
   \widetilde G(0)=A_0^*A_0.
   \]
 - [x] Prove that fixed-shape common-scale collision paths reach the boundary in finite ordinary pullback length.
+- [x] Solve the bounded-gauge integrability problem for
+  \[
+  \omega=D(h)B(h)d\theta
+  \]
+  by the exact target-normalized moment coframe
+  \[
+  dY=(A_0^{-1}A(h))\omega.
+  \]
+- [x] Prove that every primitive boundedly equivalent to \(\omega\) has ordinary Jacobian determinant vanishing like
+  \[
+  h^{2m(m-1)},
+  \]
+  so no such primitive can be an ordinary boundary-resolving chart.
+- [x] Construct an explicit ordered local blow-up chart with center, scale, normalized shape, coefficients, and exterior packet variables.
+- [x] Identify the boundary restriction of the realization map as the aggregate packet
+  \[
+  U M(x)+\sum_{\ell>m}u_\ell M(y_\ell),
+  \qquad
+  U=\sum_{j=1}^m u_j.
+  \]
+- [x] Prove the local metric-completion collapse: within one compact ordered chart, boundary configurations with the same center, aggregate coefficient, and exterior packet have zero pullback distance.
 
 ## Main notes
 
@@ -118,23 +139,20 @@ This checklist tracks the transition from local identifiability to quantitative 
 - `paper/exact-m-node-deepest-constant.md`
 - `paper/complete-cluster-constant-hierarchy.md`
 - `paper/confluent-rescaled-geometry.md`
+- `paper/confluent-coframe-integrability.md`
 
 ## Immediate theorem queue
 
-- [ ] Determine whether the rescaled coframe
-  \[
-  \omega(h)=D(h)B(h)d\theta
-  \]
-  integrates to actual confluent packet coordinates.
-- [ ] Construct a full blow-up atlas allowing center, scale, cluster shape, and coefficients to vary simultaneously.
-- [ ] Rewrite the realization map in explicit holonomic confluent coordinates when such coordinates exist.
-- [ ] Determine compatibility of overlapping cluster charts and permutation actions.
-- [ ] Identify the metric-completion quotient on the collision face.
+- [ ] Extend the cluster normal form smoothly over a full ordered blow-up chart with varying center, scale, shape, and coefficients.
+- [ ] Construct transition functions between overlapping ordered cluster charts.
+- [ ] Determine the permutation-group action on the blow-up and rescaled tangent structures.
+- [ ] Globalize the local metric-completion quotient across overlapping charts.
+- [ ] Determine whether the rescaled tangent bundles define a natural Lie algebroid over the full collision compactification.
+- [ ] Construct simultaneous-cluster and nested-cluster charts.
+- [ ] Handle nonuniform collision paths with different pairwise powers of \(h\).
 - [ ] Compute curvature of the extended rescaled metric in low-dimensional cases.
 - [ ] Formulate a canonical unitary cluster normal form from the exterior filtration.
 - [ ] Derive closed scalar cluster-polynomial formulas for the intermediate constants.
-- [ ] Handle several clusters collapsing simultaneously.
-- [ ] Handle nonuniform cluster paths with different pairwise powers of \(h\).
 
 ## Quantitative global bounds
 
@@ -158,7 +176,7 @@ This checklist tracks the transition from local identifiability to quantitative 
 
 - [ ] Compute the block entries of \(G=J^*J\) explicitly.
 - [ ] Derive translation and scaling laws for \(G\).
-- [ ] Study metric completion near multiplicity-\(2m\) confluent strata.
+- [ ] Globalize the metric completion near multiplicity-\(2m\) confluent strata.
 - [ ] Analyze curvature in low-dimensional packet manifolds.
 - [ ] Compare ordinary, rescaled, and quotient metrics on the collision face.
 
@@ -182,6 +200,6 @@ Before claiming novelty, review primary literature on:
 - singular perturbation of structured matrices;
 - singular spectra of clustered Vandermonde and confluent Vandermonde matrices;
 - analytic matrix pencils, Smith forms, and exterior-power singular asymptotics;
-- weighted blow-ups, edge geometry, and rescaled tangent bundles.
+- weighted blow-ups, edge geometry, rescaled tangent bundles, and Lie algebroids.
 
 Classical ingredients should be cited as classical. New claims should be restricted to packet-specific formulations, geometric synthesis, or genuinely new quantitative results.
