@@ -10,7 +10,7 @@ For a fixed-shape common-scale cluster, the ordinary realization Jacobian loses 
 2. the pullback metric extends to a positive-definite limit;
 3. the ordinary collision boundary remains at finite pullback distance along the common-scale path.
 
-The result is a differential-geometric desingularization. It does **not** yet prove that the rescaled coframe integrates to a holonomic coordinate chart.
+The result is a differential-geometric desingularization along a fixed cluster shape. It does **not** yet prove that the rescaled coframe integrates to a holonomic coordinate chart or that these pathwise constructions assemble into a full neighborhood atlas.
 
 ---
 
@@ -398,7 +398,6 @@ The anisotropically renormalized pullback metric extends through the collision f
 \boxed{
 \widetilde G(h)=A(h)^*A(h)
 }
-\]
 
 and
 
