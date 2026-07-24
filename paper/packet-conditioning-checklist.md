@@ -97,17 +97,67 @@ This checklist tracks the transition from local identifiability to quantitative 
   \[
   1,2,4,5.
   \]
+- [x] Prove the rank-one inverse limit
+  \[
+  h^{2m-1}J(h)^{-1}
+  \longrightarrow
+  r_\xi(\operatorname{coeff}P)^{\mathsf T}.
+  \]
+- [x] Derive the exact deepest singular-value constant
+  \[
+  \lim_{h\to0^+}
+  \frac{\sigma_{2N}(J(h))}{h^{2m-1}}
+  =
+  \frac1{\Gamma(\xi)\|\operatorname{coeff}P\|_2},
+  \]
+  where
+  \[
+  \Gamma(\xi)
+  =
+  \left(
+  \sum_{j=1}^m
+  \left|
+  \frac{q_\xi''(\xi_j)}{q_\xi'(\xi_j)^3}
+  \right|^2
+  \right)^{1/2}
+  \]
+  and
+  \[
+  P(z)
+  =
+  (z-x)^{2m-1}
+  \left(\frac{E(z)}{E(x)}\right)^2.
+  \]
+- [x] Prove the projected-jet form
+  \[
+  \lim_{h\to0^+}
+  \frac{\sigma_{2N}(J(h))}{h^{2m-1}}
+  =
+  \frac{\|Q_{m-1}M^{(2m-1)}(x)\|_2}
+  {(2m-1)!\,\Gamma(\xi)}.
+  \]
+- [x] Prove that the deepest common-scale cluster constant is independent of all nonzero packet coefficients.
+- [x] Compute the symmetric three-node constant
+  \[
+  \lim_{h\to0^+}\frac{\sigma_6(J(h))}{h^5}
+  =
+  \frac{2\sqrt2}{3}
+  \]
+  for offsets \((-1,0,1)\), center \(0\), and no exterior nodes.
 
 The exact two-node constants are recorded in `paper/exact-two-node-collision-constants.md`.
 
 The general cluster theorem is recorded in `paper/m-node-cluster-normal-form.md`.
 
+The exact deepest general-cluster constant is recorded in `paper/exact-m-node-deepest-constant.md`.
+
 ## Immediate theorem queue
 
-- [ ] Derive exact leading constants for the \(2m-2\) collapsing singular values of a general cluster.
-- [ ] Express those constants through successive effective maps or orthogonal projections of the jets
+- [ ] Derive exact leading constants for the remaining \(2m-3\) collapsing singular values of a general cluster.
+- [ ] Construct a successive inverse-filtration or effective-map theorem that produces every cluster constant.
+- [ ] Express the complete constant hierarchy through orthogonal projections of the jets
   \[
-  m''(x),m'''(x),\ldots,m^{(2m-1)}(x).
+  M''(x),M'''(x),\ldots,M^{(2m-1)}(x).
   \]
 - [ ] Formulate a canonical unitary cluster normal form.
 - [ ] Handle multiple clusters collapsing simultaneously at one common scale.
