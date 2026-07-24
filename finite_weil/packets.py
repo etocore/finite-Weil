@@ -11,6 +11,7 @@ from dataclasses import dataclass
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 
+FloatArray = NDArray[np.float64]
 FloatMatrix = NDArray[np.float64]
 
 
@@ -47,6 +48,34 @@ class GaussianPacketFamily:
     @property
     def dimension(self) -> int:
         return int(self.centers.size)
+
+    def evaluate(self, points: ArrayLike) -> FloatMatrix:
+        """Evaluate every packet on the supplied one-dimensional point grid."""
+
+        grid = np.asarray(points, dtype=float)
+        if grid.ndim != 1:
+            raise ValueError("points must be one-dimensional")
+        if not np.all(np.isfinite(grid)):
+            raise ValueError("points must be finite")
+        delta = grid[:, None] - self.centers[None, :]
+        return np.asarray(
+            np.exp(-(delta**2) / (2.0 * self.sigma**2)),
+            dtype=float,
+        )
+
+    def linear_combination(
+        self,
+        coefficients: ArrayLike,
+        points: ArrayLike,
+    ) -> FloatArray:
+        """Evaluate a packet-coordinate linear combination on a point grid."""
+
+        values = np.asarray(coefficients, dtype=float)
+        if values.ndim != 1 or values.size != self.dimension:
+            raise ValueError("coefficients must match the packet dimension")
+        if not np.all(np.isfinite(values)):
+            raise ValueError("coefficients must be finite")
+        return np.asarray(self.evaluate(points) @ values, dtype=float)
 
     def gram_matrix(self) -> FloatMatrix:
         """Return the exact analytic Gram matrix for the packet family."""
