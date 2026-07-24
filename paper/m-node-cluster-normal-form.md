@@ -50,7 +50,7 @@ The proof uses two dual interpolation systems:
 1. ordinary Vandermonde duality for derivative-column combinations;
 2. Hermite coefficient extraction for value-column combinations.
 
-The underlying Vandermonde, confluent Vandermonde, and Hermite interpolation ingredients are classical. The normal-form synthesis is stated here in packet-Jacobian language.
+The underlying Vandermonde, confluent Vandermonde, Hermite interpolation, and clustered-Prony ingredients are classical. The packet-specific contribution here is the explicit bounded-equivalence construction and its geometric interpretation. No novelty claim is made until the exponent hierarchy is compared line by line with the existing structured-matrix and Prony literature.
 
 ---
 
@@ -936,4 +936,4 @@ Collision geometry of Prony maps, confluent Prony systems, and clustered Vanderm
 - D. Batenkov, B. Diederichs, G. Goldman, and Y. Yomdin, *The Spectral Properties of Vandermonde Matrices with Clustered Nodes*, arXiv:1909.01927.
 - S. Kunis and D. Nagel, *On the Smallest Singular Value of Multivariate Vandermonde Matrices with Clustered Nodes*, arXiv:1907.07119.
 
-This note should not be presented as a novelty claim until the exact exponent hierarchy is compared carefully with the structured-matrix and Prony literature. Its present contribution is a self-contained packet-Jacobian derivation using dual Vandermonde modes, Hermite coefficient extractors, and a generalized-Hermite regular factor.
+The cited literature already treats collisions, confluent Prony geometry, and clustered Vandermonde spectra in substantial depth. This note should be treated as a self-contained derivation in the present packet coordinates, not as evidence that the hierarchy is new. A dedicated comparison is required before any originality statement.
