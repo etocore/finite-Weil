@@ -22,9 +22,17 @@ and
 
 The next question is whether two paired Gaussian translations already generate the full algebra.
 
+Because the paired translation is even in its shift parameter,
+
+\[
+T_{-s}=T_s,
+\]
+
+the nondegeneracy condition must be \(s^2\neq t^2\), rather than merely \(s\neq t\).
+
 ### Conjecture 17.1 (two-shift generation)
 
-For distinct shifts \(s\neq t\),
+For shifts satisfying \(s^2\neq t^2\),
 
 \[
 \operatorname{alg}^*(T_s,T_t)=\mathfrak G_N.
@@ -149,7 +157,7 @@ B_{ij}\neq0
 \quad\text{for every distinct same-parity pair }i,j.
 \]
 
-That would make both parity graphs complete. Initial numerical experiments, however, indicate that individual same-parity matrix elements can vanish at isolated values of \(t\neq s\). For example, with \(h=\sigma=1\), \(N=4\), and \(s=1\), one odd-sector off-diagonal entry appears to cross zero near
+That would make both parity graphs complete. Initial numerical experiments, however, indicate that individual same-parity matrix elements can vanish at isolated values of \(t\). For example, with \(h=\sigma=1\), \(N=4\), and \(s=1\), one odd-sector off-diagonal entry appears to cross zero near
 
 \[
 t\approx 3.4878498984.
@@ -159,26 +167,202 @@ Similar isolated zeros occur in larger dimensions. These computations are not a 
 
 The correct target is therefore connectivity rather than entrywise nonvanishing. Isolated missing edges are harmless provided each parity graph remains connected.
 
-## 17.5 Immediate research tasks
+## 17.5 The analytic rank certificate
 
-The reduction above isolates three concrete tasks.
-
-1. **Simple spectrum.** Determine for which shifts \(s\) the matrix \(T_s\) has simple spectrum in each parity sector, or prove that any degeneracies are isolated.
-
-2. **Connectivity certificate.** Find a fixed collection of matrix entries, such as a spanning tree inside each parity block, and prove that those entries cannot vanish simultaneously for distinct \(s,t\).
-
-3. **Exceptional set.** Treat the commutant equations directly as an analytic rank problem in \((s,t)\). The failure of two-shift generation is the vanishing of all \((N^2-2)\)-rank certificates of the joint commutator map
+Let
 
 \[
-X\longmapsto([X,T_s],[X,T_t]).
+E_\pm=\ker(J\mp I),
+\qquad
+n_\pm=\dim E_\pm,
 \]
 
-Because the matrix entries depend real-analytically on \((s,t)\), the exceptional set is a real-analytic determinantal set. Proving one pair has minimal commutant establishes generic two-shift generation, even before the stronger all-distinct-pairs conjecture is resolved.
+and write \(T_r^\pm\) for the restriction of \(T_r\) to \(E_\pm\). Define the parity-sector commutator maps
 
-## 17.6 Current status
+\[
+\mathcal L_{s,t}^\pm:M_{n_\pm}(\mathbb C)
+\longrightarrow
+M_{n_\pm}(\mathbb C)\oplus M_{n_\pm}(\mathbb C)
+\]
 
-The graph criterion is exact. The statement that every same-parity entry is nonzero is not presently supported and is likely false. The next rigorous milestone should therefore be one of the following:
+by
 
-- prove generic two-shift generation by exhibiting one analytically or rigorously certified pair;
-- prove connectivity through a sparse set of protected edges;
-- or find a genuine exceptional pair, which would force a correction of Conjecture 17.1.
+\[
+\mathcal L_{s,t}^\pm(X)
+=
+\bigl([X,T_s^\pm],[X,T_t^\pm]\bigr).
+\]
+
+The scalar matrices always lie in \(\ker\mathcal L_{s,t}^\pm\). Therefore
+
+\[
+\operatorname{rank}\mathcal L_{s,t}^\pm\le n_\pm^2-1.
+\]
+
+### Proposition 17.4 (rank criterion)
+
+The following are equivalent:
+
+1. \(\operatorname{alg}^*(T_s,T_t)=\mathfrak G_N\).
+2. \(\{T_s,T_t\}'=\operatorname{span}\{I,J\}\).
+3. For both signs,
+   \[
+   \ker\mathcal L_{s,t}^\pm=\mathbb C I_{E_\pm}.
+   \]
+4. For both signs,
+   \[
+   \operatorname{rank}\mathcal L_{s,t}^\pm=n_\pm^2-1.
+   \]
+
+### Proof
+
+Every matrix commuting with \(J\) decomposes uniquely into an even block and an odd block. Since both \(T_s\) and \(T_t\) commute with \(J\), their joint commutant inside \(\{J\}'\) is
+
+\[
+\ker\mathcal L_{s,t}^+\oplus\ker\mathcal L_{s,t}^-.
+\]
+
+This equals \(\operatorname{span}\{I,J\}\) precisely when each parity-sector kernel consists only of scalar matrices. Rank-nullity then gives the fourth condition. The bicommutant theorem gives the equivalence with generation. \(\square\)
+
+Choose bases of the two matrix spaces and represent \(\mathcal L_{s,t}^\pm\) by matrices \(L_\pm(s,t)\). Their entries are real-analytic functions of \((s,t)\), because every entry of \(T_r\) is real analytic in \(r\).
+
+A maximal minor
+
+\[
+\Delta_\pm(s,t)
+\]
+
+of size \((n_\pm^2-1)\times(n_\pm^2-1)\) is therefore real analytic. If, for one witness pair \((s_0,t_0)\),
+
+\[
+\Delta_+(s_0,t_0)\Delta_-(s_0,t_0)\neq0,
+\]
+
+then neither determinant is identically zero. Consequently the exceptional set
+
+\[
+\mathcal E_N
+=
+\{(s,t):\operatorname{alg}^*(T_s,T_t)\neq\mathfrak G_N\}
+\]
+
+is contained in the proper real-analytic set
+
+\[
+\{\Delta_+\Delta_-=0\}.
+\]
+
+This proves generic two-shift generation once a single pair is rigorously certified.
+
+### Corollary 17.5 (generic generation from one witness)
+
+If there exists one pair \((s_0,t_0)\) for which
+
+\[
+\operatorname{rank}\mathcal L_{s_0,t_0}^\pm=n_\pm^2-1
+\]
+
+in both parity sectors, then two-shift generation holds on an open dense subset of the parameter plane, and its failure is confined to a proper real-analytic determinantal set.
+
+This is the first rigorous target. It is weaker than the all-pairs conjecture, but it converts numerical evidence into a theorem as soon as one exact or interval-certified witness is found.
+
+## 17.6 Functional-equation meaning of the certificate
+
+Let
+
+\[
+\Phi(v)(z)=\sum_j v_j\widehat g_j(z),
+\qquad
+\widehat g_j(z)=\sigma\sqrt{2\pi}\,e^{-\sigma^2z^2/2}e^{-izc_j}.
+\]
+
+For a symmetric center set, let \(j'\) denote the reflected index, so that \(c_{j'}=-c_j\). Then
+
+\[
+\widehat g_{j'}(z)=\widehat g_j(-z).
+\]
+
+If \(R\) denotes reflection on the transform side,
+
+\[
+(Rh)(z)=h(-z),
+\]
+
+then
+
+\[
+\boxed{\Phi J=R\Phi.}
+\]
+
+Indeed,
+
+\[
+(\Phi Jv)(z)
+=
+\sum_j v_j\widehat g_{j'}(z)
+=
+\sum_j v_j\widehat g_j(-z)
+=
+(R\Phi v)(z).
+\]
+
+Because the frequencies \(c_j\) are distinct, \(\Phi\) is injective. Thus the coefficient-space reflection \(J\) is exactly intertwined with the involution \(z\mapsto-z\), equivalently \(s\mapsto1-s\) in critical-line coordinates \(s=\tfrac12+iz\).
+
+Accordingly,
+
+\[
+\Phi(E_+)=\Phi(\mathbb C^N)\cap\{h:h(z)=h(-z)\},
+\]
+
+and
+
+\[
+\Phi(E_-)=\Phi(\mathbb C^N)\cap\{h:h(z)=-h(-z)\}.
+\]
+
+The analytic rank certificate therefore has a precise functional-equation interpretation. If
+
+\[
+\operatorname{rank}\mathcal L_{s,t}^\pm=n_\pm^2-1,
+\]
+
+then the two translations act irreducibly inside each symmetric or antisymmetric functional-equation sector. Equivalently, the only operators commuting with both translations are independent scalars on the two sectors. Transported back to coefficient coordinates, these are exactly
+
+\[
+aI+bJ.
+\]
+
+Thus a successful rank certificate proves more than two-generator minimality:
+
+> Within the finite packet compression, the functional-equation involution is the unique nontrivial symmetry surviving the joint action of the two Gaussian translations.
+
+This conclusion depends on both ingredients:
+
+- the rank certificate proves uniqueness of the surviving symmetry;
+- the intertwining theorem identifies that symmetry as the compressed functional-equation involution.
+
+Neither theorem implies the other, but together they give the algebraic statement its analytic meaning.
+
+## 17.7 Immediate research tasks
+
+The reduction above isolates four concrete tasks.
+
+1. **Exact witness.** Find one pair \((s_0,t_0)\) for each \(N\), preferably with algebraic or rationally controlled parameters, for which both maximal ranks can be certified exactly or by interval arithmetic.
+
+2. **Simple spectrum.** Determine for which shifts \(s\) the matrix \(T_s\) has simple spectrum in each parity sector, or prove that any degeneracies are isolated.
+
+3. **Connectivity certificate.** Find a fixed collection of matrix entries, such as a spanning tree inside each parity block, and prove that those entries cannot vanish simultaneously when \(s^2\neq t^2\).
+
+4. **Exceptional set.** Determine whether the proper analytic exceptional set contains anything beyond the unavoidable diagonal loci \(t=\pm s\), or exhibit a genuine exceptional pair.
+
+## 17.8 Current status
+
+The graph criterion and analytic rank criterion are exact. The functional-equation intertwining is exact. Together they identify the desired theorem as follows:
+
+\[
+\boxed{
+\text{two generic Gaussian translations leave only the functional-equation symmetry.}
+}
+\]
+
+What remains unproved is the existence of a rigorously certified witness uniformly in \(N\), and the stronger claim that no exceptional pairs exist away from \(t=\pm s\). The next computational step is to construct the parity-sector commutator matrices \(L_\pm(s,t)\), locate stable maximal minors, and certify one nonzero pair without relying solely on floating-point rank.
