@@ -2,11 +2,24 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
+
 import numpy as np
 from numpy.typing import ArrayLike, NDArray
 from scipy.linalg import eigh
 
 FloatArray = NDArray[np.float64]
+
+
+@dataclass(frozen=True, slots=True)
+class GeneralizedEigenpair:
+    """A generalized eigenpair expressed in packet coordinates."""
+
+    eigenvalue: float
+    coefficients: FloatArray
+    residual: FloatArray
+    residual_norm: float
+    retained_rank: int
 
 
 def _as_symmetric_matrix(value: ArrayLike, *, name: str) -> FloatArray:
@@ -18,6 +31,28 @@ def _as_symmetric_matrix(value: ArrayLike, *, name: str) -> FloatArray:
     if not np.allclose(matrix, matrix.T, rtol=1e-12, atol=1e-12):
         raise ValueError(f"{name} must be symmetric")
     return matrix
+
+
+def _gram_whitening_basis(
+    gram: ArrayLike,
+    *,
+    relative_tolerance: float,
+) -> FloatArray:
+    b = _as_symmetric_matrix(gram, name="gram")
+    if relative_tolerance <= 0 or not np.isfinite(relative_tolerance):
+        raise ValueError("relative_tolerance must be a finite positive number")
+
+    values, vectors = eigh(b, check_finite=True)
+    maximum = float(values[-1])
+    if maximum <= 0:
+        raise ValueError("gram must be positive definite on a nonzero subspace")
+    retained = values > relative_tolerance * maximum
+    if not np.any(retained):
+        raise ValueError("no stable Gram modes remain at the requested tolerance")
+    return np.asarray(
+        vectors[:, retained] / np.sqrt(values[retained])[None, :],
+        dtype=float,
+    )
 
 
 def gram_whitened_matrix(
@@ -37,18 +72,8 @@ def gram_whitened_matrix(
     b = _as_symmetric_matrix(gram, name="gram")
     if a.shape != b.shape:
         raise ValueError("operator and gram must have the same shape")
-    if relative_tolerance <= 0 or not np.isfinite(relative_tolerance):
-        raise ValueError("relative_tolerance must be a finite positive number")
 
-    values, vectors = eigh(b, check_finite=True)
-    maximum = float(values[-1])
-    if maximum <= 0:
-        raise ValueError("gram must be positive definite on a nonzero subspace")
-    retained = values > relative_tolerance * maximum
-    if not np.any(retained):
-        raise ValueError("no stable Gram modes remain at the requested tolerance")
-
-    basis = vectors[:, retained] / np.sqrt(values[retained])[None, :]
+    basis = _gram_whitening_basis(b, relative_tolerance=relative_tolerance)
     whitened = basis.T @ a @ basis
     return np.asarray(0.5 * (whitened + whitened.T), dtype=float)
 
@@ -78,6 +103,55 @@ def generalized_eigenvalues(
         relative_tolerance=relative_tolerance,
     )
     return np.asarray(eigh(whitened, eigvals_only=True, check_finite=True), dtype=float)
+
+
+def smallest_generalized_eigenpair(
+    operator: ArrayLike,
+    gram: ArrayLike,
+    *,
+    relative_tolerance: float | None = None,
+) -> GeneralizedEigenpair:
+    """Return the smallest generalized eigenpair in packet coordinates.
+
+    The coefficient vector is normalized so that ``c.T @ B @ c == 1``. When Gram
+    whitening is requested, the returned coefficients lie in the retained stable
+    packet subspace. The residual is the coordinate vector
+    ``A c - lambda B c``.
+    """
+
+    a = _as_symmetric_matrix(operator, name="operator")
+    b = _as_symmetric_matrix(gram, name="gram")
+    if a.shape != b.shape:
+        raise ValueError("operator and gram must have the same shape")
+
+    if relative_tolerance is None:
+        values, vectors = eigh(a, b, check_finite=True)
+        coefficients = np.asarray(vectors[:, 0], dtype=float)
+        retained_rank = b.shape[0]
+    else:
+        basis = _gram_whitening_basis(
+            b,
+            relative_tolerance=relative_tolerance,
+        )
+        whitened = basis.T @ a @ basis
+        whitened = 0.5 * (whitened + whitened.T)
+        values, vectors = eigh(whitened, check_finite=True)
+        coefficients = np.asarray(basis @ vectors[:, 0], dtype=float)
+        retained_rank = basis.shape[1]
+
+    eigenvalue = float(values[0])
+    gram_norm = float(np.sqrt(coefficients @ b @ coefficients))
+    coefficients = coefficients / gram_norm
+    residual = np.asarray(a @ coefficients - eigenvalue * (b @ coefficients))
+    residual_norm = float(np.linalg.norm(residual))
+
+    return GeneralizedEigenpair(
+        eigenvalue=eigenvalue,
+        coefficients=coefficients,
+        residual=residual,
+        residual_norm=residual_norm,
+        retained_rank=retained_rank,
+    )
 
 
 def gram_operator_norm(

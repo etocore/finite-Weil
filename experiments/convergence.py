@@ -34,6 +34,7 @@ class ExperimentRow:
     lambda_max: float
     operator_norm: float
     gram_condition: float
+    retained_rank: int
     runtime_seconds: float
 
 
@@ -49,14 +50,23 @@ def packet_centers(dimension: int, extent: float) -> np.ndarray:
     return np.linspace(-extent, extent, dimension, dtype=float)
 
 
+def retained_gram_rank(gram: np.ndarray, relative_tolerance: float) -> int:
+    """Return the number of Gram modes retained by whitening."""
+
+    values = np.linalg.eigvalsh(gram)
+    maximum = float(values[-1])
+    return int(np.count_nonzero(values > relative_tolerance * maximum))
+
+
 def run_case(
     discriminant: int,
     dimension: int,
     sigma: float,
     cutoff: int,
     center_extent: float,
+    relative_tolerance: float = 1e-12,
 ) -> ExperimentRow:
-    """Run one generalized-eigenvalue experiment and return its measurements."""
+    """Run one Gram-whitened eigenvalue experiment and return its measurements."""
 
     character = PrimitiveQuadraticCharacter(discriminant)
     packets = GaussianPacketFamily(packet_centers(dimension, center_extent), sigma)
@@ -65,7 +75,9 @@ def run_case(
 
     start = perf_counter()
     gram = operator.gram_matrix()
-    eigenvalues = operator.generalized_eigenvalues()
+    eigenvalues = operator.generalized_eigenvalues(
+        relative_tolerance=relative_tolerance,
+    )
     elapsed = perf_counter() - start
 
     return ExperimentRow(
@@ -78,6 +90,7 @@ def run_case(
         lambda_max=float(eigenvalues[-1]),
         operator_norm=float(np.max(np.abs(eigenvalues))),
         gram_condition=float(np.linalg.cond(gram)),
+        retained_rank=retained_gram_rank(gram, relative_tolerance),
         runtime_seconds=float(elapsed),
     )
 
@@ -109,6 +122,7 @@ def main() -> None:
     parser.add_argument("--sigmas", default="0.25,0.5,1.0")
     parser.add_argument("--cutoffs", default="50,100,250,500,1000")
     parser.add_argument("--center-extent", type=float, default=6.0)
+    parser.add_argument("--relative-tolerance", type=float, default=1e-12)
     parser.add_argument(
         "--output",
         type=Path,
@@ -127,12 +141,13 @@ def main() -> None:
                         sigma=sigma,
                         cutoff=cutoff,
                         center_extent=args.center_extent,
+                        relative_tolerance=args.relative_tolerance,
                     )
                     rows.append(row)
                     print(
                         f"D={discriminant:>3} n={dimension:>2} sigma={sigma:g} "
                         f"cutoff={cutoff:>4} lambda_min={row.lambda_min:.8g} "
-                        f"cond(B)={row.gram_condition:.4g}"
+                        f"cond(B)={row.gram_condition:.4g} rank={row.retained_rank}"
                     )
 
     write_rows(args.output, rows)
