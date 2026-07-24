@@ -1,0 +1,81 @@
+{
+  "schema_version": "1.0",
+  "protocol_commit": "REQUIRED",
+  "code_commit": "REQUIRED",
+  "implementation_id": "primary-or-independent",
+  "run_id": "REQUIRED",
+  "created_utc": "REQUIRED",
+  "external_zero_verification_horizon": {
+    "height": null,
+    "source": "REQUIRED",
+    "source_date": "REQUIRED"
+  },
+  "section": {
+    "nodes": [],
+    "sigma": null,
+    "omega": null,
+    "prime_cutoff": null,
+    "working_precision_decimal_digits": null,
+    "quadrature": {},
+    "fourier_convention": "REQUIRED",
+    "reflection_convention": "REQUIRED",
+    "gram_convention": "REQUIRED"
+  },
+  "design_class": "baseline|eta_o_optimized|pole_balanced|control",
+  "admissibility": {
+    "minimum_gram_floor": null,
+    "maximum_tail_fraction_of_warning_margin": null
+  },
+  "triggers": {
+    "floating_warning_threshold": null,
+    "verified_proximity_band": null,
+    "eta_o_warning_threshold": null,
+    "descent_slope_threshold": null,
+    "refinement_offsets": [],
+    "precision_doubling_steps": []
+  },
+  "search_accounting": {
+    "batch_id": "REQUIRED",
+    "section_index": null,
+    "frequencies_attempted_so_far": null,
+    "geometries_attempted_so_far": null,
+    "widths_attempted_so_far": null,
+    "optimizer_seeds": [],
+    "exact_form_evaluations_so_far": null,
+    "interval_certifications_so_far": null
+  },
+  "certificate": {
+    "lambda_upper": null,
+    "lambda_lower": null,
+    "gram_floor_lower": null,
+    "residual_upper": null,
+    "spectral_separation_lower": null,
+    "prime_tail_operator_norm_upper": null,
+    "archimedean_remainder_operator_norm_upper": null,
+    "other_error_operator_norm_upper": null,
+    "exact_negativity_margin_lower": null,
+    "classification": "UNCOMPUTED"
+  },
+  "susceptibility": {
+    "eta_o_interval": null,
+    "r_e_interval": null,
+    "phi_plus_half_interval": null,
+    "phi_minus_half_interval": null
+  },
+  "calibration": {
+    "omega_zero_anchor_passed": false,
+    "known_lines_passed": false,
+    "doublet_resolution_passed": false,
+    "broadening_control_passed": false,
+    "orientation_tests_passed": false,
+    "gram_stress_passed": false,
+    "computed_conclusion_test_passed": false
+  },
+  "independent_reproduction": {
+    "required": true,
+    "completed": false,
+    "implementation_id": null,
+    "certificate_hash": null
+  },
+  "notes": []
+}
