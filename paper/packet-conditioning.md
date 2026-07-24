@@ -28,9 +28,10 @@ The principal results are:
 3. the definition of an absolute packet condition number;
 4. the induced pullback metric and volume form;
 5. a precise description of the singular boundary where conditioning can fail;
-6. the exact Jacobian determinant formula.
+6. the exact confluent Vandermonde determinant formula;
+7. the two-node collision singular-value laws.
 
-The invertibility result is classical in content and is equivalent to nonsingularity of a confluent Vandermonde matrix. The formulation through atomic-plus-dipole distributions and Hermite interpolation is adapted to the packet-transform program.
+The invertibility result is classical in content and is equivalent to nonsingularity of a confluent Vandermonde matrix. The formulation through atomic-plus-dipole distributions, Hermite interpolation, and collision-adapted divided differences is adapted to the packet-transform program.
 
 ---
 
@@ -229,299 +230,11 @@ This follows immediately from the complex inverse function theorem.
 
 ---
 
-## 4. Exact Jacobian determinant
-
-Define
-
-\[
-v(x)=(1,x,x^2,\ldots,x^{2N-1})^{\mathsf T}.
-\]
-
-Then
-
-\[
-J(X,u)=
-\bigl[
- v(x_1),\ldots,v(x_N),
- u_1v'(x_1),\ldots,u_Nv'(x_N)
-\bigr].
-\]
-
-Let
-
-\[
-C_N(X)=
-\bigl[
- v(x_1),\ldots,v(x_N),
- v'(x_1),\ldots,v'(x_N)
-\bigr].
-\]
-
-Therefore
-
-\[
-J(X,u)
-=
-C_N(X)
-\begin{bmatrix}
-I_N&0\\
-0&\operatorname{diag}(u_1,\ldots,u_N)
-\end{bmatrix},
-\]
-
-and hence
-
-\[
-\det J(X,u)
-=
-\left(\prod_{j=1}^N u_j\right)\det C_N(X).
-\]
-
-The remaining task is to evaluate \(\det C_N(X)\).
-
-### Theorem 4.1 - multiplicity-two confluent Vandermonde determinant
-
-For the column order
-
-\[
-\bigl[v(x_1),\ldots,v(x_N),v'(x_1),\ldots,v'(x_N)\bigr],
-\]
-
-one has
-
-\[
-\boxed{
-\det C_N(X)
-=
-(-1)^{N(N-1)/2}
-\prod_{1\le i<j\le N}(x_j-x_i)^4.
-}
-\]
-
-Equivalently, in the interleaved order
-
-\[
-\bigl[v(x_1),v'(x_1),\ldots,v(x_N),v'(x_N)\bigr],
-\]
-
-the determinant is
-
-\[
-\prod_{i<j}(x_j-x_i)^4.
-\]
-
-### Proof
-
-Let
-
-\[
-D_N(X)
-=
-\det\bigl[v(x_1),v'(x_1),\ldots,v(x_N),v'(x_N)\bigr].
-\]
-
-We first prove
-
-\[
-D_N(X)=\prod_{i<j}(x_j-x_i)^4.
-\]
-
-Fix a pair \(i<j\). Regard \(D_N\) as a polynomial in \(x_j\), with all other variables fixed, and set
-
-\[
-h=x_j-x_i.
-\]
-
-Taylor expansion gives
-
-\[
-v(x_i+h)
-=
-v(x_i)+h v'(x_i)+\frac{h^2}{2}v''(x_i)+\frac{h^3}{6}v'''(x_i)+O(h^4),
-\]
-
-and
-
-\[
-v'(x_i+h)
-=
-v'(x_i)+h v''(x_i)+\frac{h^2}{2}v'''(x_i)+O(h^3).
-\]
-
-Inside the determinant, replace the \(j\)-th value column by
-
-\[
-v(x_j)-v(x_i)-h v'(x_i),
-\]
-
-and replace the \(j\)-th derivative column by
-
-\[
-v'(x_j)-v'(x_i).
-\]
-
-These column operations do not change the determinant. The two modified columns are
-
-\[
-\frac{h^2}{2}v''(x_i)+\frac{h^3}{6}v'''(x_i)+O(h^4)
-\]
-
-and
-
-\[
-hv''(x_i)+\frac{h^2}{2}v'''(x_i)+O(h^3).
-\]
-
-Their wedge product has no term of order \(h^3\), because the apparent leading contribution is proportional to
-
-\[
-v''(x_i)\wedge v''(x_i)=0.
-\]
-
-The first potentially nonzero term occurs at order \(h^4\). Therefore
-
-\[
-D_N(X)=O(h^4)
-\qquad (h\to0),
-\]
-
-so
-
-\[
-(x_j-x_i)^4\mid D_N(X).
-\]
-
-Since this holds for every pair \(i<j\),
-
-\[
-\prod_{i<j}(x_j-x_i)^4\mid D_N(X).
-\]
-
-It remains to compare degrees. Every term in the determinant is obtained by selecting once from each row degree \(0,1,\ldots,2N-1\). In a value column, an entry from row \(k\) has degree \(k\) in its node; in a derivative column, the corresponding entry has degree \(k-1\). Thus every nonzero determinant term has total degree
-
-\[
-\sum_{k=0}^{2N-1}k-N
-=
-N(2N-1)-N
-=
-2N(N-1).
-\]
-
-Hence \(D_N\) is homogeneous of degree \(2N(N-1)\). The product
-
-\[
-\prod_{i<j}(x_j-x_i)^4
-\]
-
-has the same degree. Consequently
-
-\[
-D_N(X)=c_N\prod_{i<j}(x_j-x_i)^4
-\]
-
-for some constant \(c_N\).
-
-To determine \(c_N\), compare the coefficient of the monomial
-
-\[
-M_N:=\prod_{j=1}^N x_j^{4(j-1)}.
-\]
-
-In the determinant expansion, obtaining \(x_j^{4(j-1)}\) from the pair \(v(x_j),v'(x_j)\) requires selecting row exponents \(2j-2\) and \(2j-1\). The corresponding \(2\times2\) block is
-
-\[
-\begin{bmatrix}
- x_j^{2j-2} & (2j-2)x_j^{2j-3}\\
- x_j^{2j-1} & (2j-1)x_j^{2j-2}
-\end{bmatrix},
-\]
-
-whose determinant is
-
-\[
-x_j^{4j-4}.
-\]
-
-Using these consecutive row pairs for \(j=1,\ldots,N\) gives coefficient \(1\). No other row assignment yields the same exponent vector, because each node pair must receive two distinct row indices whose sum is \(4j-3\), and the disjoint partition of \(\{0,1,\ldots,2N-1\}\) with these prescribed sums is uniquely
-
-\[
-\{0,1\},\{2,3\},\ldots,\{2N-2,2N-1\}.
-\]
-
-The coefficient of \(M_N\) in
-
-\[
-\prod_{i<j}(x_j-x_i)^4
-\]
-
-is also \(1\), obtained by taking \(x_j^4\) from every factor with right endpoint \(j\). Hence \(c_N=1\), and
-
-\[
-D_N(X)=\prod_{i<j}(x_j-x_i)^4.
-\]
-
-Finally, pass from interleaved columns to grouped columns. Moving all derivative columns to the right requires
-
-\[
-\sum_{j=1}^N(N-j)=\frac{N(N-1)}2
-\]
-
-adjacent transpositions. Therefore
-
-\[
-\det C_N(X)
-=
-(-1)^{N(N-1)/2}D_N(X),
-\]
-
-which proves the formula. \(\square\)
-
-### Corollary 4.2 - exact packet Jacobian determinant
-
-In the ordered parameter coordinates
-
-\[
-(u_1,\ldots,u_N,x_1,\ldots,x_N),
-\]
-
-one has
-
-\[
-\boxed{
-\det J(X,u)
-=
-(-1)^{N(N-1)/2}
-\left(\prod_{j=1}^N u_j\right)
-\left(\prod_{i<j}(x_j-x_i)^4\right).
-}
-\]
-
-In the interleaved coordinates
-
-\[
-(u_1,x_1,\ldots,u_N,x_N),
-\]
-
-the sign disappears:
-
-\[
-\boxed{
-\det J_{\mathrm{int}}(X,u)
-=
-\left(\prod_{j=1}^N u_j\right)
-\left(\prod_{i<j}(x_j-x_i)^4\right).
-}
-\]
-
-Thus the zero multiplicity is exactly one along each coefficient hyperplane \(u_j=0\), and exactly four along each collision hyperplane \(x_i=x_j\).
-
----
-
-## 5. Local bi-Lipschitz stability
+## 4. Local bi-Lipschitz stability
 
 Equip parameter space and moment space with fixed norms. For concreteness, use the Euclidean norm on \(\mathbb C^{2N}\).
 
-### Theorem 5.1 - local Lipschitz stability
+### Theorem 4.1 - local Lipschitz stability
 
 Fix \(\theta_0=(X_0,u_0)\in\mathcal P_N\). There exist neighborhoods
 
@@ -580,15 +293,15 @@ Therefore
 
 Taking \(a=\mathcal R_N(\theta_1)\) and \(b=\mathcal R_N(\theta_2)\) proves the claim with \(C=M\). \(\square\)
 
-### Remark 5.2
+### Remark 4.2
 
 The theorem is local. It does not assert a uniform stability constant over all reduced packets. Such a global constant cannot persist near node collisions or vanishing coefficients, where the reduced parameterization approaches its singular boundary.
 
 ---
 
-## 6. Absolute packet condition number
+## 5. Absolute packet condition number
 
-### Definition 6.1
+### Definition 5.1
 
 For \(\theta=(X,u)\in\mathcal P_N\), define the absolute packet condition number
 
@@ -628,7 +341,7 @@ then
 
 The inequality is sharp at the linearized level.
 
-### Definition 6.2 - local forward condition number
+### Definition 5.2 - local forward condition number
 
 The corresponding forward sensitivity is
 
@@ -648,7 +361,7 @@ These quantities depend on the chosen coordinates and norms. They are therefore 
 
 ---
 
-## 7. Pullback metric and geometric interpretation
+## 6. Pullback metric and geometric interpretation
 
 The Euclidean Hermitian metric on moment space pulls back through \(\mathcal R_N\) to
 
@@ -700,18 +413,75 @@ The induced volume density in the ordered parameter coordinates is
 |\det J|.
 \]
 
-Using Corollary 4.2,
+Thus the Jacobian determinant measures the local volume distortion between packet parameters and moment coordinates.
+
+---
+
+## 7. Exact determinant formula
+
+Let
+
+\[
+m(z)=(1,z,\ldots,z^{2N-1})^{\mathsf T}.
+\]
+
+In interleaved coordinates
+
+\[
+(u_1,x_1,\ldots,u_N,x_N),
+\]
+
+the Jacobian columns are
+
+\[
+m(x_1),u_1m'(x_1),\ldots,m(x_N),u_Nm'(x_N).
+\]
+
+Factoring \(u_j\) from every derivative column reduces the determinant to the multiplicity-two confluent Vandermonde determinant.
+
+### Theorem 7.1 - packet Jacobian determinant
+
+In interleaved coordinates,
 
 \[
 \boxed{
-\sqrt{\det G(X,u)}
+\det J_{\mathrm{int}}(X,u)
+=
+\left(\prod_{j=1}^N u_j\right)
+\left(\prod_{1\le i<j\le N}(x_j-x_i)^4\right).
+}
+\]
+
+In grouped coordinates
+
+\[
+(u_1,\ldots,u_N,x_1,\ldots,x_N),
+\]
+
+\[
+\boxed{
+\det J_{\mathrm{grp}}(X,u)
+=
+(-1)^{N(N-1)/2}
+\left(\prod_{j=1}^N u_j\right)
+\left(\prod_{1\le i<j\le N}(x_j-x_i)^4\right).
+}
+\]
+
+### Consequence
+
+The exact volume density is
+
+\[
+\boxed{
+\sqrt{\det G}
 =
 \left(\prod_{j=1}^N|u_j|\right)
 \left(\prod_{i<j}|x_j-x_i|^4\right).
 }
 \]
 
-Thus local volume collapses linearly when a coefficient vanishes and quartically when a pair of nodes collides.
+Thus coefficient loss is first order in volume, while every pairwise node collision is fourth order in volume.
 
 ---
 
@@ -735,15 +505,17 @@ At either event, the ordinary \(N\)-packet chart ceases to represent a reduced p
 Consider the same Jacobian formula on all of \(\mathbb C^{2N}\). Then
 
 \[
-\boxed{
 \det J(X,u)=0
-\iff
-\left(\prod_i u_i\right)
-\left(\prod_{i<j}(x_j-x_i)\right)=0.
-}
 \]
 
-Moreover, the exact determinant formula shows that the vanishing order is one along \(u_i=0\) and four along \(x_i=x_j\).
+if and only if
+
+\[
+\left(\prod_i u_i\right)
+\left(\prod_{i<j}(x_j-x_i)\right)=0.
+\]
+
+This follows immediately from Theorem 7.1.
 
 ### Corollary 8.2 - blow-up along convergent singular sequences
 
@@ -831,33 +603,160 @@ Thus
 \det J=u.
 \]
 
+The inverse map is explicit:
+
+\[
+u=a_0,
+\qquad
+x=\frac{a_1}{a_0}.
+\]
+
+The singular boundary is exactly \(u=0\).
+
 ### Case \(N=2\)
 
-In grouped coordinates \((u_1,u_2,x_1,x_2)\),
+In interleaved coordinates the Jacobian has columns
 
 \[
-\det J
-=
--u_1u_2(x_2-x_1)^4.
+\begin{aligned}
+&[1,x_1,x_1^2,x_1^3]^{\mathsf T},
+&&[0,u_1,2u_1x_1,3u_1x_1^2]^{\mathsf T},\\
+&[1,x_2,x_2^2,x_2^3]^{\mathsf T},
+&&[0,u_2,2u_2x_2,3u_2x_2^2]^{\mathsf T}.
+\end{aligned}
 \]
 
-In interleaved coordinates \((u_1,x_1,u_2,x_2)\),
+Therefore
 
 \[
-\det J_{\mathrm{int}}
-=
-u_1u_2(x_2-x_1)^4.
+\boxed{
+\det J=u_1u_2(x_2-x_1)^4.
+}
 \]
-
-The sign change is exactly the single transposition needed to pass between the two column orders.
 
 ---
 
-## 11. Research objectives
+## 11. Two-node collision normal form
 
-The exact determinant is now established. The immediate quantitative problem is to move from determinant-level volume collapse to sharp smallest-singular-value estimates.
+Fix pairwise distinct complex numbers
 
-### Problem A - separation bounds
+\[
+x,x_3,\ldots,x_N
+\]
+
+and let
+
+\[
+x_1=x,
+\qquad
+x_2=x+h,
+\qquad
+h\to0.
+\]
+
+Assume \(u_j(h)\to u_j(0)\neq0\). The companion note
+
+`paper/two-node-collision-normal-form.md`
+
+constructs an exact factorization
+
+\[
+\boxed{
+J(h)=A(h)D(h)B(h),
+}
+\]
+
+where
+
+\[
+D(h)
+=
+\operatorname{diag}(1,\ldots,1,h,h^3)
+\]
+
+and \(A(h),B(h)\), together with their inverses, remain uniformly bounded as \(h\to0\).
+
+The adapted columns are generated by
+
+\[
+m'(x+h)-m'(x)
+=
+hm''(x)+O(h^2)
+\]
+
+and
+
+\[
+m(x+h)-m(x)
+-\frac h2\bigl(m'(x)+m'(x+h)\bigr)
+=
+-\frac{h^3}{12}m'''(x)+O(h^4).
+\]
+
+The limiting regular factor is a generalized confluent Vandermonde matrix with multiplicity four at \(x\) and multiplicity two at every remaining node, hence is invertible by generalized Hermite interpolation.
+
+### Theorem 11.1 - singular-value exponents at a simple collision
+
+There exist constants \(0<c<C<\infty\) such that, for all sufficiently small nonzero \(h\),
+
+\[
+c\le\sigma_k(J(h))\le C,
+\qquad 1\le k\le2N-2,
+\]
+
+\[
+\boxed{
+\sigma_{2N-1}(J(h))\asymp|h|,
+\qquad
+\sigma_{2N}(J(h))\asymp|h|^3.
+}
+\]
+
+Consequently,
+
+\[
+\boxed{
+\kappa_{\mathrm{abs}}(J(h))\asymp|h|^{-3}.
+}
+\]
+
+For the pullback metric \(G(h)=J(h)^*J(h)\), the two collapsing eigenvalues obey
+
+\[
+\boxed{
+\lambda_{2N-1}(G(h))\asymp|h|^2,
+\qquad
+\lambda_{2N}(G(h))\asymp|h|^6.
+}
+\]
+
+The product of the two collapsing singular values is \(\asymp|h|^4\), exactly matching the fourth-order collision factor in the determinant theorem.
+
+---
+
+## 12. Research objectives
+
+### Problem A - exact collision constants
+
+Determine the limits, when they exist, of
+
+\[
+\frac{\sigma_{2N-1}(J(h))}{|h|}
+\]
+
+and
+
+\[
+\frac{\sigma_{2N}(J(h))}{|h|^3}.
+\]
+
+This requires an orthogonal or Schur-complement reduction, since bounded-equivalence normal forms determine orders but not exact constants.
+
+### Problem B - cluster collisions
+
+For \(m\ge3\) nodes approaching one center, construct a higher divided-difference normal form and determine the complete hierarchy of singular-value exponents.
+
+### Problem C - separation bounds
 
 Find constants or asymptotic estimates for
 
@@ -875,37 +774,6 @@ u_{\min}:=\min_i|u_i|,
 R:=\max_i|x_i|.
 \]
 
-### Problem B - collision asymptotics
-
-For a controlled two-node collision
-
-\[
-x_2=x_1+h,
-\qquad h\to0,
-\]
-
-determine the leading asymptotic order of
-
-\[
-\sigma_{\min}(J)
-\]
-
-and hence of
-
-\[
-\kappa_{\mathrm{abs}}.
-\]
-
-### Problem C - optimal geometry
-
-Under normalization constraints, identify configurations minimizing
-
-\[
-\kappa_{\mathrm{abs}}(X,u).
-\]
-
-Possible constraints include fixed centroid, fixed diameter, fixed coefficient norm, or confinement to a real interval or circle.
-
 ### Problem D - confluent compactification
 
 Replace the singular ordinary chart at collisions by confluent coordinates involving
@@ -916,27 +784,41 @@ e^{xz},\ ze^{xz},\ z^2e^{xz},\ldots
 
 and determine whether the induced metric extends after a suitable renormalization.
 
+### Problem E - optimal geometry
+
+Under normalization constraints, identify configurations minimizing
+
+\[
+\kappa_{\mathrm{abs}}(X,u).
+\]
+
+Possible constraints include fixed centroid, fixed diameter, fixed coefficient norm, or confinement to a real interval or circle.
+
 ---
 
-## 12. Proven versus open
+## 13. Proven versus open
 
-### Proven here
+### Proven here and in the companion collision note
 
 - Jacobian invertibility on the reduced packet space.
 - Local holomorphic coordinates given by the first \(2N\) moments.
-- Exact Jacobian determinant, including sign for grouped and interleaved coordinates.
-- Exact vanishing multiplicities: one at coefficient loss and four at node collision.
 - Local bi-Lipschitz stability.
-- Exact characterization of the singular locus.
-- Divergence of the absolute condition number along convergent sequences approaching that locus.
-- Pullback metric and explicit volume density.
+- Exact characterization of the singular locus as collisions or vanishing coefficients.
+- Exact Jacobian determinant, including multiplicities and coordinate-order sign.
+- Divergence of the absolute condition number along convergent sequences approaching the singular locus.
+- Pullback metric and volume-form interpretation.
 - Permutation invariance.
+- Two-node collision normal form.
+- Individual collision singular-value exponents \(1\) and \(3\).
+- Condition-number exponent \(3\).
+- Pullback-metric collapse exponents \(2\) and \(6\).
 
-### Open in this note
+### Open
 
-- sharp lower bounds for \(\sigma_{\min}(J)\);
-- precise collision exponents for the smallest singular value;
+- exact leading constants in the collision singular values;
+- sharp global lower bounds for \(\sigma_{\min}(J)\);
+- cluster collision exponents for three or more nodes;
 - global minimizers of the condition number under normalization;
 - metric completion through confluent packets.
 
-These open problems mark the transition from classical local identifiability to the quantitative geometry of packet realization.
+These open problems mark the next layer of quantitative packet geometry.
