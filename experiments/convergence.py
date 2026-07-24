@@ -14,6 +14,7 @@ from pathlib import Path
 from time import perf_counter
 
 import numpy as np
+from scipy.linalg import eigh
 
 from finite_weil import (
     CompletedDirichletData,
@@ -30,6 +31,8 @@ class ExperimentRow:
     sigma: float
     cutoff: int
     center_extent: float
+    relative_tolerance: float
+    retained_rank: int
     lambda_min: float
     lambda_max: float
     operator_norm: float
@@ -49,14 +52,25 @@ def packet_centers(dimension: int, extent: float) -> np.ndarray:
     return np.linspace(-extent, extent, dimension, dtype=float)
 
 
+def stable_gram_rank(gram: np.ndarray, relative_tolerance: float) -> int:
+    """Return the number of Gram eigenmodes retained by whitening."""
+
+    values = eigh(gram, eigvals_only=True, check_finite=True)
+    maximum = float(values[-1])
+    if maximum <= 0:
+        raise ValueError("gram must be positive definite on a nonzero subspace")
+    return int(np.count_nonzero(values > relative_tolerance * maximum))
+
+
 def run_case(
     discriminant: int,
     dimension: int,
     sigma: float,
     cutoff: int,
     center_extent: float,
+    relative_tolerance: float = 1e-12,
 ) -> ExperimentRow:
-    """Run one generalized-eigenvalue experiment and return its measurements."""
+    """Run one stabilized generalized-eigenvalue experiment."""
 
     character = PrimitiveQuadraticCharacter(discriminant)
     packets = GaussianPacketFamily(packet_centers(dimension, center_extent), sigma)
@@ -65,7 +79,10 @@ def run_case(
 
     start = perf_counter()
     gram = operator.gram_matrix()
-    eigenvalues = operator.generalized_eigenvalues()
+    retained_rank = stable_gram_rank(gram, relative_tolerance)
+    eigenvalues = operator.generalized_eigenvalues(
+        relative_tolerance=relative_tolerance
+    )
     elapsed = perf_counter() - start
 
     return ExperimentRow(
@@ -74,6 +91,8 @@ def run_case(
         sigma=sigma,
         cutoff=cutoff,
         center_extent=center_extent,
+        relative_tolerance=relative_tolerance,
+        retained_rank=retained_rank,
         lambda_min=float(eigenvalues[0]),
         lambda_max=float(eigenvalues[-1]),
         operator_norm=float(np.max(np.abs(eigenvalues))),
@@ -109,6 +128,7 @@ def main() -> None:
     parser.add_argument("--sigmas", default="0.25,0.5,1.0")
     parser.add_argument("--cutoffs", default="50,100,250,500,1000")
     parser.add_argument("--center-extent", type=float, default=6.0)
+    parser.add_argument("--relative-tolerance", type=float, default=1e-12)
     parser.add_argument(
         "--output",
         type=Path,
@@ -127,12 +147,13 @@ def main() -> None:
                         sigma=sigma,
                         cutoff=cutoff,
                         center_extent=args.center_extent,
+                        relative_tolerance=args.relative_tolerance,
                     )
                     rows.append(row)
                     print(
                         f"D={discriminant:>3} n={dimension:>2} sigma={sigma:g} "
                         f"cutoff={cutoff:>4} lambda_min={row.lambda_min:.8g} "
-                        f"cond(B)={row.gram_condition:.4g}"
+                        f"cond(B)={row.gram_condition:.4g} rank={row.retained_rank}"
                     )
 
     write_rows(args.output, rows)
