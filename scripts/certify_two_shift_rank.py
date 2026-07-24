@@ -82,7 +82,9 @@ def paired_gaussian_translation_iv(
             k = abs(i - j)
             kh = _iv(k) * h
             scale = 2 * mp.iv.exp(-(sh * sh + kh * kh) / four_sig2)
-            row.append(scale * mp.iv.cosh(kh * sh / two_sig2))
+            argument = kh * sh / two_sig2
+            cosh_interval = (mp.iv.exp(argument) + mp.iv.exp(-argument)) / 2
+            row.append(scale * cosh_interval)
         out.append(row)
     return out
 
