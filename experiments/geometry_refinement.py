@@ -15,14 +15,15 @@ from math import ceil, exp
 from pathlib import Path
 
 import numpy as np
+from scipy.integrate import trapezoid
 
+from experiments.convergence import parse_floats
 from finite_weil import (
     CompletedDirichletData,
     GaussianPacketFamily,
     PrimitiveQuadraticCharacter,
     WeilOperator,
 )
-from experiments.convergence import parse_floats
 
 
 @dataclass(frozen=True, slots=True)
@@ -83,9 +84,9 @@ def boundary_mass_fraction(
     grid = np.linspace(-extent - padding, extent + padding, grid_points)
     values = packets.linear_combination(coefficients, grid)
     density = values**2
-    total = float(np.trapezoid(density, grid))
+    total = float(trapezoid(density, grid))
     boundary = np.abs(grid) >= boundary_fraction * extent
-    boundary_mass = float(np.trapezoid(density * boundary, grid) / total)
+    boundary_mass = float(trapezoid(density * boundary, grid) / total)
     peak_location = float(grid[int(np.argmax(np.abs(values)))])
     return boundary_mass, peak_location
 
