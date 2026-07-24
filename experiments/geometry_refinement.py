@@ -49,7 +49,7 @@ def packet_centers_from_spacing(extent: float, spacing: float) -> np.ndarray:
         raise ValueError("extent must be a finite positive number")
     if spacing <= 0 or not np.isfinite(spacing):
         raise ValueError("spacing must be a finite positive number")
-    half_steps = max(1, int(ceil(extent / spacing)))
+    half_steps = max(1, ceil(extent / spacing))
     return np.linspace(-extent, extent, 2 * half_steps + 1, dtype=float)
 
 
@@ -65,7 +65,7 @@ def geometry_prime_cutoff(
     if tail_sigmas <= 0 or not np.isfinite(tail_sigmas):
         raise ValueError("tail_sigmas must be a finite positive number")
     log_cutoff = 2.0 * extent + tail_sigmas * sigma
-    return max(minimum, int(ceil(exp(log_cutoff))))
+    return max(minimum, ceil(exp(log_cutoff)))
 
 
 def boundary_mass_fraction(
