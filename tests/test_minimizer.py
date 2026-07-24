@@ -29,7 +29,8 @@ def test_whitened_eigenpair_discards_numerically_null_mode() -> None:
     )
 
     assert np.isclose(pair.eigenvalue, 2.0)
-    assert np.allclose(pair.coefficients, [1.0, 0.0])
+    # Eigenvectors are defined only up to an overall sign.
+    assert np.allclose(np.abs(pair.coefficients), [1.0, 0.0])
     assert pair.retained_rank == 1
     assert pair.residual_norm < 1e-13
 
