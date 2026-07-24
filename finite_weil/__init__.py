@@ -23,9 +23,11 @@ from .lfunctions import (
     prime_power_base,
 )
 from .operators import (
+    GeneralizedEigenpair,
     generalized_eigenvalues,
     gram_operator_norm,
     gram_whitened_matrix,
+    smallest_generalized_eigenpair,
 )
 from .packets import GaussianPacketFamily
 from .weil_operator import WeilOperator
@@ -33,6 +35,7 @@ from .weil_operator import WeilOperator
 __all__ = [
     "CompletedDirichletData",
     "GaussianPacketFamily",
+    "GeneralizedEigenpair",
     "PrimeOperatorTerm",
     "PrimitiveQuadraticCharacter",
     "WeilOperator",
@@ -56,6 +59,7 @@ __all__ = [
     "quadratic_prime_power_coefficient",
     "scalar_form_matrix",
     "sharp_prime_weight",
+    "smallest_generalized_eigenpair",
     "universal_prime_operator",
     "von_mangoldt",
 ]
