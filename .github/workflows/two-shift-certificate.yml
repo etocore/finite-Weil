@@ -1,0 +1,90 @@
+name: Two-shift certificate
+
+on:
+  workflow_dispatch:
+    inputs:
+      n_min:
+        description: Smallest matrix size N
+        required: true
+        default: "4"
+      n_max:
+        description: Largest matrix size N
+        required: true
+        default: "8"
+      s_min:
+        description: Minimum shift for numerical search
+        required: true
+        default: "0.25"
+      s_max:
+        description: Maximum shift for numerical search
+        required: true
+        default: "3.0"
+      steps:
+        description: Grid points per shift axis
+        required: true
+        default: "24"
+      precision_bits:
+        description: Interval certification precision
+        required: true
+        default: "256"
+
+jobs:
+  search-and-certify:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install numpy mpmath
+
+      - name: Search and certify witnesses
+        env:
+          N_MIN: ${{ inputs.n_min }}
+          N_MAX: ${{ inputs.n_max }}
+          S_MIN: ${{ inputs.s_min }}
+          S_MAX: ${{ inputs.s_max }}
+          STEPS: ${{ inputs.steps }}
+          PRECISION_BITS: ${{ inputs.precision_bits }}
+        run: |
+          set -euo pipefail
+          mkdir -p artifacts/two-shift
+
+          for n in $(seq "$N_MIN" "$N_MAX"); do
+            echo "Searching for N=$n"
+            search_output="artifacts/two-shift/search-N${n}.txt"
+            python scripts/two_shift_rank_certificate.py \
+              --n "$n" \
+              --s-min "$S_MIN" \
+              --s-max "$S_MAX" \
+              --steps "$STEPS" \
+              --top 1 | tee "$search_output"
+
+            best_line=$(grep '^s=' "$search_output" | head -n 1)
+            s=$(printf '%s\n' "$best_line" | sed -E 's/^s=([^,]+),.*/\1/')
+            t=$(printf '%s\n' "$best_line" | sed -E 's/^s=[^,]+, t=([^,]+),.*/\1/')
+
+            echo "Certifying N=$n with s=$s and t=$t"
+            python scripts/certify_two_shift_rank.py \
+              --n "$n" \
+              --s "$s" \
+              --t "$t" \
+              --precision-bits "$PRECISION_BITS" \
+              --output "artifacts/two-shift/certificate-N${n}.json"
+          done
+
+      - name: Upload certificates
+        uses: actions/upload-artifact@v4
+        with:
+          name: two-shift-certificates
+          path: artifacts/two-shift
+          if-no-files-found: error
