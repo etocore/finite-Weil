@@ -22,6 +22,7 @@ from time import perf_counter
 
 import numpy as np
 
+from experiments.convergence import packet_centers, parse_floats, parse_ints
 from finite_weil import (
     CompletedDirichletData,
     GaussianPacketFamily,
@@ -32,7 +33,6 @@ from finite_weil import (
     generalized_eigenvalues,
     sharp_prime_weight,
 )
-from experiments.convergence import packet_centers, parse_floats, parse_ints
 
 
 @dataclass(frozen=True, slots=True)
