@@ -1,6 +1,13 @@
 name: Two-shift certificate
 
 on:
+  push:
+    branches:
+      - research/finite-weil-commutant-proof
+    paths:
+      - "scripts/**"
+      - "paper/**"
+      - ".github/workflows/two-shift-certificate.yml"
   workflow_dispatch:
     inputs:
       n_min:
@@ -49,12 +56,12 @@ jobs:
 
       - name: Search and certify witnesses
         env:
-          N_MIN: ${{ inputs.n_min }}
-          N_MAX: ${{ inputs.n_max }}
-          S_MIN: ${{ inputs.s_min }}
-          S_MAX: ${{ inputs.s_max }}
-          STEPS: ${{ inputs.steps }}
-          PRECISION_BITS: ${{ inputs.precision_bits }}
+          N_MIN: ${{ inputs.n_min || '4' }}
+          N_MAX: ${{ inputs.n_max || '8' }}
+          S_MIN: ${{ inputs.s_min || '0.25' }}
+          S_MAX: ${{ inputs.s_max || '3.0' }}
+          STEPS: ${{ inputs.steps || '24' }}
+          PRECISION_BITS: ${{ inputs.precision_bits || '256' }}
         run: |
           set -euo pipefail
           mkdir -p artifacts/two-shift
