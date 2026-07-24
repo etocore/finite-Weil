@@ -640,4 +640,4 @@ These adapted directions are not asserted to be exact singular vectors. They are
 - Metric extension in confluent packet coordinates.
 - Sharp global lower bounds in terms of minimum separation, coefficient size, and node radius.
 
-These are the next quantitative questions in Phase 2.
+The next theorem target is the exact leading coefficient of the cubic singular scale. A successful orthogonal reduction would identify the component of \(m'''(x)\) surviving after projection away from the limiting rank-\((2N-2)\) image and the first weak direction.
