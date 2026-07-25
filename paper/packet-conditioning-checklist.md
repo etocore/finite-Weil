@@ -135,9 +135,21 @@ This checklist tracks the transition from local identifiability to quantitative 
 - [x] Obtain singular-value estimates uniform over compact nondegenerate shape families.
 - [x] Construct explicit transition maps between arbitrary ordered reference-pair blow-up charts.
 - [x] Prove the transition maps extend analytically to the collision face, have explicit inverses, and satisfy the cocycle identities.
-- [x] Prove chart invariance of physical node differences, the discriminant-scale combination, and the aggregate boundary packet.
-- [x] Prove compatibility of the local metric-completion quotient with ordered-chart overlaps.
+- [x] Prove chart invariance of the aggregate boundary packet.
 - [x] Prove chart independence of the singular exponent filtration.
+- [x] Prove the full analytic transition law for the cluster-rescaled tangent frames.
+- [x] Prove that the frame-transition matrix is
+  \[
+  G_{ab}^{cd}=A_{cd}^{-1}A_{ab}
+  \]
+  and is holomorphic and uniformly invertible on compact overlaps.
+- [x] Glue the local rescaled tangent frames into an analytic vector bundle over the ordered common-scale blow-up atlas.
+- [x] Prove compatibility of the renormalized metric under the overlap law
+  \[
+  \widetilde G_{ab}
+  =
+  (G_{ab}^{cd})^*\widetilde G_{cd}G_{ab}^{cd}.
+  \]
 
 ## Main notes
 
@@ -151,12 +163,13 @@ This checklist tracks the transition from local identifiability to quantitative 
 - `paper/confluent-coframe-integrability.md`
 - `paper/varying-shape-cluster-normal-form.md`
 - `paper/ordered-blow-up-transition-maps.md`
+- `paper/ordered-cluster-chart-transitions.md`
 
 ## Immediate theorem queue
 
-- [ ] Prove the full analytic transition law for the rescaled tangent frame and its associated graded weight components.
 - [ ] Determine the permutation-group action on the blow-up and rescaled tangent structures.
-- [ ] Globalize the local metric-completion quotient across overlapping charts and collision strata.
+- [ ] Pass from labeled ordered charts to the unordered packet quotient.
+- [ ] Globalize the local metric-completion quotient across collision strata.
 - [ ] Determine whether the rescaled tangent bundles define a natural Lie algebroid over the full collision compactification.
 - [ ] Construct simultaneous-cluster and nested-cluster charts.
 - [ ] Handle nonuniform collision paths with different pairwise powers of \(h\).
