@@ -129,6 +129,10 @@ This checklist tracks the transition from local identifiability to quantitative 
   U=\sum_{j=1}^m u_j.
   \]
 - [x] Prove the local metric-completion collapse: within one compact ordered chart, boundary configurations with the same center, aggregate coefficient, and exterior packet have zero pullback distance.
+- [x] Extend the cluster normal form jointly analytically over compact nondegenerate families of center, normalized shape, coefficients, and exterior packet variables.
+- [x] Prove the diagonal exponent matrix is shape-independent while the regular factors and their inverses vary holomorphically and remain uniformly bounded on compact subcharts.
+- [x] Extend the rescaled differential and renormalized metric analytically over the full varying-shape chart.
+- [x] Obtain singular-value estimates uniform over compact nondegenerate shape families.
 
 ## Main notes
 
@@ -140,10 +144,10 @@ This checklist tracks the transition from local identifiability to quantitative 
 - `paper/complete-cluster-constant-hierarchy.md`
 - `paper/confluent-rescaled-geometry.md`
 - `paper/confluent-coframe-integrability.md`
+- `paper/varying-shape-cluster-normal-form.md`
 
 ## Immediate theorem queue
 
-- [ ] Extend the cluster normal form smoothly over a full ordered blow-up chart with varying center, scale, shape, and coefficients.
 - [ ] Construct transition functions between overlapping ordered cluster charts.
 - [ ] Determine the permutation-group action on the blow-up and rescaled tangent structures.
 - [ ] Globalize the local metric-completion quotient across overlapping charts.
