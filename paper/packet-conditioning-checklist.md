@@ -133,6 +133,11 @@ This checklist tracks the transition from local identifiability to quantitative 
 - [x] Prove the diagonal exponent matrix is shape-independent while the regular factors and their inverses vary holomorphically and remain uniformly bounded on compact subcharts.
 - [x] Extend the rescaled differential and renormalized metric analytically over the full varying-shape chart.
 - [x] Obtain singular-value estimates uniform over compact nondegenerate shape families.
+- [x] Construct explicit transition maps between arbitrary ordered reference-pair blow-up charts.
+- [x] Prove the transition maps extend analytically to the collision face, have explicit inverses, and satisfy the cocycle identities.
+- [x] Prove chart invariance of physical node differences, the discriminant-scale combination, and the aggregate boundary packet.
+- [x] Prove compatibility of the local metric-completion quotient with ordered-chart overlaps.
+- [x] Prove chart independence of the singular exponent filtration.
 
 ## Main notes
 
@@ -145,12 +150,13 @@ This checklist tracks the transition from local identifiability to quantitative 
 - `paper/confluent-rescaled-geometry.md`
 - `paper/confluent-coframe-integrability.md`
 - `paper/varying-shape-cluster-normal-form.md`
+- `paper/ordered-blow-up-transition-maps.md`
 
 ## Immediate theorem queue
 
-- [ ] Construct transition functions between overlapping ordered cluster charts.
+- [ ] Prove the full analytic transition law for the rescaled tangent frame and its associated graded weight components.
 - [ ] Determine the permutation-group action on the blow-up and rescaled tangent structures.
-- [ ] Globalize the local metric-completion quotient across overlapping charts.
+- [ ] Globalize the local metric-completion quotient across overlapping charts and collision strata.
 - [ ] Determine whether the rescaled tangent bundles define a natural Lie algebroid over the full collision compactification.
 - [ ] Construct simultaneous-cluster and nested-cluster charts.
 - [ ] Handle nonuniform collision paths with different pairwise powers of \(h\).
