@@ -64,13 +64,11 @@ def quotient_polynomial(nodes: ArrayLike, degree_offset: int) -> ComplexArray:
     dividend = np.zeros(xi.size + degree_offset + 1, dtype=np.complex128)
     dividend[0] = 1.0
     quotient, remainder = np.polydiv(dividend, node_polynomial)
-    if remainder.size and np.max(np.abs(remainder)) > 1e-10:
-        # The remainder is generally nonzero. This branch only rejects numerical
-        # pathologies that produce nonfinite polynomial division output.
-        if not np.all(np.isfinite(remainder.real)) or not np.all(
-            np.isfinite(remainder.imag)
-        ):
-            raise FloatingPointError("polynomial division produced nonfinite values")
+    if remainder.size and (
+        not np.all(np.isfinite(remainder.real))
+        or not np.all(np.isfinite(remainder.imag))
+    ):
+        raise FloatingPointError("polynomial division produced nonfinite values")
     return np.asarray(quotient, dtype=np.complex128)
 
 
