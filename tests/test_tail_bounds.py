@@ -1,5 +1,6 @@
 """Tests for the certified prime-tail bounds."""
 
+from itertools import pairwise
 from math import exp, log, sqrt
 
 import numpy as np
@@ -76,7 +77,7 @@ def test_bound_decreases_with_cutoff() -> None:
         prime_tail_spectral_bound(packets, cutoff)
         for cutoff in (100, 1000, 10000, 100000)
     ]
-    assert all(later < earlier for earlier, later in zip(values, values[1:]))
+    assert all(later < earlier for earlier, later in pairwise(values))
     assert values[-1] < 1e-12
 
 

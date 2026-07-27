@@ -1,7 +1,6 @@
 """Tests for the small-bandwidth scaling experiment."""
 
 import numpy as np
-
 import pytest
 
 from experiments.sigma_scaling import packet_family, run_case, tail_resolved_cutoff

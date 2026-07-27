@@ -11,8 +11,8 @@ import pytest
 
 pytest.importorskip("mpmath")
 
-from experiments.dirichlet_zero_side import critical_zeros, run_case  # noqa: E402
-from finite_weil import PrimitiveQuadraticCharacter  # noqa: E402
+from experiments.dirichlet_zero_side import critical_zeros, run_case
+from finite_weil import PrimitiveQuadraticCharacter
 
 
 def test_chi5_zeros_match_known_low_ordinates() -> None:
