@@ -93,7 +93,10 @@ def numerical_jacobian(
     return jacobian
 
 
-def _fit_slopes(scales: FloatArray, samples: FloatArray) -> tuple[FloatArray, FloatArray]:
+def _fit_slopes(
+    scales: FloatArray,
+    samples: FloatArray,
+) -> tuple[FloatArray, FloatArray]:
     log_h = np.log(scales)
     design = np.column_stack((log_h, np.ones(log_h.size)))
     slopes = np.empty(samples.shape[1], dtype=float)
@@ -102,7 +105,11 @@ def _fit_slopes(scales: FloatArray, samples: FloatArray) -> tuple[FloatArray, Fl
         values = samples[:, index]
         if np.any(values <= 0.0) or not np.all(np.isfinite(values)):
             raise ValueError("singular values must remain positive and finite")
-        coefficients, _, _, _ = np.linalg.lstsq(design, np.log(values), rcond=None)
+        coefficients, _, _, _ = np.linalg.lstsq(
+            design,
+            np.log(values),
+            rcond=None,
+        )
         fitted = design @ coefficients
         slopes[index] = float(coefficients[0])
         residuals[index] = float(np.linalg.norm(np.log(values) - fitted))
@@ -123,7 +130,8 @@ def analyze_stage(
     for h in scales:
         target, parameters = target_builder(float(h))
         singular_values = np.linalg.svd(
-            numerical_jacobian(target, parameters), compute_uv=False
+            numerical_jacobian(target, parameters),
+            compute_uv=False,
         )
         samples.append(np.sort(singular_values)[::-1])
     values = np.asarray(samples, dtype=float)
@@ -131,7 +139,10 @@ def analyze_stage(
     return StageSlopeResult(stage, scales, slopes, residuals)
 
 
-def fully_whitened_matrix(operator: FloatArray, gram: FloatArray) -> FloatArray:
+def fully_whitened_matrix(
+    operator: FloatArray,
+    gram: FloatArray,
+) -> FloatArray:
     """Return ``B^(-1/2) A B^(-1/2)`` without Gram-mode truncation."""
 
     values, vectors = eigh(gram, check_finite=True)
@@ -182,7 +193,10 @@ def make_weil_stage_maps(
 
     def spectrum(centers: FloatArray) -> FloatArray:
         operator, gram_matrix = matrices(centers)
-        return np.asarray(eigh(operator, gram_matrix, eigvals_only=True), dtype=float)
+        return np.asarray(
+            eigh(operator, gram_matrix, eigvals_only=True),
+            dtype=float,
+        )
 
     return {
         "synthesis": synthesis,
@@ -203,9 +217,15 @@ def main() -> None:
     parser.add_argument("--prime-cutoff", type=int, default=50)
     args = parser.parse_args()
 
-    shape = tuple(float(value) for value in args.cluster_shape.split(",") if value)
+    shape = tuple(
+        float(value)
+        for value in args.cluster_shape.split(",")
+        if value
+    )
     exterior = tuple(
-        float(value) for value in args.exterior_centers.split(",") if value
+        float(value)
+        for value in args.exterior_centers.split(",")
+        if value
     )
     scales = 10.0 ** (-np.arange(1, 5, dtype=float))
     grid = np.linspace(-6.0, 6.0, 401)
@@ -217,11 +237,17 @@ def main() -> None:
     )
 
     for name, target in maps.items():
-        def builder(h: float, target: StageMap = target) -> tuple[StageMap, FloatArray]:
+
+        def builder(
+            h: float,
+            target: StageMap = target,
+        ) -> tuple[StageMap, FloatArray]:
             return target, collision_centers(h, shape, exterior)
 
         result = analyze_stage(name, builder, scales)
-        ordered = ", ".join(f"{value:.4f}" for value in np.sort(result.slopes))
+        ordered = ", ".join(
+            f"{value:.4f}" for value in np.sort(result.slopes)
+        )
         print(f"{name:>24}: {ordered}")
 
 
