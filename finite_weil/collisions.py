@@ -1,8 +1,8 @@
 """Algebraic utilities for ordered weighted node collisions.
 
-The functions in this module implement the corrected higher-moment matrix proved
-in ``paper/13_collision_moment_determinant.md``. They do not compute a Smith
-normal form or claim the missing collision grade.
+The functions in this module implement the corrected higher-moment matrix and the
+translation relation proved in the collision notes. They do not compute a complete
+Smith normal form or globalize the collision filtration.
 """
 
 from __future__ import annotations
@@ -105,3 +105,26 @@ def corrected_collision_determinant(nodes: ArrayLike, weights: ArrayLike) -> com
 
     sign = (-1) ** (xi.size * (xi.size - 1) // 2)
     return complex(sign * np.prod(u) * vandermonde_discriminant(xi) ** 3)
+
+
+def collision_translation_relation(
+    nodes: ArrayLike,
+    weights: ArrayLike,
+) -> ComplexArray:
+    """Return the target covector dual to common node translation.
+
+    If ``C`` is the corrected collision matrix, the returned vector ``lambda`` is
+    the unique solution of
+
+    ``C.T @ lambda = ones(m)``.
+
+    Consequently ``lambda.T @ C @ delta_xi = sum(delta_xi)``. It annihilates every
+    centered node variation and therefore spans the missing target relation after
+    the center direction is removed from the collision chart.
+    """
+
+    matrix = corrected_collision_matrix(nodes, weights)
+    return np.asarray(
+        np.linalg.solve(matrix.T, np.ones(matrix.shape[0], dtype=np.complex128)),
+        dtype=np.complex128,
+    )
