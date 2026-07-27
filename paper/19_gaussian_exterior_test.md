@@ -1,116 +1,86 @@
-# Exterior packets in the concrete Gaussian feature map
+# Correction: Gaussian synthesis reproduces the intrinsic missing grade
 
-## 1. Question
+## Status
 
-The relative-spectrum hypothesis proposes that an isolated cluster has consecutive collision exponents, while embedding the cluster beside one or more separated packets removes the grade equal to the cluster size.
+The earlier version of this note reported consecutive exponents for the Gaussian synthesis map and concluded that the missing grade must arise later in the matrix pipeline. That conclusion was caused by double-precision loss of the deepest singular directions.
 
-The first concrete test should use the actual translated Gaussian feature map rather than an abstract target space.
+It is withdrawn.
 
-Let
+## High-precision result
 
-\[
-g_c(x)=\exp\left(-\frac{(x-c)^2}{2\sigma^2}\right)
-\]
-
-and consider
+For a three-node collision, the Gaussian synthesis Jacobian computed at 100 decimal digits has exponents
 
 \[
-\Phi(u,x)=\sum_{j=1}^m u_jg_{x_j}.
+\boxed{(0,0,1,2,4,5)}.
 \]
 
-For a collision
+Their sum is numerically \(11.9999\), consistent with the exact total valuation \(12\).
+
+This agrees with the exact rational result for the raw moment Jacobian:
 
 \[
-x_j=h\xi_j,
+\nu=(0,0,1,3,7,12),
+\qquad
+\nu_k-\nu_{k-1}=(0,0,1,2,4,5).
 \]
 
-the cluster Jacobian contains:
+Thus the polynomial moment realization and the Gaussian synthesis realization have the same resolved collision spectrum.
 
-- weight columns \(g_{h\xi_j}\);
-- centered position columns obtained from \(hu_j\partial_cg_{h\xi_j}\) after removing common translation.
+## Why binary64 failed
 
-Each separated exterior packet at center \(a_k\) contributes the two columns
+At cluster scale \(h\), the deepest singular direction for \(m=3\) behaves like \(h^5\). At
 
 \[
-g_{a_k},\qquad \partial_cg_{a_k}.
+h=10^{-5},
 \]
 
-The relative cluster matrix is obtained by projecting the cluster columns to the quotient by the exterior column span.
-
-## 2. Numerical experiment
-
-The implementation
-
-```text
-experiments.gaussian_relative_collision
-```
-
-samples the Gaussian functions on a dense real grid, computes singular values for a sequence of collision scales, and fits their logarithmic slopes.
-
-The experiment varies:
-
-- cluster sizes \(m=2,3,4\);
-- exterior counts \(n=0,1,2,3\);
-- exterior distances from the cluster;
-- collision scales in a range where the sampled matrices remain numerically resolved.
-
-## 3. Observation
-
-For every tested configuration, both the isolated and exterior-relative slopes are approximately
+this is of order
 
 \[
-\boxed{0,1,\ldots,2m-2}.
+10^{-25}.
 \]
 
-In particular:
+The matrix simultaneously has singular values of order one. Binary64 cannot resolve a relative scale of \(10^{-25}\), so the smallest singular values are replaced by roundoff noise. Log-log regression then fits the noise rather than the matrix germ.
+
+The previously reported consecutive lists
 
 \[
-m=2:\quad 0,1,2,
+0,1,\ldots,2m-2
 \]
+
+were therefore precision artifacts.
+
+## Exterior nodes
+
+The corrected conclusion is not that exterior nodes create the gap. The gap is already present for the isolated cluster. Exterior-node experiments remain useful only for checking stability of the intrinsic spectrum under embedding.
+
+The current evidence supports exterior independence:
+
+- cluster alone: missing grade \(m\);
+- cluster with separated nodes: same missing grade;
+- square and rectangular target truncations: same missing grade;
+- polynomial moment and Gaussian synthesis realizations: same spectrum.
+
+## Methodological rule
+
+Collision exponents must be established by one of:
+
+1. exact determinantal-divisor valuations when the entries are polynomial or rational in \(h\);
+2. arbitrary-precision singular values with a precision budget comfortably exceeding the deepest expected order;
+3. both, when two realizations are being compared.
+
+Double-precision slope fitting is not admissible as primary evidence once the expected dynamic range exceeds approximately \(10^{14}\).
+
+## Revised role of the pipeline experiment
+
+The \(A/B\), whitening, and generalized-eigenvalue stages are no longer candidates for the origin of the missing grade. They remain worth studying because nonlinear normalization can shift or merge orders, but those are downstream effects acting on an already singularly filtered cluster.
+
+## Current conclusion
 
 \[
-m=3:\quad 0,1,2,3,4,
+\boxed{
+\text{The missing grade is intrinsic to the confluent cluster Jacobian germ.}
+}
 \]
 
-\[
-m=4:\quad 0,1,2,3,4,5,6.
-\]
-
-Adding one, two, or three exterior packets does not shift the exponent \(m\), and moving the exterior packets farther away does not change the fitted list.
-
-## 4. Interpretation
-
-This falsifies the strongest form of the exterior-absorption hypothesis for the underlying Gaussian function map.
-
-Separated translated Gaussians and their center derivatives do not generically absorb the cluster derivative jet of order \(m\). The relative quotient preserves the consecutive collision slopes.
-
-Therefore, if the previously observed finite-Weil Jacobian has a gap at grade \(m\), that gap must come from additional structure beyond the packet synthesis map itself. Candidate mechanisms now include:
-
-1. the nonlinear map from packet parameters to Gram or Weil matrix entries;
-2. Gram whitening or quotienting by a nearly singular metric;
-3. a generalized-eigenvalue or matrix-pencil normalization;
-4. symmetry reduction in the matrix target;
-5. a Schur complement involving operator and Gram blocks together, rather than packet columns alone;
-6. numerical rank truncation in the original singular-value experiment.
-
-## 5. Claim boundary
-
-The sampled Gaussian computation is a numerical diagnostic, not an exact Smith theorem. It does, however, provide a direct countercheck against the claim that exterior Gaussian packets alone force the missing grade.
-
-The next experiment should differentiate the actual pair
-
-\[
-(A(c),B(c))
-\]
-
-with respect to colliding packet centers and weights, then perform the same quotient or whitening used in the original numerical run. Testing only the synthesis map \(\Phi\) is no longer sufficient.
-
-## 6. Current conclusion
-
-The evidence now supports the following separation:
-
-- the isolated corrected-moment model has consecutive exponents;
-- the concrete Gaussian synthesis map, even relative to separated packets, also has consecutive exponents;
-- the reported gap must arise later in the pipeline, after packet synthesis.
-
-The exact original generalized-matrix Jacobian is therefore the critical missing object.
+The sharp remaining target is a general formula for the determinantal valuations \(\nu_k(J_m)\).
