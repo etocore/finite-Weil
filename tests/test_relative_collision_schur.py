@@ -68,5 +68,15 @@ def test_relative_slope_fitter_detects_absorbed_leading_direction() -> None:
         exterior_scale=1.0,
     )
 
-    np.testing.assert_allclose(np.sort(isolated.isolated_slopes), [0.0, 1.0], atol=1e-10)
-    np.testing.assert_allclose(np.sort(relative.relative_slopes), [0.0, 2.0], atol=1e-10)
+    # The isolated second singular value is h * sqrt(1 + h**2), so a finite-window
+    # log-log fit approaches slope 1 without equaling it exactly.
+    np.testing.assert_allclose(
+        np.sort(isolated.isolated_slopes),
+        [0.0, 1.0],
+        atol=1e-3,
+    )
+    np.testing.assert_allclose(
+        np.sort(relative.relative_slopes),
+        [0.0, 2.0],
+        atol=1e-10,
+    )
