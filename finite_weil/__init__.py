@@ -31,6 +31,12 @@ from .operators import (
 )
 from .packets import GaussianPacketFamily
 from .poles import pole_matrix, pole_vectors
+from .tail_bounds import (
+    prime_tail_bound_matrix,
+    prime_tail_entry_bound,
+    prime_tail_spectral_bound,
+    prime_truncation_eigenvalue_bound,
+)
 from .weil_operator import WeilOperator
 
 __all__ = [
@@ -59,6 +65,10 @@ __all__ = [
     "prime_operator_terms",
     "prime_power_base",
     "prime_power_values",
+    "prime_tail_bound_matrix",
+    "prime_tail_entry_bound",
+    "prime_tail_spectral_bound",
+    "prime_truncation_eigenvalue_bound",
     "quadratic_prime_power_coefficient",
     "scalar_form_matrix",
     "sharp_prime_weight",
