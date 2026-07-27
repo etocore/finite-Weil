@@ -5,7 +5,7 @@ For the raw 2m by 2m moment Jacobian, every k-minor has h-order
     sum(selected row degrees) - number(selected position columns)
 
 when its h-free coefficient determinant is nonzero. This module records the
-uniform row and column choices that attain the conjectured lower bound.
+uniform row and column choices that attain the sharp lower bound.
 """
 
 from __future__ import annotations
@@ -13,6 +13,7 @@ from __future__ import annotations
 from collections.abc import Iterable
 from dataclasses import dataclass
 from fractions import Fraction
+from math import factorial
 
 from experiments.raw_moment_smith import (
     Rational,
@@ -34,19 +35,19 @@ class UniformWitness:
 
 
 def predicted_valuation(cluster_size: int, minor_size: int) -> int:
-    """Return the proposed valuation of the k-th determinantal divisor."""
+    """Return the generic valuation of the k-th determinantal divisor."""
 
     if cluster_size < 2:
         raise ValueError("cluster_size must be at least two")
     if not 1 <= minor_size <= 2 * cluster_size:
         raise ValueError("minor_size must lie between 1 and 2m")
-    if minor_size <= cluster_size + 1:
-        return (minor_size - 1) * (minor_size - 2) // 2
-    return minor_size * (minor_size - 1) // 2 - cluster_size
+    return minor_size * (minor_size - 1) // 2 - min(
+        cluster_size, minor_size - 1
+    )
 
 
 def predicted_valuations(cluster_size: int) -> tuple[int, ...]:
-    """Return all proposed determinantal-divisor valuations."""
+    """Return all generic determinantal-divisor valuations."""
 
     return tuple(
         predicted_valuation(cluster_size, size)
@@ -54,11 +55,23 @@ def predicted_valuations(cluster_size: int) -> tuple[int, ...]:
     )
 
 
+def predicted_smith_exponents(cluster_size: int) -> tuple[int, ...]:
+    """Return the generic Smith exponents, with grade m omitted."""
+
+    valuations = predicted_valuations(cluster_size)
+    previous = 0
+    exponents: list[int] = []
+    for valuation in valuations:
+        exponents.append(valuation - previous)
+        previous = valuation
+    return tuple(exponents)
+
+
 def canonical_witness_indices(
     cluster_size: int,
     minor_size: int,
 ) -> tuple[tuple[int, ...], tuple[int, ...]]:
-    """Return the uniform row and column sets for a candidate witness minor.
+    """Return the uniform row and column sets for a witness minor.
 
     Columns 0,...,m-1 are weight columns and columns m,...,2m-1 are
     position columns. The witness always uses the first k rows.
@@ -99,6 +112,36 @@ def canonical_witness(
         columns,
         coefficient,
     )
+
+
+def small_witness_closed_form(
+    nodes: Iterable[object],
+    weights: Iterable[object],
+    minor_size: int,
+) -> Rational:
+    """Return the exact coefficient formula for the k <= m+1 witness.
+
+    With columns W_1, P_1, ..., P_{k-1}, expansion along row zero gives
+
+        (k-1)! * prod_{j < k} u_j * Vandermonde(xi_1, ..., xi_{k-1}).
+    """
+
+    node_values = tuple(Fraction(value) for value in nodes)
+    weight_values = tuple(Fraction(value) for value in weights)
+    cluster_size = len(node_values)
+    if len(weight_values) != cluster_size:
+        raise ValueError("nodes and weights must have the same length")
+    if not 1 <= minor_size <= cluster_size + 1:
+        raise ValueError("small witness requires 1 <= k <= m+1")
+
+    selected_count = minor_size - 1
+    coefficient = Fraction(factorial(selected_count))
+    for index in range(selected_count):
+        coefficient *= weight_values[index]
+    for left in range(selected_count):
+        for right in range(left + 1, selected_count):
+            coefficient *= node_values[right] - node_values[left]
+    return coefficient
 
 
 def elementary_lower_bound(cluster_size: int, minor_size: int) -> int:
