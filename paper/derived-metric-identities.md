@@ -1,8 +1,8 @@
-# Derived metric identities for packet collisions
+# Metric volume and structural identities for packet collisions
 
 ## Status
 
-This note proves several consequences that follow directly from the established Jacobian factorization and determinant formula for the finite exponential moment map
+This note records the geometric consequences of the established Jacobian factorization and determinant formula for the finite exponential moment map
 
 \[
 \mathcal R_N(X,u)
@@ -22,49 +22,9 @@ Assume throughout that the ordinary parameter and moment spaces carry their stan
 
 ---
 
-## 1. Exact determinant of the pullback metric
+## 1. Exact realization-metric volume form
 
-### Proposition 1.1
-
-For every square complex matrix \(J\),
-
-\[
-\boxed{
-\det(J^*J)=|\det J|^2.
-}
-\]
-
-### Proof
-
-Using multiplicativity of the determinant,
-
-\[
-\det(J^*J)
-=
-\det(J^*)\det(J).
-\]
-
-Since
-
-\[
-\det(J^*)=\overline{\det J},
-\]
-
-we obtain
-
-\[
-\det(J^*J)
-=
-\overline{\det J}\,\det J
-=
-|\det J|^2.
-\]
-
-This proves the identity. \(\square\)
-
-Applying the exact packet determinant formula gives the following.
-
-### Corollary 1.2
+### Theorem 1.1
 
 In interleaved coordinates,
 
@@ -72,10 +32,10 @@ In interleaved coordinates,
 \det J
 =
 \left(\prod_{j=1}^N u_j\right)
-\prod_{1\le i<j\le N}(x_j-x_i)^4,
+\prod_{1\le i<j\le N}(x_j-x_i)^4.
 \]
 
-and therefore
+Therefore
 
 \[
 \boxed{
@@ -86,13 +46,156 @@ and therefore
 }
 \]
 
-The same formula holds in grouped coordinates because the coordinate-ordering sign disappears after taking absolute value squared.
+On a real parameter slice, the associated Riemannian volume density is
+
+\[
+\boxed{
+d\operatorname{vol}_G
+=
+\left(\prod_{j=1}^N|u_j|\right)
+\prod_{1\le i<j\le N}|x_j-x_i|^4\,d\theta.
+}
+\]
+
+Here \(d\theta\) denotes the Euclidean coordinate density on the chosen real slice.
+
+### Proof
+
+For every square complex matrix \(J\),
+
+\[
+\det(J^*J)
+=
+\det(J^*)\det(J)
+=
+\overline{\det J}\,\det J
+=
+|\det J|^2.
+\]
+
+Substituting the exact packet determinant gives
+
+\[
+\det G
+=
+\left|\left(\prod_{j=1}^N u_j\right)
+\prod_{i<j}(x_j-x_i)^4\right|^2,
+\]
+
+which is the displayed determinant formula. Taking the positive square root gives the real Riemannian volume density. \(\square\)
+
+### Corollary 1.2
+
+Across a simple collision hyperplane \(x_i=x_j\), with all other factors nonzero,
+
+\[
+d\operatorname{vol}_G
+\sim
+|x_i-x_j|^4\,d\theta.
+\]
+
+Hence every simple collision divisor has fourth-order volume vanishing.
+
+For an \(m\)-node common-scale collision
+
+\[
+x_j=x+h\xi_j,
+\]
+
+one has
+
+\[
+\prod_{1\le i<j\le m}|x_j-x_i|^4
+=
+|h|^{4\binom m2}
+\prod_{1\le i<j\le m}|\xi_j-\xi_i|^4,
+\]
+
+so the volume density collapses at order
+
+\[
+\boxed{|h|^{2m(m-1)}.}
+\]
+
+This is the square-root counterpart of the metric-determinant collapse order
+
+\[
+|h|^{4m(m-1)}.
+\]
 
 ---
 
-## 2. Equality of metric eigenvalues and squared singular values
+## 2. Canonical exponent filtration and chart invariance
 
-### Proposition 2.1
+Let the adapted diagonal normal form be
+
+\[
+D(h)=\operatorname{diag}(h^{e_1},\ldots,h^{e_{2N}}),
+\qquad
+0\le e_1\le\cdots\le e_{2N}.
+\]
+
+For each threshold \(q\), define
+
+\[
+F^q
+=
+\operatorname{span}\{e_i:e_i\ge q\}
+\]
+
+in the model rescaled fiber.
+
+### Theorem 2.1
+
+The subspaces \(F^q\) define an intrinsic filtration of the ordered packet-rescaled tangent bundle. Under an overlap map between ordered blow-up charts, the transition matrix preserves every filtration level.
+
+### Proof
+
+In an ordered chart \(\alpha\), let
+
+\[
+J=A_\alpha D_\alpha B_\alpha,
+\qquad
+T_\alpha=B_\alpha^{-1}D_\alpha^{-1}.
+\]
+
+On an overlap with a chart \(\beta\), both rescaled frames represent the same lifted realization differential, so
+
+\[
+J T_\alpha=A_\alpha,
+\qquad
+J T_\beta=A_\beta.
+\]
+
+Hence
+
+\[
+T_\beta=T_\alpha G_{\alpha\beta},
+\qquad
+G_{\alpha\beta}=A_\alpha^{-1}A_\beta,
+\]
+
+up to the fixed convention for left-versus-right frame matrices. Since \(A_\alpha\) and \(A_\beta\) extend analytically and invertibly to the collision face, \(G_{\alpha\beta}\) is an analytic invertible gauge.
+
+The filtration is characterized by asymptotic realization order: a rescaled vector lies in \(F^q\) precisely when its ordinary representative acquires at least \(q\) powers of the collision scale before applying the bounded analytic factors. This order is independent of the chosen adapted chart because the overlap gauge is bounded and invertible at the boundary. Therefore each \(G_{\alpha\beta}\) maps \(F^q_\beta\) isomorphically onto \(F^q_\alpha\). \(\square\)
+
+### Corollary 2.2
+
+For an \(m\)-node common-scale cluster, the nonzero filtration exponents are
+
+\[
+\boxed{
+1,2,\ldots,m-1,m+1,\ldots,2m-1.
+}
+\]
+
+The absence of exponent \(m\) is therefore a chart-independent structural feature, not an artifact of one normal-form calculation.
+
+---
+
+## 3. Metric eigenvalues and singular values
+
+### Proposition 3.1
 
 Let
 
@@ -106,13 +209,7 @@ be the singular values of \(J\), and let
 \lambda_1(G)\ge\cdots\ge\lambda_n(G)\ge0
 \]
 
-be the eigenvalues of
-
-\[
-G=J^*J.
-\]
-
-Then
+be the eigenvalues of \(G=J^*J\). Then
 
 \[
 \boxed{
@@ -123,47 +220,29 @@ Then
 
 ### Proof
 
-Take a singular-value decomposition
+Take an SVD
 
 \[
-J=U\Sigma V^*,
-\]
-
-where \(U,V\) are unitary and
-
-\[
-\Sigma=\operatorname{diag}(\sigma_1,\ldots,\sigma_n).
+J=U\Sigma V^*.
 \]
 
 Then
 
 \[
-G
-=
-J^*J
-=
-V\Sigma^*U^*U\Sigma V^*
-=
-V\Sigma^2V^*.
+G=J^*J=V\Sigma^2V^*,
 \]
 
-Thus \(G\) is unitarily similar to
+so the eigenvalues of \(G\) are the squared singular values of \(J\). \(\square\)
 
-\[
-\operatorname{diag}(\sigma_1^2,\ldots,\sigma_n^2),
-\]
+### Corollary 3.2
 
-which proves the claim. \(\square\)
-
-### Corollary 2.2
-
-If the collapsing singular-value exponents for an \(m\)-node common-scale cluster are
+If the collapsing singular-value exponents are
 
 \[
 1,2,\ldots,m-1,m+1,\ldots,2m-1,
 \]
 
-then the collapsing pullback-metric eigenvalue exponents are
+then the collapsing metric-eigenvalue exponents are
 
 \[
 \boxed{
@@ -174,9 +253,9 @@ then the collapsing pullback-metric eigenvalue exponents are
 
 ---
 
-## 3. Equality of Jacobian rank and metric rank
+## 4. Kernel and rank identities
 
-### Proposition 3.1
+### Proposition 4.1
 
 For every complex matrix \(J\),
 
@@ -196,31 +275,15 @@ Hence
 
 ### Proof
 
-If \(Jv=0\), then clearly
+If \(Jv=0\), then \(J^*Jv=0\). Conversely, if \(J^*Jv=0\), then
 
 \[
-J^*Jv=0.
+0=v^*J^*Jv=\|Jv\|^2,
 \]
 
-Conversely, if
+so \(Jv=0\). Rank equality follows from rank-nullity. \(\square\)
 
-\[
-J^*Jv=0,
-\]
-
-then
-
-\[
-0
-=
-v^*J^*Jv
-=
-\|Jv\|^2.
-\]
-
-Therefore \(Jv=0\). Thus the kernels agree. Equality of ranks follows from rank-nullity. \(\square\)
-
-### Corollary 3.2
+### Corollary 4.2
 
 At an \(m\)-node common-scale collision,
 
@@ -228,25 +291,19 @@ At an \(m\)-node common-scale collision,
 \operatorname{rank}J(0)=2N-2m+2,
 \]
 
-so
+and therefore
 
 \[
 \boxed{
 \operatorname{rank}G(0)=2N-2m+2,
-}
-\]
-
-and
-
-\[
-\boxed{
+\qquad
 \operatorname{corank}G(0)=2m-2.
 }
 \]
 
 ---
 
-## 4. Exact determinant of the renormalized metric
+## 5. Renormalized metric determinant and positivity
 
 Assume the proved cluster normal form
 
@@ -254,232 +311,161 @@ Assume the proved cluster normal form
 J(h)=A(h)D(h)B(h)
 \]
 
-and define
+and define the rescaled tangent frame
 
 \[
 T(h)=B(h)^{-1}D(h)^{-1}.
 \]
 
-The renormalized pullback metric is
+Then
+
+\[
+J(h)T(h)=A(h)
+\]
+
+and the renormalized pullback metric is
 
 \[
 \widetilde G(h)
 =
-T(h)^*J(h)^*J(h)T(h).
-\]
-
-The established exact identity is
-
-\[
-\widetilde G(h)=A(h)^*A(h).
-\]
-
-### Proposition 4.1
-
-\[
-\boxed{
-\det\widetilde G(h)
+T(h)^*J(h)^*J(h)T(h)
 =
-|\det A(h)|^2.
-}
+A(h)^*A(h).
 \]
-
-### Proof
-
-By the exact renormalized metric identity,
-
-\[
-\det\widetilde G(h)
-=
-\det(A(h)^*A(h)).
-\]
-
-Applying Proposition 1.1 with \(J=A(h)\) gives
-
-\[
-\det(A(h)^*A(h))
-=
-|\det A(h)|^2.
-\]
-
-This proves the result. \(\square\)
-
-### Corollary 4.2
-
-Since \(A(h)\) extends continuously or analytically to \(h=0\), and
-
-\[
-A(0)=A_0\in GL(2N,\mathbb C),
-\]
-
-we have
-
-\[
-\boxed{
-\det\widetilde G(0)
-=
-|\det A_0|^2
->0.
-}
-\]
-
-Hence the renormalized metric is nondegenerate at the collision face.
-
----
-
-## 5. Positive definiteness of the boundary metric
 
 ### Proposition 5.1
 
-If
-
 \[
-\widetilde G(0)=A_0^*A_0
+\boxed{
+\det\widetilde G(h)=|\det A(h)|^2.
+}
 \]
 
-with \(A_0\in GL(2N,\mathbb C)\), then
+If \(A(0)=A_0\in GL(2N,\mathbb C)\), then
 
 \[
 \boxed{
-\widetilde G(0)>0.
+\det\widetilde G(0)=|\det A_0|^2>0.
 }
 \]
 
 ### Proof
 
-For every nonzero vector \(v\),
+Apply the identity
+
+\[
+\det(C^*C)=|\det C|^2
+\]
+
+with \(C=A(h)\). \(\square\)
+
+### Proposition 5.2
+
+The boundary metric is positive definite:
+
+\[
+\boxed{
+\widetilde G(0)=A_0^*A_0>0.
+}
+\]
+
+### Proof
+
+For every nonzero \(v\),
 
 \[
 v^*\widetilde G(0)v
 =
-v^*A_0^*A_0v
-=
-\|A_0v\|^2.
+\|A_0v\|^2>0,
 \]
 
-Because \(A_0\) is invertible,
-
-\[
-A_0v\ne0
-\]
-
-whenever \(v\ne0\). Therefore
-
-\[
-\|A_0v\|^2>0.
-\]
-
-Thus 
-
-\[
-\widetilde G(0)
-\]
-
-is positive definite. \(\square\)
+because \(A_0\) is invertible. \(\square\)
 
 ---
 
-## 6. Exact boundary differential isomorphism
+## 6. Rescaled-frame differential identities
 
-The rescaled tangent frame satisfies
+The ordinary differential at the collision face is
 
 \[
-J(h)T(h)=A(h).
+d\mathcal R_N\big|_{h=0}=J(0),
 \]
+
+which is rank-deficient. The invertible limit appears only after reading the differential in the rescaled tangent frame.
 
 ### Proposition 6.1
 
-The lifted realization differential extends to an isomorphism at the collision face:
+Let \(\mathsf X\) denote the ordered packet-rescaled tangent frame represented by \(T(h)\). Then
 
 \[
 \boxed{
-[d\mathcal R_N]_{h=0}
-=
-A_0:
-{}^{\mathrm{cl}}T_0
-\longrightarrow
-\mathbb C^{2N}.
-}
-\]
-
-### Proof
-
-For \(h>0\), the matrix of the realization differential in the rescaled frame is
-
-\[
 [d\mathcal R_N]_{\mathsf X}
 =
 J(h)T(h)
 =
 A(h).
+}
 \]
 
-By continuity or analyticity,
+Consequently,
 
 \[
-A(h)\to A_0.
+\boxed{
+[d\mathcal R_N]_{\mathsf X,h=0}
+=
+A_0:
+{}^{\mathrm{cl}}T_0\longrightarrow\mathbb C^{2N},
+}
 \]
 
-Since \(A_0\) is invertible, the limiting bundle map is an isomorphism. \(\square\)
+and this boundary map is an isomorphism.
+
+### Proof
+
+This is the exact normal-form identity
+
+\[
+J(h)B(h)^{-1}D(h)^{-1}=A(h),
+\]
+
+followed by analytic continuation to \(h=0\). \(\square\)
 
 ### Corollary 6.2
 
 After target normalization
 
 \[
-Y
-=
-A_0^{-1}(\mathcal R_N-R_0),
+Y=A_0^{-1}(\mathcal R_N-R_0),
 \]
 
-we have
+one has
 
 \[
 \boxed{
-[dY]_{h=0}=I.
+[dY]_{\mathsf X}
+=
+A_0^{-1}A(h),
 }
 \]
 
-Indeed,
+and therefore
 
 \[
-[dY]_{\mathsf X}
-=
-A_0^{-1}A(h)
-\longrightarrow
-I.
+\boxed{
+[dY]_{\mathsf X,h=0}=I.
+}
 \]
+
+These are rescaled-frame statements. They do not assert that the ordinary coordinate differential at \(h=0\) is invertible.
 
 ---
 
-## 7. Exact metric-volume collapse and its renormalization
+## 7. Exact determinant collapse and renormalization
 
 For an \(m\)-node common-scale cluster,
 
 \[
-\det D(h)
-=
-h^{2m(m-1)}.
-\]
-
-Since
-
-\[
-J=A D B,
-\]
-
-\[
-\det J
-=
-\det A\,\det D\,\det B.
-\]
-
-Therefore
-
-\[
-\det G
-=
-|\det A|^2|\det D|^2|\det B|^2.
+\det D(h)=h^{2m(m-1)}.
 \]
 
 ### Proposition 7.1
@@ -499,165 +485,72 @@ Therefore
 Since
 
 \[
-|\det D(h)|^2
-=
-|h|^{4m(m-1)},
+\det J=\det A\,\det D\,\det B,
 \]
 
-the result follows immediately from multiplicativity. \(\square\)
+we have
+
+\[
+\det G=|\det A|^2|\det D|^2|\det B|^2.
+\]
+
+Using
+
+\[
+|\det D(h)|^2=|h|^{4m(m-1)}
+\]
+
+gives the formula. \(\square\)
 
 ### Corollary 7.2
 
-The renormalized metric removes exactly the collapsing volume factor:
+The renormalized metric removes exactly the collapsing determinant factor:
 
 \[
 \boxed{
 \det\widetilde G(h)
 =
-\frac{\det G(h)}
-{|\det D(h)|^2|\det B(h)|^2}
+\frac{\det G(h)}{|\det D(h)|^2|\det B(h)|^2}
 =
 |\det A(h)|^2.
 }
 \]
 
-Thus the ordinary metric volume collapses at order
+Thus the ordinary metric determinant collapses at order
 
 \[
 |h|^{4m(m-1)},
 \]
 
-while the renormalized metric volume converges to the nonzero limit
+while the renormalized determinant converges to
 
 \[
-|\det A_0|^2.
+|\det A_0|^2>0.
 \]
 
 ---
 
-## 8. Canonical exponent filtration
+## 8. Geometric interpretation
 
-Let the adapted diagonal normal form be
+The identities above separate two distinct structures.
+
+The ordinary realization metric records the singular geometry of packet collisions through the explicit density
 
 \[
-D(h)=\operatorname{diag}(h^{e_1},\ldots,h^{e_{2N}}),
+\left(\prod_j|u_j|\right)|\Delta(X)|^4.
+\]
+
+The packet-rescaled tangent bundle removes precisely the realization-induced anisotropic collapse. In that frame, the differential and metric extend as
+
+\[
+[d\mathcal R_N]_{\mathsf X}=A(h),
 \qquad
-0\le e_1\le\cdots\le e_{2N}.
+\widetilde G=A(h)^*A(h),
 \]
 
-For each exponent threshold \(q\), define the model filtration subspace
+with nondegenerate boundary values.
 
-\[
-F^q
-=
-\operatorname{span}\{e_i:e_i\ge q\}.
-\]
+Accordingly, the collision blow-up and the spectral rescaling should be distinguished:
 
-In the rescaled tangent bundle, define
-
-\[
-\mathcal F^q
-=
-T(h)F^q.
-\]
-
-### Proposition 8.1
-
-Under an ordered-chart change with
-
-\[
-\widetilde h=\lambda(\xi)h,
-\qquad
-\lambda(\xi)\ne0,
-\]
-
-each graded factor transforms by multiplication with the nowhere-vanishing scalar
-
-\[
-\lambda(\xi)^e.
-\]
-
-Consequently, the ordered collection of exponent subspaces is chart-independent.
-
-### Proof
-
-For an exponent-\(e\) diagonal factor,
-
-\[
-\widetilde h^{\,e}
-=
-\lambda(\xi)^e h^e.
-\]
-
-Since 
-
-\[
-\lambda(\xi)^e\ne0,
-\]
-
-the one-dimensional graded line generated by the exponent-\(e\) factor is unchanged. Taking sums over all exponents at least \(q\) preserves the filtered subspace. \(\square\)
-
----
-
-## 9. Summary of proved identities
-
-The following are now explicit standalone propositions:
-
-\[
-\boxed{
-\det G=|\det J|^2,
-}
-\]
-
-\[
-\boxed{
-\det G
-=
-\left(\prod_j|u_j|^2\right)
-\prod_{i<j}|x_j-x_i|^8,
-}
-\]
-
-\[
-\boxed{
-\lambda_i(G)=\sigma_i(J)^2,
-}
-\]
-
-\[
-\boxed{
-\ker G=\ker J,
-\qquad
-\operatorname{rank}G=\operatorname{rank}J,
-}
-\]
-
-\[
-\boxed{
-\det\widetilde G=|\det A|^2,
-\qquad
-\widetilde G(0)=A_0^*A_0>0,
-}
-\]
-
-\[
-\boxed{
-[d\mathcal R_N]_{h=0}=A_0,
-\qquad
-[dY]_{h=0}=I,
-}
-\]
-
-\[
-\boxed{
-\det G(h)
-=
-|h|^{4m(m-1)}
-|\det A(h)|^2
-|\det B(h)|^2,
-}
-\]
-
-and the exponent filtration is invariant under ordered-chart transitions up to nowhere-vanishing graded factors.
-
-These results are direct consequences of the already proved packet normal form and do not address the still-open unordered quotient, nested clusters, simultaneous clusters, curvature, Lie algebroid, or global lower-bound problems.
+- the blow-up resolves node-configuration geometry;
+- the exponent filtration and renormalized metric are induced by the Prony realization map.
