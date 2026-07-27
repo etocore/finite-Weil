@@ -1,196 +1,91 @@
-# Determinantal obstruction in the simplified collision model
+# Correction: the missing collision grade is intrinsic
 
-## 1. Purpose
+## Status
 
-This note computes the h-adic invariant factors of the simplified centered upper block
-
-\[
-D_m(h)C|_{E_0},
-\]
-
-where
-
-\[
-D_m(h)=\operatorname{diag}(h^m,h^{m+1},\ldots,h^{2m-1}).
-\]
-
-The calculation shows that this model generically contains exponent \(m\). Therefore it cannot explain a universal spectrum with the exponent \(m\) missing.
-
-## 2. Determinantal valuations
-
-Let
-
-\[
-K=C|_{E_0}
-\]
-
-be represented as an \(m\times(m-1)\) constant matrix of full column rank.
-
-The weighted matrix is
-
-\[
-A(h)=D_m(h)K.
-\]
-
-For each \(1\le k\le m-1\), the valuation of the k-th determinantal divisor is the minimum valuation among all nonzero \(k\times k\) minors.
-
-A minor using rows
-
-\[
-r_1<\cdots<r_k
-\]
-
-has h-order
-
-\[
-(m+r_1)+\cdots+(m+r_k),
-\]
-
-provided the corresponding constant minor of \(K\) is nonzero.
-
-For a generic full-rank matrix \(K\), the minors using the first \(k\) rows are nonzero. Hence
-
-\[
-\nu_k
-=
-\sum_{r=0}^{k-1}(m+r)
-=
-km+\frac{k(k-1)}2.
-\]
-
-The successive invariant-factor exponents are
-
-\[
-\nu_k-\nu_{k-1}
-=
-m+k-1.
-\]
-
-Therefore the generic upper exponents are
-
-\[
-\boxed{m,m+1,\ldots,2m-2}.
-\]
-
-## 3. Consequence
-
-Combining this with the lower weight exponents
-
-\[
-0,1,\ldots,m-1
-\]
-
-gives the simplified full list
-
-\[
-\boxed{0,1,\ldots,2m-2}.
-\]
-
-There is no missing grade in this model.
-
-Thus at least one ingredient used by the original singular-value experiments is absent from
+This note supersedes the earlier conclusion that the isolated collision block has consecutive exponents. That conclusion came from replacing the raw moment Jacobian germ by the reduced model
 
 \[
 D_m(h)C|_{E_0}.
 \]
 
-## 4. Small cases
+The replacement does not preserve the determinantal ideals of the raw confluent Jacobian. Its Smith data therefore cannot be used to decide whether the grade \(m\) is present.
 
-For \(m=2\), the centered upper block is one column with generic exponent
+## Exact result for \(m=3\)
 
-\[
-2.
-\]
-
-For \(m=3\), the generic upper exponents are
+For the raw moment Jacobian, exact rational minor computation gives determinantal-divisor valuations
 
 \[
-3,4.
+\boxed{\nu=(0,0,1,3,7,12)}.
 \]
 
-For \(m=4\), they are
+Taking successive differences gives the Smith exponents
 
 \[
-4,5,6.
+\boxed{(0,0,1,2,4,5)}.
 \]
 
-These outcomes directly contradict the proposed upper lists
+Thus grade \(3=m\) is absent. This is an exact statement about the matrix germ, not a fitted singular-value observation.
+
+The same exponent list is obtained from the Gaussian synthesis realization at 100 decimal digits. The moment and Gaussian models therefore agree in the resolved computation.
+
+## What failed in the earlier reduction
+
+The prior calculation of
 
 \[
-3,
-\qquad
-4,5,
-\qquad
-5,6,7,
+D_m(h)C|_{E_0}
 \]
 
-that would follow from omitting exponent \(m\).
+was internally correct for that particular matrix. The invalid step was treating it as Smith-equivalent to the raw Jacobian germ. Row grading alone does not capture cancellations among coupled weight and center columns. Those cancellations change the determinantal ideals and remove grade \(m\).
 
-## 5. Interpretation
+Accordingly, the statements
 
-The translation relation
+- "the simplified collision block has consecutive exponents," and
+- "the missing grade must arise from exterior nodes or a later matrix pipeline"
+
+are withdrawn as claims about the actual collision Jacobian.
+
+## Precision failure
+
+Double-precision singular-value regression is unreliable for this problem. For \(m=3\), the deepest scale behaves like \(h^5\). At \(h=10^{-5}\), this is approximately \(10^{-25}\), far below binary64 resolution relative to an order-one leading singular value.
+
+Once the singular values cross the floating-point floor, fitted slopes become arbitrary. Numerical slope lists obtained in that regime are not evidence about the Smith spectrum.
+
+## Correct conclusion
+
+The current evidence supports:
+
+1. the missing grade is intrinsic to the isolated \(m\)-cluster;
+2. it occurs in the raw moment Jacobian itself;
+3. it is independent of exterior nodes;
+4. it is reproduced by the Gaussian synthesis map at sufficient precision;
+5. it does not require the Gram, Weil, whitening, or generalized-eigenvalue pipeline.
+
+## Remaining theorem target
+
+Let \(J_m(h)\) denote the raw confluent moment Jacobian germ. For each \(k\), define
 
 \[
-\lambda^{\mathsf T}K=0
+\nu_k(J_m)
+=
+\min\{\operatorname{ord}_h \det M(h): M(h)\text{ is a nonzero }k\times k\text{ minor}\}.
 \]
 
-is a relation among the unweighted rows of \(K\). It does not force the first row of \(K\) to vanish, and it does not increase the minimum determinantal valuation after multiplication by \(D_m(h)\).
+The next objective is to determine \(\nu_k(J_m)\) for general \(m\), then recover the Smith exponents from
 
-The observed missing grade must therefore come from additional structure in the actual Jacobian, such as:
+\[
+e_k=\nu_k-\nu_{k-1}.
+\]
 
-1. a source normalization depending analytically on \(h\);
-2. coupling with center or scale columns;
-3. a Schur complement formed before the center variable is removed;
-4. an additional constraint on weights or moments;
-5. a different matrix being measured in the numerical experiments.
+This is a determinantal-ideal problem. Floating-point singular-value fitting may be used only as a secondary check.
 
-## 6. Reproduction
-
-The diagnostic is implemented in
-
-```text
-experiments/collision_smith_diagnostic.py
-```
-
-It computes determinantal-divisor valuations from nonzero minors of the constant centered matrix.
-
-Representative runs are
-
-```bash
-python -m experiments.collision_smith_diagnostic \
-  --nodes=-1,0,1 \
-  --weights=1,2,3
-```
-
-and
-
-```bash
-python -m experiments.collision_smith_diagnostic \
-  --nodes=-2,-0.5,0.75,1.75 \
-  --weights=1,2,-1,3
-```
-
-## 7. Revised next step
-
-The immediate task is no longer to globalize a local Smith theorem. It is to recover the exact matrix used in the original flat-limit singular-value experiments and compare it term by term with the simplified block.
-
-For each source column, the reconstruction must record:
-
-- whether center and scale are independent variables;
-- whether weight corrections depend on \(h\);
-- which normalization constraints are imposed;
-- which target coordinates are projected out;
-- whether the matrix is a raw Jacobian, Gram-normalized Jacobian, Schur complement, or singular-value equivalent.
-
-Only after that audit can the missing exponent be stated as a theorem target again.
-
-## 8. Claim ledger
+## Claim ledger
 
 | Statement | Status |
 |---|---|
-| Simplified upper block is \(D_m(h)C|_{E_0}\) | Definition of the diagnostic model |
-| Generic upper exponents are \(m,\ldots,2m-2\) | Proved by determinantal valuations |
-| Translation relation removes exponent \(m\) in this model | False |
-| Simplified model reproduces the observed missing grade | False |
-| Exact experimental Jacobian has been reconstructed | Open |
-| Universal missing-grade theorem | Open |
+| Exact \(m=3\) valuations are \((0,0,1,3,7,12)\) | Established by exact rational minor computation in the reported run |
+| Exact \(m=3\) Smith exponents are \((0,0,1,2,4,5)\) | Immediate from the valuations |
+| Grade \(m=3\) is missing intrinsically | Established for the computed germ |
+| Exterior nodes create the missing grade | False |
+| A later \(A/B\) or whitening stage is required | False |
+| Closed formula for all \(m\) | Open |
