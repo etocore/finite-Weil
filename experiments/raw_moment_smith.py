@@ -21,10 +21,10 @@ full determinantal-ideal computation exact and avoids polynomial expansion.
 from __future__ import annotations
 
 import argparse
+from collections.abc import Iterable, Sequence
 from dataclasses import dataclass
 from fractions import Fraction
 from itertools import combinations
-from typing import Iterable, Sequence
 
 Rational = Fraction
 RationalMatrix = tuple[tuple[Rational, ...], ...]
