@@ -56,10 +56,13 @@ def run_case(
 ) -> DeepCutoffRow:
     character = PrimitiveQuadraticCharacter(discriminant)
     packets = GaussianPacketFamily(packet_centers(dimension, center_extent), sigma)
+    # Historical semantics: pole block excluded; see experiments/pole_cancellation.py
+    # for the corrected D = 1 assembly.
     operator = WeilOperator(
         packets=packets,
         data=CompletedDirichletData(character),
         prime_cutoff=cutoff,
+        include_pole=False,
     )
 
     start = perf_counter()
