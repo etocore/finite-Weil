@@ -1,119 +1,32 @@
-# Local Smith spectrum on the nondegenerate collision face
+# The h-adic obstruction to the proposed local Smith factorization
 
-## 1. Scope and claim boundary
+## 1. Scope
 
-This note proves the local Smith exponent list for the Jacobian of a common-scale ordered weighted collision after the cluster center has been separated.
-
-The proof uses only:
-
-1. the Vandermonde isomorphism for lower moments;
-2. the corrected upper-moment determinant;
-3. the translation covector \(\lambda=C^{-\mathsf T}\mathbf 1\);
-4. triangularity of the derivative-jet frame.
-
-The result is local on the ordered nondegenerate face
+This note records and corrects a failed attempt to deduce the local collision Smith spectrum directly from the translation relation
 
 \[
-\mathcal B_m^\circ
-=
-\{\Delta(\xi)\ne0\}
-\cap
-\left\{\prod_j u_j\ne0\right\}.
+\lambda^{\mathsf T}C=\mathbf 1^{\mathsf T}.
 \]
 
-It does not yet prove that the corresponding root spaces glue globally as holomorphic bundles, descend to unordered clusters, or extend across nested collisions.
+The relation is exact and remains useful. However, it lives in the unweighted corrected-moment coordinates. The local Smith problem is governed by the \(h\)-weighted jet matrix, and the grading prevents the relation from being used as an ordinary analytic row operation.
 
-## 2. Collision expansion
-
-Let a cluster be written as
+Consequently, the exponent list
 
 \[
-x_j=c+h\xi_j,
+\{0,1,\ldots,m-1,m+1,\ldots,2m-1\}
 \]
 
-where \(c\) is the center, \(h\) is the common collision scale, and \(\xi\) is a normalized ordered shape.
+is **not proved** by the translation relation alone.
 
-For an analytic target family \(M(x)\), the cluster contribution has Taylor expansion
+## 2. Unweighted corrected position map
+
+After correcting weights so that
 
 \[
-\mathcal R(h)
-=
-\sum_{r\ge0}
-\frac{h^r}{r!}
-U_rM^{(r)}(c),
-\qquad
-U_r=\sum_{j=1}^m u_j\xi_j^r.
+\delta U_0=\cdots=\delta U_{m-1}=0,
 \]
 
-The tangent source variables are:
-
-- \(m\) independent weight variations;
-- \(m-1\) centered node variations after the common translation direction has been removed.
-
-Thus the reduced collision Jacobian has source dimension
-
-\[
-2m-1.
-\]
-
-We study it over the local power-series ring in \(h\).
-
-## 3. Lower root germs
-
-Let
-
-\[
-V(\xi)_{rj}=\xi_j^r,
-\qquad
-0\le r\le m-1.
-\]
-
-Because \(\Delta(\xi)\ne0\), the Vandermonde matrix is invertible.
-
-For each \(0\le r\le m-1\), choose a weight variation \(a^{(r)}\) satisfying
-
-\[
-V(\xi)a^{(r)}=e_r,
-\]
-
-where \(e_r\) is the \(r\)-th standard basis vector. Equivalently,
-
-\[
-\delta U_k(a^{(r)})=\delta_{kr},
-\qquad
-0\le k\le m-1.
-\]
-
-The corresponding Jacobian column has expansion
-
-\[
-J(h)a^{(r)}
-=
-\frac{h^r}{r!}M^{(r)}(c)
-+O(h^m).
-\]
-
-Hence the lower root germs have exact orders
-
-\[
-0,1,\ldots,m-1.
-\]
-
-Their leading target vectors are
-
-\[
-M(c),M'(c),\ldots,M^{(m-1)}(c).
-\]
-
-## 4. Corrected centered position map
-
-For a node variation \(\delta\xi\), uniquely correct the weights so that
-
-\[
-\delta U_0=\cdots=\delta U_{m-1}=0.
-\]
-
-The corrected upper moments are
+the higher moments satisfy
 
 \[
 \delta U_{m+s}
@@ -127,12 +40,10 @@ u_jq_\xi'(\xi_j)H_s(\xi_j)\,\delta\xi_j,
 Write
 
 \[
-C_{sj}
-=
- u_jq_\xi'(\xi_j)H_s(\xi_j).
+C_{sj}=u_jq_\xi'(\xi_j)H_s(\xi_j).
 \]
 
-On \(\mathcal B_m^\circ\),
+On the nondegenerate ordered face,
 
 \[
 \det C
@@ -143,25 +54,15 @@ On \(\mathcal B_m^\circ\),
 \ne0.
 \]
 
-Let
+For centered variations
 
 \[
 E_0
 =
-\{\delta\xi:\mathbf 1^{\mathsf T}\delta\xi=0\}
+\{\delta\xi:\mathbf 1^{\mathsf T}\delta\xi=0\},
 \]
 
-be the centered node hyperplane. The reduced position block is
-
-\[
-C|_{E_0}:E_0\to\mathbb C^m.
-\]
-
-Its image has codimension one.
-
-## 5. Translation-adapted target frame
-
-Define
+define
 
 \[
 \lambda=C^{-\mathsf T}\mathbf 1.
@@ -170,200 +71,143 @@ Define
 Then
 
 \[
-\lambda^{\mathsf T}C
-=
-\mathbf 1^{\mathsf T},
-\]
-
-so
-
-\[
 \lambda^{\mathsf T}C\delta\xi=0
+\qquad
+(\delta\xi\in E_0).
 \]
 
-for every \(\delta\xi\in E_0\).
+This is an exact codimension-one relation in the unweighted upper-moment space.
 
-Choose an invertible target change
+## 3. The actual h-weighted upper block
+
+In the collision expansion, the target jets occur with different powers of the collision scale:
 
 \[
-T\in GL_m(\mathbb C)
+\sum_{s=0}^{m-1}
+\frac{h^{m+s}}{(m+s)!}
+\delta U_{m+s}M^{(m+s)}(c).
 \]
 
-whose first row is \(\lambda^{\mathsf T}\). Then
+Ignoring the nonzero factorials, the upper coefficient matrix is therefore
 
 \[
-TC|_{E_0}
-=
-\begin{pmatrix}
-0\\
-\widetilde C
-\end{pmatrix},
+D_m(h)C|_{E_0},
 \]
 
 where
 
 \[
-\widetilde C:E_0\to\mathbb C^{m-1}
-\]
-
-is an isomorphism.
-
-The quotient-polynomial basis \(H_0,\ldots,H_{m-1}\) is triangular relative to the monomial basis. Therefore this target change can be incorporated into an invertible triangular change of the upper derivative jets.
-
-After the vanished translation-dual coordinate is removed, the surviving upper target grades are
-
-\[
-m+1,m+2,\ldots,2m-1.
-\]
-
-## 6. Upper root germs
-
-Choose a basis
-
-\[
-b^{(1)},\ldots,b^{(m-1)}
-\]
-
-of \(E_0\) such that
-
-\[
-\widetilde Cb^{(s)}=e_s,
-\qquad
-1\le s\le m-1.
-\]
-
-For each \(b^{(s)}\), include the unique lower-moment weight correction.
-
-In the translation-adapted upper target frame, the resulting Jacobian column has leading term
-
-\[
-J(h)b^{(s)}
+D_m(h)
 =
-\frac{h^{m+s}}{(m+s)!}
-\widetilde M_{m+s}(c)
-+O(h^{m+s+1}),
-\]
-
-for \(1\le s\le m-1\), where the vectors \(\widetilde M_{m+s}(c)\) are the transformed upper derivative jets.
-
-Therefore the upper root germs have exact orders
-
-\[
-m+1,m+2,\ldots,2m-1.
-\]
-
-Their leading target vectors are independent because \(\widetilde C\) is invertible and the upper target change is invertible.
-
-## 7. Analytic factorization
-
-Collect the lower and upper source root germs into a source matrix \(R(h)\). Its value at \(h=0\) is invertible because:
-
-- the lower weight roots form a basis of the weight tangent space;
-- the corrected upper roots project to a basis of \(E_0\).
-
-Collect the corresponding leading target vectors into a target matrix \(L(h)\). Its value at \(h=0\) is invertible because:
-
-- the lower derivative jets are independent in the chosen jet truncation;
-- the translation-adapted upper leading vectors are independent;
-- lower and upper grades occupy distinct target levels.
-
-Hence the reduced collision Jacobian admits a local factorization
-
-\[
-\boxed{
-J_{\mathrm{red}}(h)
-=
-L(h)
 \operatorname{diag}
+\left(h^m,h^{m+1},\ldots,h^{2m-1}\right).
+\]
+
+The relation
+
+\[
+\lambda^{\mathsf T}C|_{E_0}=0
+\]
+
+does not imply
+
+\[
+\lambda^{\mathsf T}D_m(h)C|_{E_0}=0.
+\]
+
+The diagonal grading matrix does not commute with the constant row covector unless the relation is supported in a single grade.
+
+## 4. Why the previous triangular argument fails
+
+To transfer the unweighted relation to the weighted block, one would need a row covector of the form
+
+\[
 \left(
-1,h,\ldots,h^{m-1},
- h^{m+1},\ldots,h^{2m-1}
-\right)
-R(h),
-}
+\lambda_0,
+ h^{-1}\lambda_1,
+ \ldots,
+ h^{-(m-1)}\lambda_{m-1}
+\right),
 \]
 
-where \(L(h)\) and \(R(h)\) are analytic and invertible at \(h=0\).
+up to a common factor.
 
-This is a Smith factorization over the local analytic ring.
-
-## 8. Local Smith theorem
-
-### Theorem 8.1 - Universal common-scale collision spectrum
-
-On the ordered nondegenerate collision face \(\mathcal B_m^\circ\), after separating the common center coordinate, the reduced collision Jacobian has Smith exponents
+Such a transformation contains negative powers of \(h\). It is not invertible over the local analytic ring
 
 \[
-\boxed{
-E_m
-=
-\{0,1,\ldots,m-1,m+1,\ldots,2m-1\}.
-}
+\mathbb C\{h\}
 \]
 
-Each exponent occurs with multiplicity one.
+and is therefore not an allowed Smith row operation.
 
-The missing exponent \(m\) is the target coordinate dual to the removed common translation direction.
+Thus an arbitrary constant target change whose first row is \(\lambda^{\mathsf T}\) is not grade preserving. It can mix higher-order rows into the degree-\(m\) row but cannot remove the lowest \(h\)-adic term by an analytic unimodular transformation.
 
-#### Proof
+## 5. Small-dimensional diagnostic
 
-The lower Vandermonde root germs provide the exponents
+The obstruction is already visible for \(m=2\).
+
+The centered node space has dimension one. Write its nonzero generator as \(v\). The weighted upper block is the single column
 
 \[
-0,1,\ldots,m-1.
+\begin{pmatrix}
+ h^2(Cv)_0\\
+ h^3(Cv)_1
+\end{pmatrix}.
 \]
 
-The corrected centered position map has rank \(m-1\). The translation covector removes its unique degree-\(m\) target relation, and the remaining triangular upper jets provide the exponents
+If
 
 \[
-m+1,\ldots,2m-1.
+(Cv)_0\ne0,
 \]
 
-The analytic source and target changes constructed above are invertible at \(h=0\), giving the stated Smith factorization. \(\square\)
+then the Smith exponent of this column is \(2\), because the greatest common divisor of its entries has order \(2\).
 
-## 9. Determinant order check
+The unweighted relation between \((Cv)_0\) and \((Cv)_1\) does not change that valuation.
 
-The sum of the exponents is
+Therefore a missing exponent \(m\) requires an additional structural cancellation forcing the degree-\(m\) coefficient itself to vanish after the correct source normalization. It cannot follow merely from the existence of a left kernel of \(C|_{E_0}\).
+
+## 6. Correct status of the translation relation
+
+The identity
 
 \[
-\sum_{r=0}^{m-1}r
-+
-\sum_{r=m+1}^{2m-1}r
-=
-\frac{m(m-1)}2
-+
-\frac{(m-1)(3m)}2
-=
-2m(m-1).
+\lambda=C^{-\mathsf T}\mathbf 1
 \]
 
-Thus every square reduced Jacobian minor representing the full source and target frames has determinant order
+still proves:
 
-\[
-\boxed{2m(m-1)}.
-\]
+1. the centered corrected-position image has codimension one in the unweighted upper-moment space;
+2. the missing target relation is dual to common translation at the coefficient level;
+3. the relation has a barycentric interpolation description;
+4. the coefficients depend on both shape and weights.
 
-This is a consistency check for symbolic and numerical implementations.
+It does **not** yet prove:
 
-## 10. What remains
+1. that the degree-\(m\) coefficient vanishes;
+2. that an analytic target transformation removes grade \(m\);
+3. that the upper Smith exponents begin at \(m+1\);
+4. the complete local Smith spectrum.
 
-The local theorem does not yet provide the global root filtration. The next tasks are:
+## 7. Revised theorem target
 
-1. show that the lower and upper root lines vary holomorphically across \(\mathcal B_m^\circ\);
-2. determine their permutation behavior under relabeling of nodes;
-3. descend the filtration to the unordered collision quotient;
-4. describe degeneration near vanishing weights and nested collision trees.
+The missing-grade theorem must establish an \(h\)-compatible cancellation. At least one of the following must occur in the actual collision Jacobian:
 
-## 11. Claim ledger
+1. the degree-\(m\) corrected coefficient vanishes identically on the correctly normalized source tangent space;
+2. the source chart contains an \(h\)-dependent analytic correction that raises the first upper root by one order;
+3. coupling with the center or scale column produces an analytic Schur complement whose first upper coefficient cancels;
+4. the experimentally observed singular-value list belongs to a different reduced matrix than \(D_m(h)C|_{E_0}\).
+
+The next task is to reconstruct the exact Jacobian used in the numerical experiments, including all center, scale, weight, and normalization columns, and compute its \(h\)-adic minors directly.
+
+## 8. Claim ledger
 
 | Statement | Status |
 |---|---|
-| Lower root orders \(0,\ldots,m-1\) | Proved by Vandermonde inversion |
-| Corrected position block is invertible before centering | Proved by the Vandermonde-cubic determinant |
-| Centered upper block has one target relation | Proved |
-| Missing relation is dual to common translation | Proved |
-| Upper root orders \(m+1,\ldots,2m-1\) | Proved locally by triangular target reduction |
-| Local Smith spectrum \(E_m\) | Proved on the ordered nondegenerate face |
-| Holomorphic global root filtration | Open |
-| Descent to unordered clusters | Open |
-| Nested collision spectrum | Open |
+| Corrected upper determinant equals \(\pm(\prod u_j)\Delta^3\) | Proved |
+| Translation covector satisfies \(C^{\mathsf T}\lambda=\mathbf 1\) | Proved |
+| Translation covector annihilates the unweighted centered image | Proved |
+| Constant triangular target change removes grade \(m\) | False in general |
+| Translation relation alone proves the missing exponent | False |
+| Universal local Smith spectrum | Open |
+| Exact h-compatible missing-grade mechanism | Immediate theorem target |
