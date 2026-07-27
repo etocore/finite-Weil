@@ -18,7 +18,7 @@ minors of the raw moment map in that chart.
 
 from __future__ import annotations
 
-from collections.abc import Iterable, Sequence
+from collections.abc import Iterable
 from dataclasses import dataclass
 from fractions import Fraction
 from itertools import combinations
