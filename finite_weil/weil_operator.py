@@ -1,18 +1,24 @@
 """Assembly and spectral analysis of truncated finite Weil operators.
 
-The coordinate matrix is assembled from the three contributions currently fixed
-by the project:
+For an entire completed primitive quadratic L-function, the coordinate matrix is
+assembled as
 
     A = A_conductor + A_gamma + A_prime(cutoff).
 
-Gaussian packets are not orthonormal, so spectral quantities are computed from
-the generalized problem ``A v = lambda B v`` with packet Gram matrix ``B``.
+For the completed zeta function (the principal character ``D = 1``), the
+meromorphic completion also contributes the rank-two pole block
+
+    A = A_conductor + A_gamma + A_prime(cutoff) + A_pole.
+
+``WeilOperator`` includes that pole block automatically for ``D = 1`` unless a
+historical pole-free computation is explicitly requested. Gaussian packets are
+not orthonormal, so spectral quantities are computed from the generalized
+problem ``A v = lambda B v`` with packet Gram matrix ``B``.
 """
 
 from __future__ import annotations
 
 from dataclasses import dataclass
-
 import numpy as np
 from numpy.typing import NDArray
 
@@ -37,12 +43,12 @@ class WeilOperator:
     """Truncated finite Weil operator for a primitive quadratic character.
 
     ``include_pole`` controls the completed-zeta pole matrix derived in
-    ``paper/12_pole_term.md``.  The default ``None`` resolves automatically:
+    ``paper/12_pole_term.md``. The default ``None`` resolves automatically:
     the pole block is included exactly for the principal character ``D = 1``,
-    whose completed function has poles, and omitted for the entire
-    non-principal L-functions.  Pass ``False`` to reproduce historical
-    pole-free assemblies, or ``True`` to assert inclusion (rejected for
-    non-principal characters).
+    whose completed function is meromorphic, and omitted for non-principal
+    primitive quadratic L-functions, whose completions are entire. Pass
+    ``False`` only to reproduce explicitly labeled historical pole-free
+    assemblies. Passing ``True`` for a non-principal character is rejected.
     """
 
     packets: GaussianPacketFamily
@@ -129,7 +135,11 @@ class WeilOperator:
         epsabs: float = 1e-11,
         epsrel: float = 1e-11,
     ) -> FloatMatrix:
-        """Return conductor plus gamma contributions."""
+        """Return conductor plus gamma contributions.
+
+        The completed-zeta pole block is not part of this method; it is added by
+        :meth:`matrix` when ``pole_included`` is true.
+        """
 
         return self.conductor_matrix() + self.gamma_matrix(
             epsabs=epsabs,
