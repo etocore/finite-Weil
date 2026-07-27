@@ -9,11 +9,11 @@ proportional to sigma, the Gram matrix approaches a well-conditioned Toeplitz
 matrix and Weil positivity on the packet family becomes classical
 Bochner-Herglotz positive-definiteness of the sampled kernel.
 
-For each sigma the prime cutoff is chosen with the certified tail bound of
-``finite_weil.tail_bounds`` so that the reported eigenvalues carry an explicit
-truncation-error budget.  When ``mpmath`` is installed, the assembled matrix
-is also compared entrywise against the zero-side matrix built from actual
-zeta zeros.
+For each sigma the prime cutoff is chosen with the proved tail bound of
+``finite_weil.tail_bounds`` (evaluated in floating point) so that the
+reported eigenvalues carry an explicit truncation-error budget.  When
+``mpmath`` is installed, the assembled matrix is also compared entrywise
+against the zero-side matrix built from actual zeta zeros.
 """
 
 from __future__ import annotations
@@ -59,20 +59,29 @@ def packet_family(extent: float, sigma: float, spacing_ratio: float) -> Gaussian
     return GaussianPacketFamily(centers, sigma)
 
 
-def certified_cutoff(
+def tail_resolved_cutoff(
     packets: GaussianPacketFamily,
     tolerance: float,
     *,
     maximum: int = 4_000_000,
 ) -> tuple[int, float]:
-    """Return the smallest doubling cutoff whose eigenvalue-shift bound passes."""
+    """Return the smallest doubling cutoff whose eigenvalue-shift bound passes.
+
+    Raises instead of silently returning an unresolved cutoff, so sweep rows
+    can never carry a truncation budget larger than requested.
+    """
 
     extent = float(np.max(np.abs(packets.centers)))
     cutoff = max(16, int(np.exp(max(2.0, 2.0 * extent))) + 1)
     while True:
         bound = prime_truncation_eigenvalue_bound(packets, cutoff)
-        if bound <= tolerance or cutoff >= maximum:
+        if bound <= tolerance:
             return cutoff, bound
+        if cutoff >= maximum:
+            raise RuntimeError(
+                f"failed to reach truncation tolerance {tolerance:g} by cutoff "
+                f"{maximum}; final bound was {bound:g}"
+            )
         cutoff = min(2 * cutoff, maximum)
 
 
@@ -104,7 +113,7 @@ def run_case(
     envelope_floor: float,
 ) -> SigmaScalingRow:
     packets = packet_family(extent, sigma, spacing_ratio)
-    cutoff, bound = certified_cutoff(packets, truncation_tolerance)
+    cutoff, bound = tail_resolved_cutoff(packets, truncation_tolerance)
     data = CompletedDirichletData(PrimitiveQuadraticCharacter(1))
     operator = WeilOperator(
         packets=packets,

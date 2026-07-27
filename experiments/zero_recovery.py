@@ -53,6 +53,7 @@ class RecoveryRow:
     model_order: int
     recovered: tuple[float, ...]
     amplitude_ratios: tuple[float, ...]
+    decay_rates: tuple[float, ...]
 
 
 def prime_side_kernel_samples(
@@ -92,19 +93,24 @@ def prime_side_kernel_samples(
     return kernel
 
 
-def matrix_pencil_frequencies(
+def matrix_pencil_modes(
     samples: np.ndarray,
     step: float,
     *,
     model_order: int | None = None,
     singular_value_tolerance: float = 1e-8,
-) -> tuple[np.ndarray, int]:
-    """Return recovered positive frequencies and the model order used.
+) -> tuple[np.ndarray, np.ndarray, int]:
+    """Return recovered complex modes as (frequencies, decay rates, order).
 
-    The samples are assumed to follow ``y_m = sum_j a_j cos(omega_j step m)``
-    up to a small error.  The estimator is the standard matrix-pencil method:
-    SVD-truncate the Hankel matrix of the samples, then read the frequencies
-    from the eigenvalues of the shifted pencil in the signal subspace.
+    The pencil eigenvalues are complex, ``z_j = exp((alpha_j + i omega_j)
+    step)``.  Critical-line zeros produce undamped cosines, i.e. modes on the
+    unit circle with ``alpha_j = 0``.  A hypothetical off-line zero pair at
+    ``beta + i gamma`` would enter the kernel with ``exp(+-(beta - 1/2)
+    delta)`` modulation, i.e. modes off the unit circle, so the decay rate is
+    the direct diagnostic and is returned rather than discarded.
+
+    Returned arrays are sorted by frequency; only modes with positive
+    frequency are reported (real data makes them conjugate-symmetric).
     """
 
     y = np.asarray(samples, dtype=float)
@@ -134,8 +140,15 @@ def matrix_pencil_frequencies(
     ) / singular[:rank][None, :]
     eigenvalues = np.linalg.eigvals(reduced)
     frequencies = np.angle(eigenvalues) / step
-    positive = np.sort(frequencies[frequencies > 0.0])
-    return positive, model_order
+    with np.errstate(divide="ignore"):
+        decay_rates = np.log(np.abs(eigenvalues)) / step
+    keep = frequencies > 0.0
+    order_index = np.argsort(frequencies[keep])
+    return (
+        frequencies[keep][order_index],
+        decay_rates[keep][order_index],
+        model_order,
+    )
 
 
 def envelope_amplitude_ratios(
@@ -180,7 +193,7 @@ def run_case(
         cutoff *= 2
 
     samples = prime_side_kernel_samples(sigma, step, count, cutoff)
-    frequencies, order = matrix_pencil_frequencies(samples, step)
+    frequencies, decay_rates, order = matrix_pencil_modes(samples, step)
     ratios = envelope_amplitude_ratios(frequencies, samples, step, sigma)
     keep = (ratios > ratio_window[0]) & (ratios < ratio_window[1])
     return RecoveryRow(
@@ -191,6 +204,7 @@ def run_case(
         model_order=order,
         recovered=tuple(float(f) for f in frequencies[keep]),
         amplitude_ratios=tuple(float(r) for r in ratios[keep]),
+        decay_rates=tuple(float(a) for a in decay_rates[keep]),
     )
 
 
@@ -215,9 +229,10 @@ def main() -> None:
             f"{f:.4f} (x{r:.2f})"
             for f, r in zip(row.recovered, row.amplitude_ratios)
         )
+        largest_decay = max((abs(a) for a in row.decay_rates), default=float("nan"))
         print(
             f"sigma={row.sigma:g} order={row.model_order} cutoff={row.prime_cutoff} "
-            f"recovered=[{recovered}]"
+            f"max|alpha|={largest_decay:.2e} recovered=[{recovered}]"
         )
 
     args.output.parent.mkdir(parents=True, exist_ok=True)
@@ -232,6 +247,7 @@ def main() -> None:
                 "model_order",
                 "recovered",
                 "amplitude_ratios",
+                "decay_rates",
             ]
         )
         for row in rows:
@@ -244,6 +260,7 @@ def main() -> None:
                     row.model_order,
                     ";".join(f"{f:.10f}" for f in row.recovered),
                     ";".join(f"{r:.6f}" for r in row.amplitude_ratios),
+                    ";".join(f"{a:.6e}" for a in row.decay_rates),
                 ]
             )
     print(f"wrote {len(rows)} rows to {args.output}")

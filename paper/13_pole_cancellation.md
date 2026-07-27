@@ -118,11 +118,14 @@ with generalized spectra agreeing to eight digits and every generalized
 eigenvalue strictly positive. This comparison is enshrined as the regression
 test `tests/test_poles.py::test_zeta_operator_with_pole_matches_zero_side_matrix`.
 
-For \(D=5,-3,8,13\), zeros of \(L(s,\chi_D)\) were computed independently via
+For \(D=5,-3,8,13\), zeros of \(L(s,\chi_D)\) are computed independently via
 the Hurwitz-zeta representation of \(L\) and sign changes of the real-valued
-completed function \(\Lambda(\tfrac12+it,\chi)\). The entrywise agreement is
-again \(2\)–\(4\times10^{-16}\), and all generalized eigenvalues are strictly
-positive:
+completed function \(\Lambda(\tfrac12+it,\chi)\). This comparison is
+committed as `experiments/dirichlet_zero_side.py`, with the run recorded in
+`paper/data/dirichlet-zero-side.csv` and an mpmath-gated regression test for
+\(D=5\) in `tests/test_dirichlet_zero_side.py`. The entrywise agreement is
+at the \(10^{-16}\)–\(10^{-15}\) level, and all generalized eigenvalues are
+strictly positive:
 
 | \(D\) | zeros used (\(\gamma\le42\)) | first zeros | \(\max|A-Z|\) | \(\lambda_{\min}\) |
 |---:|---:|---|---:|---:|
@@ -170,9 +173,12 @@ recovered zero is simple.
 
 - The pole matrix is implemented exactly as derived in
   `paper/12_pole_term.md` and gated to the principal character.
-- `WeilOperator` keeps `include_pole=False` by default so that all historical
-  experiment artifacts retain their original semantics; the corrected
-  \(D=1\) assembly must opt in.
+- `WeilOperator` resolves `include_pole=None` automatically: the pole block
+  is included exactly for the principal character, so the default assembly
+  is the mathematically correct completed function. The historical sweep
+  scripts (`experiments/convergence.py`, `experiments/deep_cutoff.py`,
+  `experiments/compare_regularizations.py`) pass `include_pole=False`
+  explicitly so the tables of chapters 8 and 9 remain reproducible.
 - All statements in this chapter about cancellation and agreement are
   floating-point observations at stated cutoffs, not certified enclosures.
   Interval versions of the zero-side comparison are a natural next
@@ -186,5 +192,9 @@ recovered zero is simple.
 
 ```bash
 python -m experiments.pole_cancellation
-python -m pytest tests/test_poles.py
+python -m experiments.dirichlet_zero_side
+python -m pytest tests/test_poles.py tests/test_dirichlet_zero_side.py
 ```
+
+Committed run records: `paper/data/pole-cancellation.csv` and
+`paper/data/dirichlet-zero-side.csv`.

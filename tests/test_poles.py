@@ -45,8 +45,10 @@ def test_pole_vectors_match_numerical_laplace_evaluations() -> None:
         for a, vector in ((-0.5, p_minus), (0.5, p_plus)):
 
             def integrand(x: float, center: float = center, a: float = a) -> float:
+                # A single combined exponent keeps the integrand integrable and
+                # avoids overflow: it is bounded above and underflows to zero.
                 exponent = -((x - center) ** 2) / (2.0 * packets.sigma**2) + a * x
-                return exp(max(exponent, -700.0))
+                return exp(exponent)
 
             expected, _ = quad(integrand, -np.inf, np.inf, epsabs=1e-12)
             assert vector[j] == pytest.approx(expected, rel=1e-10)
@@ -108,7 +110,7 @@ def test_pole_block_is_gated_to_the_principal_character() -> None:
     dirichlet_data = CompletedDirichletData(PrimitiveQuadraticCharacter(5))
 
     with_pole = WeilOperator(packets, zeta_data, prime_cutoff=5, include_pole=True)
-    without = WeilOperator(packets, zeta_data, prime_cutoff=5)
+    without = WeilOperator(packets, zeta_data, prime_cutoff=5, include_pole=False)
 
     assert np.allclose(
         with_pole.matrix(),
@@ -118,6 +120,27 @@ def test_pole_block_is_gated_to_the_principal_character() -> None:
 
     with pytest.raises(ValueError, match="principal character"):
         WeilOperator(packets, dirichlet_data, prime_cutoff=5, include_pole=True)
+
+
+def test_default_pole_resolution_follows_the_conductor() -> None:
+    """The default assembles the mathematically correct completed function."""
+
+    packets = GaussianPacketFamily([-0.5, 0.5], sigma=0.4)
+    zeta = WeilOperator(
+        packets,
+        CompletedDirichletData(PrimitiveQuadraticCharacter(1)),
+        prime_cutoff=5,
+    )
+    dirichlet = WeilOperator(
+        packets,
+        CompletedDirichletData(PrimitiveQuadraticCharacter(5)),
+        prime_cutoff=5,
+    )
+
+    assert zeta.pole_included
+    assert not dirichlet.pole_included
+    assert np.allclose(zeta.pole_matrix(), pole_matrix(packets))
+    assert np.allclose(dirichlet.pole_matrix(), 0.0)
 
 
 def test_zeta_operator_with_pole_matches_zero_side_matrix() -> None:
@@ -178,7 +201,7 @@ def test_deep_cutoff_negativity_is_cancelled_by_the_pole_matrix() -> None:
     data = CompletedDirichletData(PrimitiveQuadraticCharacter(1))
     cutoff = 2000  # log(2000) = 7.6 > 2 * extent + 4 * sigma = 6.0
 
-    without = WeilOperator(packets, data, prime_cutoff=cutoff)
+    without = WeilOperator(packets, data, prime_cutoff=cutoff, include_pole=False)
     with_pole = WeilOperator(packets, data, prime_cutoff=cutoff, include_pole=True)
     gram = packets.gram_matrix()
 

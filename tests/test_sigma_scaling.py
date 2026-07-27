@@ -2,7 +2,9 @@
 
 import numpy as np
 
-from experiments.sigma_scaling import certified_cutoff, packet_family, run_case
+import pytest
+
+from experiments.sigma_scaling import packet_family, run_case, tail_resolved_cutoff
 from finite_weil import prime_truncation_eigenvalue_bound
 
 
@@ -13,12 +15,19 @@ def test_packet_family_is_symmetric_with_requested_spacing() -> None:
     assert np.max(np.diff(packets.centers)) <= 1.5 * 0.2 + 1e-12
 
 
-def test_certified_cutoff_meets_the_requested_tolerance() -> None:
+def test_tail_resolved_cutoff_meets_the_requested_tolerance() -> None:
     packets = packet_family(1.0, 0.3, 1.5)
-    cutoff, bound = certified_cutoff(packets, 1e-6)
+    cutoff, bound = tail_resolved_cutoff(packets, 1e-6)
 
     assert bound <= 1e-6
     assert prime_truncation_eigenvalue_bound(packets, cutoff) == bound
+
+
+def test_tail_resolved_cutoff_raises_when_tolerance_is_unreachable() -> None:
+    packets = packet_family(1.0, 0.3, 1.5)
+
+    with pytest.raises(RuntimeError, match="failed to reach"):
+        tail_resolved_cutoff(packets, 1e-30, maximum=64)
 
 
 def test_run_case_spectrum_is_positive_within_truncation_budget() -> None:

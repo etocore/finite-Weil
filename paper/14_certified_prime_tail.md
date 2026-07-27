@@ -1,4 +1,4 @@
-# A certified prime-tail bound on fixed packet spaces
+# An explicit prime-tail bound on fixed packet spaces
 
 ## 1. Scope and claim status
 
@@ -167,10 +167,14 @@ orders of magnitude, which is acceptable because it decays Gaussian-fast in
 
 ### Remark 4.3
 
-Claim 4 is evaluated in code with a floating-point
-\(\lambda_{\min}(B)\).  A fully certified enclosure would compute
-\(\lambda_{\min}(B)\) with directed rounding; this is the natural next
-certification step and is deliberately not claimed here.
+The inequalities of Theorem 4.1 are exact.  Their implementation, however,
+evaluates *every* ingredient in ordinary floating point: the exponentials
+and \(\operatorname{erfc}\) in \(I_\sigma\), the row sums, the Gram entries,
+\(\lambda_{\min}(B)\), and the final division.  The correct description of a
+computed value is therefore "a proved analytic upper-bound formula,
+numerically evaluated in floating point," not a machine-certified enclosure.
+Directed-rounding or interval evaluation of the whole chain is the natural
+next certification step and is deliberately not claimed here.
 
 ## 5. Implementation and tests
 

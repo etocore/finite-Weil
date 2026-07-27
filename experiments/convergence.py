@@ -71,7 +71,14 @@ def run_case(
     character = PrimitiveQuadraticCharacter(discriminant)
     packets = GaussianPacketFamily(packet_centers(dimension, center_extent), sigma)
     data = CompletedDirichletData(character)
-    operator = WeilOperator(packets=packets, data=data, prime_cutoff=cutoff)
+    # Historical sweep semantics: the pole block is excluded even for D = 1 so
+    # that rows remain comparable with the tables in paper chapters 8 and 9.
+    operator = WeilOperator(
+        packets=packets,
+        data=data,
+        prime_cutoff=cutoff,
+        include_pole=False,
+    )
 
     start = perf_counter()
     gram = operator.gram_matrix()

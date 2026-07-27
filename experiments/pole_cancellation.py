@@ -57,7 +57,12 @@ def run_case(
     gram = packets.gram_matrix()
 
     start = perf_counter()
-    without = WeilOperator(packets=packets, data=data, prime_cutoff=cutoff)
+    without = WeilOperator(
+        packets=packets,
+        data=data,
+        prime_cutoff=cutoff,
+        include_pole=False,
+    )
     base_matrix = without.matrix()
     values_without = generalized_eigenvalues(
         base_matrix,

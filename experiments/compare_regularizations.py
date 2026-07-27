@@ -83,12 +83,14 @@ def run_case(
     character = PrimitiveQuadraticCharacter(discriminant)
     packets = GaussianPacketFamily(packet_centers(dimension, center_extent), sigma)
     data = CompletedDirichletData(character)
+    # Historical semantics: pole block excluded even for D = 1.
     operator = WeilOperator(
         packets=packets,
         data=data,
         prime_cutoff=cutoff,
         prime_weight=weight,
         prime_support_multiplier=support_multiplier,
+        include_pole=False,
     )
 
     start = perf_counter()
