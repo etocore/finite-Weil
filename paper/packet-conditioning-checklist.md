@@ -150,6 +150,20 @@ This checklist tracks the transition from local identifiability to quantitative 
   =
   (G_{ab}^{cd})^*\widetilde G_{cd}G_{ab}^{cd}.
   \]
+- [x] Identify the packet exponent list as the local Smith partial multiplicities of the analytic Jacobian germ.
+- [x] Identify the explicit Hermite-dual modes as a maximal system of root functions whose Taylor coefficients form maximal Jordan chains.
+- [x] Prove that the root orders, filtration, and one-dimensional associated-graded root lines are intrinsic, while the Hermite roots are distinguished local lifts.
+- [x] Globalize the root filtration over the ordered nondegenerate common-scale collision face as holomorphic subbundles
+  \[
+  \mathcal E=\mathcal F^0\supseteq\mathcal F^1\supseteq\cdots\supseteq\mathcal F^{2m}=0.
+  \]
+- [x] Prove that every positive packet exponent defines a canonical holomorphic graded line bundle and that the missing exponent is the global identity
+  \[
+  \mathcal F^m=\mathcal F^{m+1},
+  \qquad
+  \operatorname{gr}^m\mathcal F=0.
+  \]
+- [x] Prove that Hermite root classes are local frames of the canonical graded lines and have scalar holomorphic overlap cocycles.
 
 ## Main notes
 
@@ -164,10 +178,13 @@ This checklist tracks the transition from local identifiability to quantitative 
 - `paper/varying-shape-cluster-normal-form.md`
 - `paper/ordered-blow-up-transition-maps.md`
 - `paper/ordered-cluster-chart-transitions.md`
+- `paper/local-smith-form-of-packet-jacobian.md`
+- `paper/hermite-root-functions-and-jordan-chains.md`
+- `paper/canonical-filtered-root-bundle.md`
 
 ## Immediate theorem queue
 
-- [ ] Determine the permutation-group action on the blow-up and rescaled tangent structures.
+- [ ] Determine the permutation-group action on the blow-up, filtered root bundles, rescaled tangent structures, and renormalized metric.
 - [ ] Pass from labeled ordered charts to the unordered packet quotient.
 - [ ] Globalize the local metric-completion quotient across collision strata.
 - [ ] Determine whether the rescaled tangent bundles define a natural Lie algebroid over the full collision compactification.
