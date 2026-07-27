@@ -1,18 +1,28 @@
-# The missing collision grade as the removed translation direction
+# The translation relation in corrected collision moments
 
-## 1. Scope and claim boundary
+## 1. Scope and corrected claim boundary
 
-This note identifies the exact one-dimensional target relation that appears after the common translation direction is removed from an ordered weighted collision chart.
+This note identifies the exact codimension-one relation obtained after common node translation is removed from the corrected upper-moment map.
 
-It proves that the relation is not generally the raw equation
+It proves the coefficient-level identity
 
 \[
-\delta U_m=0.
+\lambda^{\mathsf T}C\delta\xi=0
 \]
 
-Instead, it is the unique triangular target covector dual to common node translation.
+for centered node variations, where
 
-The result supplies the local missing-grade mechanism. It does **not** yet prove the complete Smith spectrum, construct the root filtration as a holomorphic bundle, treat nested collisions, or descend from ordered to unordered clusters.
+\[
+\lambda=C^{-\mathsf T}\mathbf 1.
+\]
+
+This relation is exact. However, it lives before the upper rows are weighted by the collision powers
+
+\[
+h^m,h^{m+1},\ldots,h^{2m-1}.
+\]
+
+Therefore it does **not** by itself prove that grade \(m\) is absent from the local Smith spectrum. The earlier triangular-target interpretation was too strong and is corrected here.
 
 ## 2. Corrected higher-moment map
 
@@ -22,7 +32,7 @@ Let
 q_\xi(t)=\prod_{j=1}^m(t-\xi_j)
 \]
 
-for pairwise distinct ordered nodes \(\xi_1,\ldots,\xi_m\), and let all weights \(u_j\) be nonzero.
+for pairwise distinct ordered nodes, with nonzero weights \(u_j\).
 
 After the unique weight correction satisfying
 
@@ -38,15 +48,7 @@ the higher moments satisfy
 \sum_{j=1}^m
 u_jq_\xi'(\xi_j)H_s(\xi_j)\,\delta\xi_j,
 \qquad
-0\le s\le m-1,
-\]
-
-where \(H_s\) is the quotient polynomial in
-
-\[
-t^{m+s}=q_\xi(t)H_s(t)+R_s(t),
-\qquad
-\deg R_s<m.
+0\le s\le m-1.
 \]
 
 Write
@@ -57,7 +59,7 @@ C=C^{\mathrm{full}}(\xi,u),
 C_{sj}=u_jq_\xi'(\xi_j)H_s(\xi_j).
 \]
 
-The determinant theorem gives
+The determinant formula gives
 
 \[
 \det C
@@ -67,11 +69,11 @@ The determinant theorem gives
 \Delta(\xi)^3,
 \]
 
-so \(C\) is invertible on the nondegenerate ordered collision face.
+so \(C\) is invertible on the nondegenerate ordered face.
 
 ## 3. Translation and centered variations
 
-A common infinitesimal translation is the node variation
+A common infinitesimal translation is
 
 \[
 \delta\xi=a\mathbf 1,
@@ -79,7 +81,7 @@ A common infinitesimal translation is the node variation
 \mathbf 1=(1,\ldots,1)^{\mathsf T}.
 \]
 
-After the center coordinate has been separated, the remaining node variations lie in the centered hyperplane
+After the center coordinate has been separated, the remaining node variations lie in
 
 \[
 E_0
@@ -90,15 +92,9 @@ E_0
 \right\}.
 \]
 
-The scale direction together with the normalized shape tangent space spans \(E_0\). Thus the reduced upper map is the restriction
+Because \(C\) is invertible and \(E_0\) has codimension one, the image \(C(E_0)\) also has codimension one.
 
-\[
-C|_{E_0}:E_0\longrightarrow\mathbb C^m.
-\]
-
-Since \(C\) is invertible and \(E_0\) has codimension one, the image \(C(E_0)\) also has codimension one.
-
-## 4. Exact target relation
+## 4. Exact translation covector
 
 Define
 
@@ -108,7 +104,7 @@ Define
 }
 \]
 
-Equivalently, \(\lambda\) is the unique solution of
+Equivalently,
 
 \[
 \boxed{
@@ -116,7 +112,7 @@ C^{\mathsf T}\lambda=\mathbf 1.
 }
 \]
 
-Then for every node variation \(\delta\xi\),
+Then for every node variation,
 
 \[
 \lambda^{\mathsf T}C\delta\xi
@@ -128,7 +124,7 @@ Therefore:
 
 ### Theorem 4.1 - Translation relation
 
-For every centered node variation \(\delta\xi\in E_0\),
+For every centered variation \(\delta\xi\in E_0\),
 
 \[
 \boxed{
@@ -143,31 +139,28 @@ For every centered node variation \(\delta\xi\in E_0\),
 }
 \]
 
-Moreover, this relation spans the full left kernel of the reduced map \(C|_{E_0}\).
+Moreover, this relation spans the full left kernel of \(C|_{E_0}\).
 
 #### Proof
 
-The identity follows immediately from
+Since
 
 \[
 \lambda^{\mathsf T}C
 =
-\mathbf 1^{\mathsf T}.
+\mathbf 1^{\mathsf T},
 \]
 
-If \(\delta\xi\in E_0\), then
+we obtain
 
 \[
-\mathbf 1^{\mathsf T}\delta\xi=0,
+\lambda^{\mathsf T}C\delta\xi
+=
+\mathbf 1^{\mathsf T}\delta\xi
+=0
 \]
 
-so
-
-\[
-\lambda^{\mathsf T}C\delta\xi=0.
-\]
-
-Because \(C\) is invertible, \(C(E_0)\) has dimension \(m-1\). Its annihilator is therefore one-dimensional, and the nonzero covector \(\lambda\) spans it. \(\square\)
+for every \(\delta\xi\in E_0\). The image \(C(E_0)\) has dimension \(m-1\), so its annihilator is one-dimensional. \(\square\)
 
 ## 5. Interpolation description
 
@@ -198,12 +191,10 @@ is equivalent to
 \[
 \sum_{s=0}^{m-1}\lambda_sH_s(\xi_j)
 =
-\frac{1}{u_jq_\xi'(\xi_j)}
-\qquad
-(1\le j\le m).
+\frac{1}{u_jq_\xi'(\xi_j)}.
 \]
 
-Thus the polynomial
+Thus
 
 \[
 P_\lambda(t)
@@ -211,7 +202,7 @@ P_\lambda(t)
 \sum_{s=0}^{m-1}\lambda_sH_s(t)
 \]
 
-is the unique polynomial of degree less than \(m\) interpolating the barycentric-weight data
+is the unique polynomial of degree less than \(m\) satisfying
 
 \[
 P_\lambda(\xi_j)
@@ -219,80 +210,42 @@ P_\lambda(\xi_j)
 \frac{1}{u_jq_\xi'(\xi_j)}.
 \]
 
-This explains two features seen in the exploratory computation:
+This gives a barycentric interpolation formula for the translation covector.
 
-1. the relation depends on the individual weights, not only on symmetric functions of the node shape;
-2. it is naturally expressed in the quotient basis \(H_0,\ldots,H_{m-1}\), rather than as the literal vanishing of the first raw upper moment.
+## 6. Why this does not yet remove grade m
 
-## 6. Missing grade after a triangular target change
-
-The quotient polynomials satisfy
+The actual upper collision contribution is weighted by
 
 \[
-H_s(t)=t^s+\text{lower-degree terms}.
-\]
-
-Therefore the passage from raw derivative jets
-
-\[
-M^{(m)},M^{(m+1)},\ldots,M^{(2m-1)}
-\]
-
-to the \(H_s\)-adapted target frame is triangular with nonzero diagonal.
-
-The covector \(\lambda\) identifies one target line as dual to the removed translation direction. Choose any invertible target change whose first row is \(\lambda^{\mathsf T}\). In the transformed target coordinates, the first upper coordinate vanishes identically on centered variations, while the remaining \(m-1\) upper coordinates are independent.
-
-Hence the normalized upper block has grades
-
-\[
-m+1,m+2,\ldots,2m-1,
-\]
-
-with no independent grade-\(m\) line.
-
-This is the precise local meaning of
-
-\[
-\boxed{\operatorname{gr}_m=0.}
-\]
-
-The missing grade is the target image of the translation direction removed when the cluster center is separated.
-
-## 7. Consequence for the local exponent list
-
-The lower weight block supplies independent grades
-
-\[
-0,1,\ldots,m-1
-\]
-
-through the Vandermonde isomorphism
-
-\[
-\delta u
-\longmapsto
-(\delta U_0,\ldots,\delta U_{m-1}).
-\]
-
-The centered position block has dimension \(m-1\). After the target relation above is used to remove its first triangular coordinate, the surviving upper grades are
-
-\[
-m+1,\ldots,2m-1.
-\]
-
-Thus the algebra predicts the local exponent list
-
-\[
-\boxed{
-E_m
+D_m(h)
 =
-\{0,1,\ldots,m-1,m+1,\ldots,2m-1\}.
-}
+\operatorname{diag}
+\left(h^m,h^{m+1},\ldots,h^{2m-1}\right).
 \]
 
-A complete Smith-spectrum theorem still requires construction of root germs with these exact orders and proof that the relevant leading target vectors remain independent throughout the nondegenerate face. This note identifies the algebraic reason for the gap but does not replace that root-germ argument.
+The \(h\)-weighted upper block is
 
-## 8. Implementation correspondence
+\[
+D_m(h)C|_{E_0}.
+\]
+
+Although
+
+\[
+\lambda^{\mathsf T}C|_{E_0}=0,
+\]
+
+one does not generally have
+
+\[
+\lambda^{\mathsf T}D_m(h)C|_{E_0}=0.
+\]
+
+To convert the unweighted relation into a relation among the weighted rows would require coefficients involving negative powers of \(h\). Such operations are not allowed over the local analytic ring used in Smith theory.
+
+Therefore the translation relation proves a coefficient-level codimension-one statement, but not an \(h\)-adic missing-grade theorem.
+
+## 7. Implementation correspondence
 
 The exact covector is implemented by
 
@@ -303,7 +256,7 @@ finite_weil.collisions.collision_translation_relation
 which solves
 
 ```text
-C.T @ lambda = ones(m).
+C.T @ lambda = ones(m)
 ```
 
 Regression tests verify
@@ -320,17 +273,26 @@ and
 
 for centered variations.
 
+## 8. Revised theorem target
+
+The missing exponent \(m\) requires an additional \(h\)-compatible mechanism. The next calculation must use the exact Jacobian from the singular-value experiments and determine whether:
+
+1. the degree-\(m\) coefficient vanishes after the true source normalization;
+2. an analytic source correction raises its order;
+3. a center-scale Schur complement cancels it;
+4. the observed exponent list belongs to a different reduced matrix.
+
 ## 9. Claim ledger
 
 | Statement | Status |
 |---|---|
-| Full corrected matrix is invertible on the nondegenerate ordered face | Proved in the preceding note |
-| Scale plus normalized shape spans the centered node hyperplane | Elementary linear algebra |
-| \(\lambda=C^{-\mathsf T}\mathbf 1\) annihilates the reduced upper image | Proved |
-| The missing target relation is dual to removed translation | Proved |
-| The relation has a barycentric interpolation description | Proved |
-| A triangular target frame removes the raw grade-\(m\) coordinate | Proved locally |
-| Complete local Smith spectrum | Next theorem target |
-| Holomorphic root filtration on the full face | Open |
+| Full corrected matrix is invertible on the nondegenerate ordered face | Proved |
+| \(\lambda=C^{-\mathsf T}\mathbf 1\) annihilates the unweighted centered image | Proved |
+| Translation relation has a barycentric interpolation description | Proved |
+| Translation relation alone removes grade \(m\) | False |
+| Constant triangular target change proves \(\operatorname{gr}_m=0\) | False in general |
+| Complete local Smith spectrum | Open |
+| Exact h-compatible missing-grade mechanism | Immediate theorem target |
+| Holomorphic global root filtration | Open |
 | Extension to nested collisions | Open |
 | Descent to unordered clusters | Open |
