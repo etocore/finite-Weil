@@ -1,56 +1,76 @@
 # Finite Weil
 
-Finite Weil is a research codebase for finite-dimensional compressions of Weil explicit-formula operators attached to completed L-functions.
+Finite Weil is a research codebase for finite-dimensional compressions of Weil explicit-formula forms attached to completed L-functions.
 
-The project is organized around four distinct kinds of claims:
+The project distinguishes four kinds of statements:
 
 1. proved mathematical statements;
-2. interval-certified computational theorems;
-3. reproducible numerical observations;
+2. interval-certified computational statements;
+3. reproducible floating-point observations;
 4. open conjectures and research questions.
 
-This repository does **not** claim a proof of RH or GRH. Its present scope is finite-dimensional spectral mathematics, perturbation theory, explicit-formula computations, and computer-assisted verification.
+This repository does **not** claim a proof of RH or GRH. Its present scope is finite-dimensional spectral mathematics, explicit-formula computation, perturbation theory, Gaussian packet geometry, and computer-assisted validation.
 
-## Immediate research program
+## Current validated picture
 
-The first milestone is a clean reconstruction of the Gaussian packet model and the finite prime-operator decomposition. The first large experiment will measure
+For a primitive quadratic character, the implemented finite matrix is assembled from the conductor, gamma, and prime contributions. For the principal character `D = 1`, the completed zeta function also contributes the rank-at-most-two pole block
 
 \[
-D(\sigma,q)=\lambda_{\min}(\sigma,q)-\log q
+P_{ij}=4\pi\sigma^2e^{\sigma^2/4}\cosh\!\left(\frac{c_i-c_j}{2}\right).
 \]
 
-across packet bandwidths and primitive quadratic characters.
+`WeilOperator` includes this block automatically for `D = 1`. Historical scripts that reproduce the old pole-free chapter 8/9 tables opt out explicitly.
 
-## Run the convergence experiment locally
+The earlier large negative deep-cutoff eigenvalues for `D = 1` were not negative Weil certificates. They were the spectral signature of omitting this analytically required pole block. The corrected arithmetic-side matrices agree with independently assembled zero-side matrices to floating-point precision for the tested characters.
 
-Create a Python 3.11 or newer environment, then install the package with its experiment dependencies:
+The repository also contains:
+
+- an explicit analytic bound for the omitted prime tail on each fixed Gaussian packet space;
+- complex-mode matrix-pencil recovery of low zeta ordinates from the arithmetic side;
+- small-bandwidth scaling experiments with floating-point evaluations of the analytic truncation budget;
+- collision and flat-limit results for degenerating Gaussian packet families.
+
+## Claim boundaries
+
+- The prime-tail inequality is proved analytically, but its numerical evaluation currently uses ordinary floating point rather than directed rounding.
+- Zero-side agreement and zero recovery are reproducible numerical observations, not interval certificates.
+- Complex pencil modes can represent off-unit-circle behavior, but the repository does not claim a quantified detector for off-critical zeros.
+- Finite positivity or negativity does not by itself establish an infinite-dimensional statement.
+
+## Install and test
+
+Create a Python 3.11 or newer environment, then install the package with experiment dependencies:
 
 ```bash
 python -m pip install -e ".[experiments]"
 ```
 
-Run the default local sweep and generate the CSV plus all plots with one command:
+Run the test suite:
 
 ```bash
-python -m experiments.run
+python -m pytest
 ```
 
-The default `quick` profile evaluates 90 parameter combinations. The full 300-case sweep is:
+Run the current principal experiments:
 
 ```bash
-python -m experiments.run --profile full
+python -m experiments.pole_cancellation
+python -m experiments.dirichlet_zero_side
+python -m experiments.zero_recovery
+python -m experiments.sigma_scaling
 ```
 
-Results are written to `artifacts/convergence.csv` and one PNG for each discriminant/sigma slice. These are floating-point numerical observations, not certified results and not evidence for RH or GRH.
+Historical convergence and deep-cutoff scripts remain available for reproduction, but their `D = 1` outputs are intentionally pole-free and must not be interpreted as the completed-zeta Weil form.
 
 ## Repository layout
 
 - `finite_weil/` - mathematical implementation
 - `tests/` - tests corresponding to definitions and proved identities
 - `experiments/` - reproducible numerical studies
-- `paper/` - theorem statements and proofs
-- `certificates/` - machine-readable interval certificates
-- `docs/` - research map, assumptions, and implementation notes
+- `paper/` - theorem statements, proofs, historical chapters, and numerical reports
+- `paper/data/` - committed run records for quoted numerical tables
+- `certificates/` - machine-readable interval certificates, where available
+- `docs/` - research map, correction ledger, assumptions, and implementation notes
 
 ## Development rule
 
@@ -59,8 +79,7 @@ Every theorem-facing implementation should have:
 - an explicit mathematical statement;
 - a corresponding test;
 - documented hypotheses;
-- a clear distinction between floating-point evidence and certified computation.
+- a clear distinction between proof, floating-point evidence, and interval certification;
+- an explicit supersession note when later work invalidates an earlier interpretation.
 
-## Status
-
-The repository is being rebuilt from first principles. Historical scripts will be imported only after their normalization and assumptions are audited.
+The repository preserves historical artifacts for reproducibility, but current claims are governed by `docs/RESEARCH_MAP.md` and `docs/CORRECTION_LEDGER.md`.
