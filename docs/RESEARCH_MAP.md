@@ -8,7 +8,9 @@ This document is the project's claim ledger. A statement moves upward only when 
 | Distinct translated Gaussian packets are linearly independent | Previously proved in project notes, not yet imported | Referee-ready proof | Reconstruct in paper |
 | Symmetry of the implemented universal matrix `T_n` | Implemented and tested from explicit Gaussian correlations | Written proposition matching code notation | Add proof to paper |
 | Finite identity `A_prime(N;D) = sum beta_D(n) T_n` | Exact by implemented definition; arithmetic tests added | Independent hand-derived matrix example | Add a worked example and theorem statement |
-| Identification of `A_prime` with the classical explicit-formula prime term | Not yet claimed | Derivation from a fixed Fourier and completed-L normalization | Audit archimedean/conductor conventions first |
+| Identification of `A_prime` with the classical explicit-formula prime term | Observed at machine precision (`paper/13_pole_cancellation.md`) | Entrywise agreement of the full assembly with independently computed zero-side matrices | Upgrade the floating-point comparison to an interval certificate |
+| Completed-zeta pole matrix `P` | Implemented and tested from the derivation in `paper/12_pole_term.md` | Closed-form Laplace checks, rank/eigenvalue identities, zero-side regression test | Extend to other meromorphic completions |
+| Deep-cutoff negativity for `D = 1` is the missing pole block | Observed (`paper/13_pole_cancellation.md`) | With-pole spectrum collapses to `~1e-5` at cutoff `1e7` | Derive an explicit prime-tail bound to certify the cancellation |
 | Primitive quadratic character arithmetic | Implemented and tested for representative discriminants | Broader reference-value tests | Add exhaustive small-conductor checks |
 | Complete finite Weil operator decomposition | Historical, not reconstructed | Conductor term, gamma term, exact definitions, proof, regression tests | Resolve normalization issue #2 |
 | Generalized eigenvalue perturbation bound | Standard finite-dimensional result; project specialization not yet imported | Precise hypotheses and proof | Add theorem module and paper section |

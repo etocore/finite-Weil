@@ -26,6 +26,7 @@ from .operators import (
     smallest_generalized_eigenpair,
 )
 from .packets import GaussianPacketFamily
+from .poles import pole_matrix
 
 FloatArray = NDArray[np.float64]
 FloatMatrix = NDArray[np.float64]
@@ -33,13 +34,21 @@ FloatMatrix = NDArray[np.float64]
 
 @dataclass(frozen=True, slots=True)
 class WeilOperator:
-    """Truncated finite Weil operator for a primitive quadratic character."""
+    """Truncated finite Weil operator for a primitive quadratic character.
+
+    ``include_pole`` adds the completed-zeta pole matrix derived in
+    ``paper/12_pole_term.md``.  It is valid only for the principal character
+    ``D = 1``; non-principal primitive L-functions are entire.  The flag
+    defaults to ``False`` so that historical experiment artifacts keep their
+    original semantics.
+    """
 
     packets: GaussianPacketFamily
     data: CompletedDirichletData
     prime_cutoff: int
     prime_weight: PrimeWeight = sharp_prime_weight
     prime_support_multiplier: float = 1.0
+    include_pole: bool = False
 
     def __post_init__(self) -> None:
         if isinstance(self.prime_cutoff, bool) or not isinstance(self.prime_cutoff, int):
@@ -52,6 +61,12 @@ class WeilOperator:
         ):
             raise ValueError(
                 "prime_support_multiplier must be a finite positive number"
+            )
+        if not isinstance(self.include_pole, bool):
+            raise TypeError("include_pole must be a boolean")
+        if self.include_pole and self.data.conductor != 1:
+            raise ValueError(
+                "the pole matrix applies only to the principal character D = 1"
             )
 
     def gram_matrix(self) -> FloatMatrix:
@@ -90,6 +105,14 @@ class WeilOperator:
             support_multiplier=self.prime_support_multiplier,
         )
 
+    def pole_matrix(self) -> FloatMatrix:
+        """Return the pole contribution, or a zero matrix when not included."""
+
+        if not self.include_pole:
+            dimension = self.packets.dimension
+            return np.zeros((dimension, dimension), dtype=float)
+        return pole_matrix(self.packets)
+
     def archimedean_matrix(
         self,
         *,
@@ -113,6 +136,8 @@ class WeilOperator:
 
         matrix = self.archimedean_matrix(epsabs=epsabs, epsrel=epsrel)
         matrix += self.prime_matrix()
+        if self.include_pole:
+            matrix += self.pole_matrix()
         return np.asarray(matrix, dtype=float)
 
     def generalized_eigenvalues(

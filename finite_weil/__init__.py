@@ -30,6 +30,7 @@ from .operators import (
     smallest_generalized_eigenpair,
 )
 from .packets import GaussianPacketFamily
+from .poles import pole_matrix, pole_vectors
 from .weil_operator import WeilOperator
 
 __all__ = [
@@ -53,6 +54,8 @@ __all__ = [
     "is_fundamental_discriminant",
     "jacobi_symbol",
     "kronecker_symbol",
+    "pole_matrix",
+    "pole_vectors",
     "prime_operator_terms",
     "prime_power_base",
     "prime_power_values",
