@@ -156,11 +156,34 @@ def exact_chart_smith_data(
     return ChartSmithResult(size // 2, tuple(valuations), tuple(exponents))
 
 
-def predicted_chart_exponents(cluster_size: int) -> tuple[int, ...]:
-    """Return the pattern suggested by exact anchored-chart computations."""
+def predicted_chart_valuation(cluster_size: int, minor_size: int) -> int:
+    """Return the generic anchored-chart determinantal valuation."""
 
     if cluster_size < 2:
         raise ValueError("cluster_size must be at least two")
-    if cluster_size == 2:
-        return (0, 0, 1, 3)
-    return (0, 0, 1, *range(3, 2 * cluster_size))
+    if not 1 <= minor_size <= 2 * cluster_size:
+        raise ValueError("minor_size must lie between 1 and 2m")
+    if minor_size <= 2:
+        return 0
+    return minor_size * (minor_size - 1) // 2 - 2
+
+
+def predicted_chart_valuations(cluster_size: int) -> tuple[int, ...]:
+    """Return all generic anchored-chart determinantal valuations."""
+
+    return tuple(
+        predicted_chart_valuation(cluster_size, minor_size)
+        for minor_size in range(1, 2 * cluster_size + 1)
+    )
+
+
+def predicted_chart_exponents(cluster_size: int) -> tuple[int, ...]:
+    """Return the generic anchored-chart Smith exponent pattern."""
+
+    valuations = predicted_chart_valuations(cluster_size)
+    previous = 0
+    exponents: list[int] = []
+    for valuation in valuations:
+        exponents.append(valuation - previous)
+        previous = valuation
+    return tuple(exponents)
