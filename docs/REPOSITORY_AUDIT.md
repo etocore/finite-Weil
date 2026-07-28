@@ -22,6 +22,33 @@ The principal correction governing this audit is that the completed zeta functio
 6. Off-critical zeros must be modeled through complex exponential modes, not merely anomalous cosine amplitudes.
 7. Toeplitz and symbol-limit statements remain conjectural until the required sampling, smoothing, finite-section, and aliasing arguments are proved.
 
-## Progress
+## File ledger
 
-The detailed file-by-file ledger will be expanded during the audit. A checked file is not considered complete until its mathematics, code references, temporal language, and downstream citations have all been reviewed.
+| File | Audit status | Principal findings | Action |
+|---|---|---|---|
+| `README.md` | First pass complete | Original future-work description and pole-free baseline were stale | Rewritten to state the corrected operator and current claim boundary |
+| `finite_weil/weil_operator.py` | First pass complete | Module docstring still described a three-term operator | Corrected to distinguish principal four-term and non-principal three-term assemblies |
+| `paper/09_prime_cutoff_geometry.md` | Deep audit complete | Negative table was unlabeled pole-free data; "exact" overstated floating-point spectra; early drift and limiting negativity were conflated; dimension dependence was called unresolved after the pole explanation; tail-bound work was still described as future | Rewritten line by line, historical data quarantined, corrected comparison added, surviving geometric claim narrowed, Paper 14 linked, dependency map added |
+
+## Paper 9 findings in detail
+
+The following propositions survived review:
+
+- Gaussian packet-pair entries are localized near logarithmic prime scales matching the center separation.
+- A cutoff with `log(N) < 2E` ends before some packet-pair Gaussian envelope centers when centers lie in `[-E,E]`.
+- Cutoff refinement and packet-space refinement are distinct operations.
+- Shallow common cutoffs can compare differently resolved packet spaces.
+
+The following statements were superseded or narrowed:
+
+- The large negative eigenvalues do not belong to the corrected completed-zeta operator.
+- Stabilization over the final sampled cutoff interval is not a proof of convergence.
+- The phrase "exact deep-cutoff experiment" was inaccurate for floating-point eigenspectra.
+- Insufficient arithmetic depth explains early cutoff drift, but not the limiting negative spectrum.
+- The dimension dependence is explained primarily by the Gram representation of the omitted rank-two pole block.
+- The heuristic `log(N) >> 2E` is not a quantitative error rule.
+- Derivation of a prime-tail estimate is completed in Paper 14 and is no longer future work.
+
+## Progress rule
+
+A checked file is not considered complete until its mathematics, code references, temporal language, artifacts, and downstream citations have all been reviewed. Paper 9 is complete at the source-file level; its downstream uses will be rechecked during the audits of Papers 10 through 16.
